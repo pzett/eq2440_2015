@@ -4,8 +4,8 @@
 \contentsline {section}{\numberline {3}Sketch of solution}{2}{section.3}
 \contentsline {section}{\numberline {4}Goals}{3}{section.4}
 \contentsline {section}{\numberline {5}Organisation}{4}{section.5}
-\contentsline {section}{\numberline {6}Time and Resource Plan}{5}{section.6}
-\contentsline {section}{\numberline {7}Risk Analysis}{5}{section.7}
+\contentsline {section}{\numberline {6}Tasks \& Time and Resource Plan}{5}{section.6}
+\contentsline {section}{\numberline {7}Risk Analysis}{6}{section.7}
 \contentsline {section}{\numberline {8}Documents and Rules}{6}{section.8}
-\contentsline {section}{\numberline {9}Project Model}{6}{section.9}
+\contentsline {section}{\numberline {9}Project Model}{7}{section.9}
 \contentsline {section}{\numberline {10}Bibliography}{7}{section.10}

@@ -24,6 +24,7 @@
 \usepackage{anysize}
 \usepackage{caption}
 \usepackage{geometry}
+\usepackage[final]{pdfpages}
 
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
 
@@ -111,16 +112,16 @@ Per Zetterberg
 \pagebreak
 \section{Background}
 
-This is the Project Plan of the Project in Wireless Communication \textit{Noise and echo cancellation in a teleconference}. As a Project Plan, this is also the contract between the team members and the supervisor of the Project, Per Zetterberg, that contains the goals, the organisation, the resource plan, the risk analysis, the documents rules and finally the project model that the project follows.
+This is the Project Plan of the Project in Wireless Communication \textit{ Noise and echo cancellation in a teleconference}. As a project plan, this is also the contract between the team members and the supervisor of the Project, Per Zetterberg, that contains the goals, the organisation, the resource plan, the risk analysis, the documents rules and the project model that the project follows.
 
-This project intends to be the first real project where to apply the theoretical knowledge acquired in the KTH's Master performed by the team members. Moreover, all the experience to gain during the project such as team work, project management, code programming and application of theory into practice has taken into account to choose the project, and all of these competences will be used when performing our Master Thesis next year.
+This project intends to be the first real project where to apply the theoretical knowledge acquired in the KTH's Master performed by the team members. Moreover, all the experience to gain during the project such as team work, project management, code programming and application of theory into practice were taken into account to choose the project, and all of these competences will be used when performing our Master Thesis next year.
 
 In the following sections, the Project Plan will be developed in detail with the aim to follow it as good as possible and to show it to the project supervisor (sponsor).
 
 
 \section{Specification of the project}
 
-The aim of the project, as the title of itself says, is to program a noise and echo cancellation algorithm in a teleconference. The very first scenario (Figure \ref{scenario}) considers that only one of the users is speaking in an echo and noisy environment. Further in the project, if this scenario is successfully solved, a second scenario will be approached: both users might be in a echo and noisy environment.
+The aim of the project, as the title of itself says, is to program a noise and echo cancellation algorithm in a teleconference in real time. The very first scenario (Figure \ref{scenario}) considers that only one of the users is speaking in an echo and noisy environment. Further in the project, if the first scenario is successfully solved, a second scenario will be approached: both users might be in a echo and noisy environment.
 
 		\begin{figure}[h]
 		\centering
@@ -132,12 +133,12 @@ The aim of the project, as the title of itself says, is to program a noise and e
 \section{Sketch of solution}
 
 
-With a background in adaptive signal processing and programming, mostly in MATLAB and Android, the goal is to cancel the noise and the echo generated in the user's environment during a teleconference (Figure \ref{scenario}). To do so, the group will use mostly the content of the course \textit{Adaptive Signal Processing (EQ2400)} and therefore model the system in the theoretical part. The test of the algorithms will be done by MATLAB and the implementation in real time will be coded with Android in a Eclipse environment. As there are 5 members in the team and different areas where to work, everyone has been allocated in these areas with certain responsabilities (see \textit{Organisation}) and will report properly the progress of the project.
+With a needed background in adaptive signal processing and programming, mostly in MATLAB and Android, the goal is to cancel the noise and the echo generated in the user's environment during a teleconference (Figure \ref{scenario}). To do so, the group will use mostly the content of the course \textit{Adaptive Signal Processing (EQ2400)} and therefore mode and test the system in a theoretical way. The test of the algorithms will be done by MATLAB and the implementation in real time will be coded with Android in the Eclipse environment. As there are 5 members in the team and different areas where to work, everyone has been allocated in these areas with certain responsabilities (see \textit{Organisation}) and will report properly the progress of the project.
 		
 The first approach to solve the problem will be by using Adaptive Signal Processing techniques. In order to work the project, the team has been provided 5 cellphones to work with:
 
 \begin{itemize}
-\item 1 phone per each user (total 2 phones)
+\item 2 phones for the users (1 phone per user)
 \item 1 phone as a server
 \item 1 phone to record the noise
 \end{itemize}
@@ -150,7 +151,7 @@ With the information of the recorded noise, adaptive filtering techniques such a
 \end{itemize}
 
 
-Finally the first model that will be used to treat the noise is show in the Figure \ref{model}.
+Finally the first model that will be used to treat the noise is show in the Figure \ref{model}. On the other hand, the echo cancellation will follow a similar model but the CIOs need to study deeper the final model.
 
 		\begin{figure}[h]
 		\centering
@@ -161,9 +162,9 @@ Finally the first model that will be used to treat the noise is show in the Figu
 
 \section{Goals}
 
-The goals of the team can be divided in two academic (business) goal and project goals. The academic goal is to achieve the best result within the time constrain given by the course (8 weeks). Consequently, the minimum score required will be a \textbf{B} being \textbf{A} the desired mark. In terms of project goals, as engineers the project should fulfill the expectation of noise and echo cancellation with the minimum possible delay.
+The goals of the team can be divided in two academic goals (business goals) and project goals. The academic goal is to achieve the best result within the time constrain given by the course (8 weeks). Consequently, the minimum score required will be a \textbf{B} being \textbf{A} the desired mark. In terms of project goals, as engineers the project should fulfill the expectation of noise and echo cancellation with the minimum possible delay, in order to have a real time application.
 
-Due to the complexity of the project, the budget (hours invested by the team members) will not be a constrain (in comparison with the time and the quality), even though every member of the team has other courses or seminars to attend, which will turn into risk factors that may affect during the performance of the project. According to the previous, the Figure \ref{3_const} shows the triple constraint of the project.
+Due to the complexity of the project, the budget (hours invested by the team members) will not be a constrain (in comparison with the time and the quality). Even though, every member of the team has other courses or seminars to attend, which will turn into risk factors that may affect during the performance of the project (see \textit{Risk Analysis}). According to the previous information, the Figure \ref{3_const} shows the triple constraint of the project.
 
 		\begin{figure}[h]
 		\centering
@@ -194,14 +195,14 @@ The organisation is fully made up by electrical engineering students. Each of th
 	
 \item Mohammad Abdulla
 	\begin{itemize}
-	\item Role: CEO \& CIO
+	\item Role: CTO
 	\item e-mail: hamodiilatch@gmail.com (mabdulla@kth.se)
 	\item Telephone: 
 	\end{itemize}
 	
 \item Thomas Gaudy
 	\begin{itemize}
-	\item Role: CEO \& CIO
+	\item Role: CTO
 	\item e-mail: gaudy.thomas@gmail.com (gaudy@kth.se)
 	\item Telephone: +46 760936034
 	\end{itemize}
@@ -240,44 +241,75 @@ The sponsor members as Project Examiner/Supervisor and Project Support are:
 	\end{itemize}
 \end{itemize}
 
-\section{Time and Resource Plan}
+\section{Tasks \& Time and Resource Plan}
 
-The measurable resources of the team is the amount of hours to dedicate to the project. Considering this, each of the members will work, a priori, 4 hours per day and 4 days per week, with some exceptions in the weeks with more work. After a first test in certain assignments it is a reasonable amount of hours with a total close to 190 hours in the 8 weeks of the course.
+\subsection*{Tasks}
+As it has previously said, the tasks of the project have been distributed among the team members depending on the areas of work. All the tasks with its classification, type of task, date to be ready and responsible, have been distributed as shown in the \textit{Annex 1}. Due to the \textit{Mid-term evaluation} the Android tasks have been distributed among the team's programmers depending on the comlexity of the task and the ammount of phones involved. Eventually, tasks 1, 2, 3 and 4 will be done individually and tasks 5, 6 and 7 will be done by groups.\\
 
-In order to plan the hours to dedicate and make a right follow up of them, it has been done a document of Time and Resource Allocation plan, attached in this Project Plan as an appendix. As a clarification, the hours shown in the Annex 1 are effective hours in the laboratory.
+On behalf of the Theory team, there are three phases involved: noise cancellation, echo cancellation and the merge of these two procedures (with code optimizing and transfer from MATLAB to Android). All the details in the \textit{Annex 1}.\\
+
+Finally, the Management area will take care about the Project Plan, all the Status Reports of the project and the Final Report. All the detailes, again, in the \textit{Annex 1}.
+
+\subsection*{Time and Resource Plan (TRP)}
+The measurable resources of the team is the amount of hours to dedicate to the project, and it has been planned as a \textit{Time and Resource Plan}. Considering this, each of the members will work, a priori, 4 hours per day and 4 days per week, with some exceptions in the weeks with more work. After a first test in certain assignments it is a reasonable amount of hours with a total close to 190 hours in the 8 weeks of the course.
+
+In order to plan the hours to dedicate and make a right follow up of them, it has been done a document named \textit{TimeAndResourcePlan.xls} this document is attached in this Project Plan as the \textit{Annex 2} As a clarification, the hours that stated in the Time and Resourse Plan are effective hours in the laboratory, the self study is not included.
 
 \section{Risk Analysis}
 
 In terms of risks that may affect the project we have analyzed two types of them:
 
 \begin{itemize}
-\item Technical risks: involving all the technical risks or lack of knowledge that the team my find during the project. This risks are unmeasurable and uncertain so Android programming and real time application are new areas for the team members and problems of different nature may occur.
+\item Technical risks: involving all the technical risks or lack of knowledge that the team may find during the project. This risks are unmeasurable and uncertain since Android programming and real time application are new areas for the team members and problems of different nature may occur.
 
 \item Managerial risks: all external risks that might put in difficulty the right follow up of the Project Plan. This section contains other courses, seminars, projects and language courses that the team members follow simultaneously.
 
 \end{itemize}
 
-In this Risk Analysis have not been taken into account personal activities or situations of the course members understanding that each member of the team should handle them so not to affect the performance of the project.
+In this Risk Analysis have not been taken into account personal activities or situations of the course members understanding that each member of the team should handle them so not to affect the performance of the project. For this reason, Table \ref{tablerisk} shows the risk table done following the \textit{Mini-Risk Method} (``Handbook for Small Project''), where \textbf{P}=Probability that the risk happens (from 1 to 4), \textbf{C}=consequence if the risk happens (from 1 to 4) and \textbf{R}=Risk Value (from 1 to 16).
+
+
+\begin{table}[h]
+\label{tablerisk}
+\centering
+\begin{tabular}{l| l| l| l| l| l}
+ Nr &Risk  &P  &C  &R &Action  \\
+ \hline
+ 1 & Do not find a good theoretical model & 1 & 4 & 4 & Read more literature\\
+ 2 & Do not pass the mid-term evaluation & 1 & 4 & 4 & Re-schedule the TRP\\
+ 3 & Problems with real time & 2 & 4 & 8 & Help and re-schedule TRP \\
+\end{tabular}
+\end{table}
+
+
 
 \section{Documents and Rules}
 This section contains the rules to follow in terms of documentation during the project, some of them will be handled by the team's CEOs and some of them will be handled individually. The projects to be done during the project will be next:
 
 \begin{itemize}
-\item Project Plan: will be done by the CEOs at the beginning of the project. They to hand it in will be by posting it in the project's KTH social group.
+\item Project Plan: will be done by the CEOs at the beginning of the project. The hand in it in will be done by posting it in the project's KTH social group.
 
 \item Reflective diary: this document will be done individually. Will be handled my e-mail to Per Zetterberg in pdf or .doc file before the deadline indicated by the schedule. Should include all what each team member has done in a schematic way with all the documentation needed to suport the lyrics.
 
-\item Status Report: will be done by the CEOs and handed in before the deadline of the schedule. As the Project Plan, it will be posted in the porject's KTH social group.  All the information will be provided by the team members to the CEOs so to elaborate this document.
+\item Progress Report: will be done by the CEOs and handed in before the deadline of the schedule. As the Project Plan, it will be posted in the porject's KTH social group.  All the information will be provided by the team members to the CEOs so to elaborate this document.
 
 \item Final Report: will be done by the CEOs with all the information provided by the CIOs and CTOs before the deadline of the course.
 \end{itemize}
 
-In terms of backup, every member of the team will daily upload to the \textit{GITHUB} directory all the progress and will make a backup in his own computer. In this way there will be, at least, three backups of the project for every section.
 
+The backup of the information will be don daily using next sources:
+
+\begin{itemize}
+\item Github: the group has a shared github server. All the progress will be uploaded at the end of the day
+\item Hard Disk: Every member of the team will have a daily backup in his own machine
+\end{itemize}
+
+With this backup procedure there will be at least 3 copies a day of the project.
 
 \section{Project Model}
 
 The project model will follow the general Project Flow (Ref. Handbook for Small Projects, Joakim Lilliesköld). In the Annex 1 can be found a Schedule with all the deadlines and important dates during the project and to which phase it refers to and so who is responsible of each task. The project is divided into next phases:
+
 \begin{itemize}
 \item Pre-study: already done before taking the course
 \item Start: Will finish when the Project Plan will be finished and approved
@@ -295,4 +327,9 @@ Milestones and Tollgates will be used to organise the project. On the one hand, 
 \item Slides of Lectures from the course Adaptive Signal Processing (EQ2400)
 \item Slides of Lectures of the course Project in Wireless Communication (EQ2440)
 \end{itemize}
+
+\includepdf[pages={1}]{tasks_phase1}
+\includepdf[pages={1}]{tasks_phase2}
+\includepdf[pages=-]{TimeResourcePlan}
+
 \end{document}  
