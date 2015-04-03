@@ -74,7 +74,7 @@ public class StudentCode extends StudentCodeBase {
 
 
 		// Set sample rate for sound in/out, 8000 for emulator, 8000, 11025, 22050 or 44100 for target device
-		sampleRate=22050;
+		sampleRate=44100;
 
 		// If CAMERA_RGB or CAMERA, use camera GUI?
 		useCameraGUI=false;
@@ -97,7 +97,7 @@ public class StudentCode extends StudentCodeBase {
 		//ntpServer = "192.168.5.11";
 
 		// Set the approximate interval in milliseconds for your need for calls to your process function
-		processInterval = 50;
+		processInterval = 10;
 
 		// If you access and modify data structures from several sensor functions and/or process you may need to make the calls
 		// be performed in series instead of simultaneous to prevent exception when one function changes data at the same time as another 
@@ -118,7 +118,7 @@ public class StudentCode extends StudentCodeBase {
 	// This is called when the user presses start in the menu, reinitialize any data if needed
 	public void start()
 	{	
-		firstDelayMilliseconds=10;
+		firstDelayMilliseconds=12;
 		firstDelaySamples=(firstDelayMilliseconds*sampleRate)/1000;
 		secondDelayMilliseconds=30;
 		secondDelaySamples=(secondDelayMilliseconds*sampleRate)/1000;
@@ -149,22 +149,9 @@ public class StudentCode extends StudentCodeBase {
 	int secondDelayMilliseconds;
 	int secondDelaySamples;
 	boolean buffered;
-	boolean testEcho=true;
 	// Fill in the process function that will be called according to interval above
 	public void process()
 	{ 
-		if(buffered){
-			for (int i=0;i<lengthBuffer;i++){
-				buffer[i]=(short)((float)samples[i]);
-				if(i<lengthBuffer-firstDelaySamples && testEcho){
-					buffer[i+firstDelaySamples]+=(short)((float)samples[i]*0.7);
-				}
-				if(i<lengthBuffer-secondDelaySamples && testEcho){
-					buffer[i+secondDelaySamples]+=(short)((float)samples[i]*0.5);
-				}
-			}
-			sound_out(buffer,lengthBuffer);
-		}
 
 
 		//set_output_text(""+gyroData+"\n"+gpsData + "\n"+triggerTime+"\n"+ magneticData+"\n"+proximityData+"\n"+lightData+"\n"+screenData+"\n"+messageData);		//set_output_text(debug_output+"\n");
@@ -235,6 +222,17 @@ public class StudentCode extends StudentCodeBase {
 			this.bufferTime=time;
 		}
 		buffered=true;
+		
+		for (int i=0;i<lengthBuffer;i++){
+			buffer[i]=(short)((float)samples[i]);
+			if(i<lengthBuffer-firstDelaySamples){
+				buffer[i]+=(short)((float)samples[i+firstDelaySamples]*0.7);
+			}
+			if(i<lengthBuffer-secondDelaySamples){
+				buffer[i]+=(short)((float)samples[i+secondDelaySamples]*0.5);
+			}
+		}
+		sound_out(buffer,lengthBuffer);
 		set_output_text("lengthSamples="+samples.length+"\n"+"buffered="+buffered+"\n"+"firstDelaySamples="+firstDelaySamples+"\n"+"secondDelaySamples="+secondDelaySamples+"\n");
 	}
 
