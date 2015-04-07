@@ -127,13 +127,16 @@ public class StudentCode extends StudentCodeBase {
 	public void start()
 	{
 		z= new ArrayList<Double>();
-		
-		lengthZ=600;
+
+		lengthZ=2100;
 		for (int i=0;i<lengthZ;i++){
 			double zero=0;
 			z.add(zero);
 		}
 		hasStarted=true;
+		timeChangedFloor=System.currentTimeMillis();
+		meanLimit=0.3;
+		userInput=2;
 	}
 
 	// This is called when the user presses stop in the menu, do any post processing here
@@ -157,52 +160,95 @@ public class StudentCode extends StudentCodeBase {
 
 	int lengthZ;
 	ArrayList<Double> z;
-	
+
 	double mean1;
 	double mean2;
-	double var1;
-	double var2;
+	double mean3;
+	double mean4;
+	double mean5;
+	double mean6;
+	double mean7;
 	boolean hasStarted;
 	boolean moving;
-	boolean testDown;
-	boolean testUp;
-	double userInput;
+	boolean oneUp;
+	boolean oneDown;
+	boolean twoUp;
+	boolean twoDown;
+	boolean threeUp;
+	boolean threeDown;
+	boolean fourUp;
+	boolean fourDown;
+	boolean fiveUp;
+	boolean fiveDown;
+	boolean sixUp;
+	boolean sixDown;
+	int userInput;
+	boolean changedFloor;
+	long timeChangedFloor;
+	double meanLimit;
 	/*
 	double[] result1=new double[2];
 	double[] result2=new double[2];
-	*/
+	 */
 	int counter=0;
 
 	int icounter = 0;
 	// Fill in the process function that will be called according to interval above
 	public void process()
 	{ 
-
 		if (hasStarted){
-			
+			long currentTime=System.currentTimeMillis();
+			boolean canChange=(currentTime-timeChangedFloor>3000);
 			moving=true;
-			testDown=(mean1>0.2 && mean2<-0.2);
-			testUp=(mean1<-0.2 && mean2>0.2);
-			
-			accelerometerData="moving="+moving+"\n"+"testDown="+testDown+"\n"+"testUp="+testUp;
-			
+			oneDown=(mean1>meanLimit && mean2<-meanLimit);
+			oneUp=(mean1<-meanLimit && mean2>meanLimit);
+			twoDown=(mean1>meanLimit && mean3<-meanLimit);
+			twoUp=(mean1<-meanLimit && mean3>meanLimit);
+			threeDown=(mean1>meanLimit && mean4<-meanLimit);
+			threeUp=(mean1<-meanLimit && mean4>meanLimit);
+			fourDown=(mean1>meanLimit && mean5<-meanLimit);
+			fourUp=(mean1<-meanLimit && mean5>meanLimit);
+			fiveDown=(mean1>meanLimit && mean6<-meanLimit);
+			fiveUp=(mean1<-meanLimit && mean6>meanLimit);
+			sixDown=(mean1>meanLimit && mean7<-meanLimit);
+			sixUp=(mean1<-meanLimit && mean7>meanLimit);
+			if (canChange && mean1<0.35 && mean1>-0.35){
+				if (oneDown || oneUp || twoDown || twoUp || threeDown || threeUp || fourDown || fourUp || fiveDown || fiveUp || sixDown || sixUp){
+					changedFloor=true;
+					timeChangedFloor=System.currentTimeMillis();
+				}
+			}
+			if (changedFloor){
+				if (oneDown){
+					userInput--;
+				}else if (oneUp){
+					userInput++;
+				}else if (twoDown){
+					userInput-=2;
+				}else if (twoUp){
+					userInput+=2;
+				}else if (threeDown){
+					userInput-=3;
+				}else if (threeUp){
+					userInput+=3;
+				}else if (fourDown){
+					userInput-=4;
+				}else if (fourUp){
+					userInput+=4;
+				}else if (fiveDown){
+					userInput-=5;
+				}else if (fiveUp){
+					userInput+=5;
+				}else if (sixDown){
+					userInput-=6;
+				}else if (sixUp){
+					userInput+=6;
+				}
+				changedFloor=false;
+			}
+			accelerometerData="You're on the floor "+userInput+"\n"+"oneDown="+oneDown+"\n"+"oneUp="+oneUp+"\n"+"twoDown="+twoDown+"\n"+"twoUp="+twoUp+"\n"+"threeDown="+threeDown+"\n"+"threeUp="+threeUp+"\n"+"fourDown="+fourDown+"\n"+"fourUp="+fourUp+"\n"+"fiveDown="+fiveDown+"\n"+"fiveUp="+fiveUp+"\n"+"sixDown="+sixDown+"\n"+"sixUp="+sixUp;
 		}
-		
-
-		
 		this.set_output_text(this.accelerometerData);
-
-		//set_output_text(debug_output+"\n");
-		//write_string_on_logfile(triggerTime);
-
-		//set_output_text(triggerTime+"\n");
-
-
-		// Sound example. Uncomment to play sound from the file data/lga.dat formatted as described in the slides.		
-		//playsoundexample();
-
-
-
 	};       
 
 
@@ -228,16 +274,26 @@ public class StudentCode extends StudentCodeBase {
 		double z0=this.z.get(0);
 		double z300=this.z.get(300);
 		double z600=this.z.get(600);
+		double z900=this.z.get(900);
+		double z1200=this.z.get(1200);
+		double z1500=this.z.get(1500);
+		double z1800=this.z.get(1800);
+		double z2100=this.z.get(2100);
 		mean1+=z0/300;
 		mean1-=z300/300;
 		mean2+=z300/300;
 		mean2-=z600/300;
-		var1+=(z0-mean1)*(z0-mean1)/300;
-		var1-=(z300-mean1)*(z300-mean1)/300;
-		var2+=(z300-mean2)*(z300-mean2)/300;
-		var2-=(z600-mean2)*(z600-mean2)/300;
-		
-		accelerometerData="z="+(z-9.875)+"\n"+"lengthZ="+this.z.size()+"\n"+"mean1="+mean1+"\n"+"mean2="+mean2+"\n"+"var1="+var1+"\n"+"var2="+var2;
+		mean3+=z600/300;
+		mean3-=z900/300;
+		mean4+=z900/300;
+		mean4-=z1200/300;
+		mean5+=z1200/300;
+		mean5-=z1500/300;
+		mean6+=z1500/300;
+		mean6-=z1800/300;
+		mean7+=z1800/300;
+		mean7-=z2100/300;
+		accelerometerData="z="+(z-9.875)+"\n"+"lengthZ="+this.z.size()+"\n"+"mean1="+mean1+"\n"+"mean2="+mean2;
 	}
 
 	public void gyroscope(long time, double x, double y, double z)
@@ -291,7 +347,7 @@ public class StudentCode extends StudentCodeBase {
 
 
 	public void stringFromUser(String user_input){		
-		userInput=Double.parseDouble(user_input);
+		userInput=Integer.parseInt(user_input);
 	}
 
 
@@ -451,7 +507,7 @@ public class StudentCode extends StudentCodeBase {
 		mean=mean/list.size();
 		return mean;
 	}
-	
+
 	private double[] calculateVariance(List<Double> list,int sizeList){
 		double[] result=new double[2];
 		result[0]=this.calculateAverage(list,sizeList);
