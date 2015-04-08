@@ -118,11 +118,14 @@ public class StudentCode extends StudentCodeBase {
 	// This is called when the user presses start in the menu, reinitialize any data if needed
 	public void start()
 	{	
-		firstDelayMilliseconds=12;
+		firstDelayMilliseconds=100;
 		firstDelaySamples=(firstDelayMilliseconds*sampleRate)/1000;
-		secondDelayMilliseconds=30;
+		secondDelayMilliseconds=200;
 		secondDelaySamples=(secondDelayMilliseconds*sampleRate)/1000;
-		buffered=false;
+		buffer=new short[4096];
+		int maxDelay=Math.max(firstDelaySamples, secondDelaySamples);
+		int indice=(maxDelay-maxDelay%4096)/4096;
+		bufferTotal=new short[4096*(indice+2)];
 	}
 
 	// This is called when the user presses stop in the menu, do any post processing here
@@ -141,14 +144,12 @@ public class StudentCode extends StudentCodeBase {
 	String messageData;
 	String wifi_ap = "Start value";
 	int counter=0;
-	short[] samples;
+	short[] bufferTotal;
 	long bufferTime;
-	int lengthBuffer;
 	int firstDelayMilliseconds;
 	int firstDelaySamples;
 	int secondDelayMilliseconds;
 	int secondDelaySamples;
-	boolean buffered;
 	// Fill in the process function that will be called according to interval above
 	public void process()
 	{ 
@@ -195,45 +196,19 @@ public class StudentCode extends StudentCodeBase {
 		lightData = "L: "+format4_2.format(l);
 	}
 
-	/*
-	public void sound_in(long time, short[] samples, int length)
-	{			
-		bufferTime=time;
-		long currentTime=System.currentTimeMillis();
-		long difference=currentTime-lastEcho;
-		boolean echoRecord=(difference<delaySamples);	
-		if (echoRecord){
-			//lastEcho=System.currentTimeMillis();
-			this.samples.add(0, samples);
-			if (this.samples.size()>3){
-				this.samples.remove(3);
-			}
-		}
-		lengthBuffer=length;
-		//processInterval = (long)((lengthBuffer*1000)/sampleRate);
-		set_output_text("length="+length+"\n"+"Active Microphone"+"\n"+"processInterval="+processInterval+"\n"+"samplesLength="+echoRecord);
-	}*/
-
 	public void sound_in(long time, short[] samples, int length){
-		if (!buffered){
-			this.lengthBuffer=length;
-			this.samples=samples;
-			this.buffer=new short[lengthBuffer];
-			this.bufferTime=time;
+		for(int i=0;i<bufferTotal.length-length;i++){
+			bufferTotal[i]=bufferTotal[i+length];
 		}
-		buffered=true;
+		for(int i=0;i<length;i++){
+			bufferTotal[i+bufferTotal.length-length]=samples[i];
+		}
 		
-		for (int i=0;i<lengthBuffer;i++){
-			buffer[i]=(short)((float)samples[i]);
-			if(i<lengthBuffer-firstDelaySamples){
-				buffer[i]+=(short)((float)samples[i+firstDelaySamples]*0.7);
-			}
-			if(i<lengthBuffer-secondDelaySamples){
-				buffer[i]+=(short)((float)samples[i+secondDelaySamples]*0.5);
-			}
+		for(int i=0;i<length;i++){
+			buffer[i]=(short)(bufferTotal[i+bufferTotal.length-firstDelaySamples-length]+bufferTotal[i+bufferTotal.length-secondDelaySamples-length]+samples[i]);
 		}
-		sound_out(buffer,lengthBuffer);
-		set_output_text("lengthSamples="+samples.length+"\n"+"buffered="+buffered+"\n"+"firstDelaySamples="+firstDelaySamples+"\n"+"secondDelaySamples="+secondDelaySamples+"\n");
+		sound_out(buffer,length);
+		set_output_text("lengthBuffer="+samples.length+"\n"+"firstDelaySamples="+firstDelaySamples+"\n"+"secondDelaySamples="+secondDelaySamples+"\n"+"lengthBufferTotal="+bufferTotal.length);
 	}
 
 	public void screen_touched(float x, float y) 
