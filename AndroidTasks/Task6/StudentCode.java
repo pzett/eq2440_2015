@@ -58,9 +58,11 @@ public class StudentCode extends StudentCodeBase {
 	byte[] the_sound_file_contents2=null;
 	ByteBuffer the_sound_file_contents_bb2=null; 
 
+	short[] bufferTotal;
 	short[] buffer1; 
 	short[] buffer2;
 	String d_filename=null;
+	int ID;
 
 	// This is called before any other functions are initialized so that parameters for these can be set
 	public void init()
@@ -85,7 +87,7 @@ public class StudentCode extends StudentCodeBase {
 		// If message communication is used between phones in the project, enable it here and set server address, type and group names
 		useMessaging = true;   
 		//messageServer = "192.168.1.101";  
-		messageServer="130.237.50.55";
+		messageServer="130.237.50.78";
 		messageServerType = PHONE_SERVER;//LINUX_MESSAGE_SERVER; // WEB_MESSAGE_SERVER
 
 		String temp[] =  {"sender1","sender2","receiver"};
@@ -97,7 +99,7 @@ public class StudentCode extends StudentCodeBase {
 		//ntpServer = "192.168.5.11";
 
 		// Set the approximate interval in milliseconds for your need for calls to your process function
-		processInterval = 1;
+		processInterval = 10;
 
 		// If you access and modify data structures from several sensor functions and/or process you may need to make the calls
 		// be performed in series instead of simultaneous to prevent exception when one function changes data at the same time as another 
@@ -120,12 +122,17 @@ public class StudentCode extends StudentCodeBase {
 	{	
 		buffer1=new short[4096];
 		buffer2=new short[4096];
+		bufferTotal=new short[4096];
 		for (int i=0;i<4096;i++){
 			buffer1[i]=0;
 		}
 		for (int i=0;i<4096;i++){
 			buffer2[i]=0;
 		}
+		for (int i=0;i<4096;i++){
+			bufferTotal[i]=0;
+		}
+		ID=2;
 	}
 
 	// This is called when the user presses stop in the menu, do any post processing here
@@ -150,6 +157,18 @@ public class StudentCode extends StudentCodeBase {
 	// Fill in the process function that will be called according to interval above
 	public void process()
 	{ 
+
+		
+		if (myGroupID==0){
+			messageData="I am the first sender";
+		}else if (myGroupID==1){
+			messageData="I am the second sender";
+		}else if (myGroupID==2){
+			for (int i=0;i<lengthBuffer;i++){
+				bufferTotal[i]=(short) (buffer1[i]+buffer2[i]);
+			}
+			sound_out(bufferTotal,lengthBuffer);
+		}
 		set_output_text(messageData);
 		//set_output_text(""+gyroData+"\n"+gpsData + "\n"+triggerTime+"\n"+ magneticData+"\n"+proximityData+"\n"+lightData+"\n"+screenData+"\n"+messageData);		//set_output_text(debug_output+"\n");
 		//set_output_text(wifi_ap);		
@@ -195,18 +214,12 @@ public class StudentCode extends StudentCodeBase {
 	public void sound_in(long time, short[] samples, int length)
 	{			
 		//Record the sound on one phone, send it to another one that adds it to what he is recording and send it to the third phone to be played
-		if (myGroupID==0){
-			for (int i=0;i<length;i++){
-				buffer2[i]=(short) (samples[i]+buffer1[i]);
-			}
-			p_streaming_buffer_out(buffer2, length, messageGroups[2]);
+		if (myGroupID==0 || myGroupID==1){
+			p_streaming_buffer_out(samples, length, messageGroups[2]);
 		}
-		if (myGroupID==1){
-			p_streaming_buffer_out(samples, length, messageGroups[0]);
-		}
-		
-		
-		
+
+
+
 		/*
 		sound_out(buffer,lengthBuffer);
 		set_output_text("length="+length);
@@ -269,11 +282,17 @@ public class StudentCode extends StudentCodeBase {
 	public void streaming_buffer_in(short[] buffer, int length, int senderId)
 	{
 		if (myGroupID==2){
-			sound_out(buffer,length);
-		}
-		if (myGroupID==0){
-			for (int i=0;i<length;i++){
-				buffer1[i]=buffer[i];
+			lengthBuffer=length;
+			if (senderId==0){
+				for (int i=0;i<length;i++){
+					buffer1[i]=buffer[i];
+				}
+				messageData="receiving from 1"+"\n"+"lengthBuffer="+buffer.length;
+			}else if (senderId==1){
+				for (int i=0;i<length;i++){
+					buffer2[i]=buffer[i];
+				}
+				messageData="receiving from 2"+"\n"+"lengthBuffer="+buffer.length;
 			}
 		}
 	}
