@@ -314,6 +314,8 @@ public class StudentCode extends StudentCodeBase {
 	// initialing is done.
 	// If you return true the execution stops after this function.
 	// Use this to test algorithms with static data.
+
+	/*
 	public boolean test_harness()
 	{
 		boolean do_test=true; // Set to true when running test_harness_example
@@ -350,7 +352,64 @@ public class StudentCode extends StudentCodeBase {
 
 
 			// Call the function to be tested 
-			out_values=lmsXavi(in_values,in_values2,100,0.001);
+			out_values=lmsXaviDouble(in_values,in_values2,100,0.000000000001);
+
+
+
+			// Write file on sdcard 
+			for(int i=0; i<in_values.length; i++){
+				out.writeDouble(out_values[i]);
+			};
+
+
+			out.close();  
+			in.close();
+
+			return true;
+		} else
+			return false;
+	}
+	 */
+
+	public boolean test_harness()
+	{
+		boolean do_test=true; // Set to true when running test_harness_example
+
+		// The below code is used together with test_harness_example.m.	
+		if (do_test) {	
+			int no_of_real;
+			short [] in_values;
+			short [] in_values2;
+			short [] out_values;
+
+
+
+			SimpleOutputFile out = new SimpleOutputFile();
+			SimpleInputFile in = new SimpleInputFile();
+			SimpleInputFile in2 = new SimpleInputFile();
+
+			in.open("indata.txt");    	  
+			in2.open("indata2.txt");
+			out.open("outdata.txt");
+
+			// Read data from input file 
+			no_of_real=in.readInt();
+			no_of_real=in2.readInt();
+			in_values=new short[no_of_real];
+			in_values2=new short[no_of_real];
+			// Read file from sdcard
+			for(int i=0; i<in_values.length; i++){
+				in_values[i]=(short) in.readDouble(); 
+			};
+			for(int i=0; i<in_values2.length; i++){
+				in_values2[i]=(short) in2.readDouble(); 
+			};
+
+
+			// Call the function to be tested 
+			out_values=lmsXaviShort(in_values,in_values2,100,0.00001);
+
+
 
 			// Write file on sdcard 
 			for(int i=0; i<in_values.length; i++){
@@ -366,50 +425,50 @@ public class StudentCode extends StudentCodeBase {
 			return false;
 	}
 
-	/*
-    private double[] lmsXavi(double[] x,double[] y,int N,double muu){
-    	long start=System.currentTimeMillis();
-    	int M=y.length;
-    	double[] xhat=new double[M];
-    	double[][] thetahat=new double[N][M-N];
-    	double[] ytemp=new double[N];
 
-    	for (int n=0;n<M-N-1;n++){
-    		for (int i=0;i<N;i++){
-    			ytemp[i]=y[n+N-i-1];
-    		}
-    		if (n==0){
-    			xhat[n+N]=0;
-    			for (int i=0;i<N;i++){
-    				thetahat[i][n]=muu*ytemp[i]*(x[n+N]-xhat[n+N]);
-    			}
-    		}else{
-    			for (int i=0;i<N;i++){
-    				xhat[n+N]+=ytemp[i]*thetahat[i][n-1];
-    			}
-    			for (int i=0;i<N;i++){
-    				thetahat[i][n]=thetahat[i][n-1]+muu*ytemp[i]*(x[n+N]-xhat[n+N]);
-    			}
-    		}
-    	}
-    	int time=(int) (System.currentTimeMillis()-start);
-    	System.out.println("timeLMS="+time);
-    	return xhat;
-    }
-	 */
 	private double[] lmsXavi(double[] x,double[] y,int N,double muu){
 		long start=System.currentTimeMillis();
 		int M=y.length;
 		double[] xhat=new double[M];
-		double[] thetahat=new double[N];
+		double[][] thetahat=new double[N][M-N];
+		double[] ytemp=new double[N];
+
+		for (int n=0;n<M-N-1;n++){
+			for (int i=0;i<N;i++){
+				ytemp[i]=y[n+N-i-1];
+			}
+			if (n==0){
+				xhat[n+N]=0;
+				for (int i=0;i<N;i++){
+					thetahat[i][n]=muu*ytemp[i]*(x[n+N]-xhat[n+N]);
+				}
+			}else{
+				for (int i=0;i<N;i++){
+					xhat[n+N]+=ytemp[i]*thetahat[i][n-1];
+				}
+				for (int i=0;i<N;i++){
+					thetahat[i][n]=thetahat[i][n-1]+muu*ytemp[i]*(x[n+N]-xhat[n+N]);
+				}
+			}
+		}
+		int time=(int) (System.currentTimeMillis()-start);
+		System.out.println("timeLMS="+time);
+		return xhat;
+	}
+
+	private double[] lmsXaviDouble(double[] x,double[] y,int N,double muu){
+		final long start=System.currentTimeMillis();
+		final int M=y.length;
+		final double[] xhat=new double[M];
+		final double[] thetahat=new double[N];
 		int i;
 		int n;
 		int m;
 		int o;
-		double xn0=x[N];
+		final double xn0=x[N];
 		double xn;
 		double k;
-		double k0=xn0*muu;
+		final double k0=xn0*muu;
 		double xhatt;
 		for (i=N;--i>=0;){
 			thetahat[i]=k0*y[N-i-1];
@@ -427,21 +486,49 @@ public class StudentCode extends StudentCodeBase {
 			for (i=N;--i>=0;){
 				thetahat[i]+=k*y[o-i];
 			}
-
 		}
 		int time=(int) (System.currentTimeMillis()-start);
 		System.out.println("timeLMS="+time);
 		return xhat;
 	}
 
-	/* Used in test_harness_example.m */
-	private double [] square(double [] in_values) {
-		double [] out_values;
-		out_values = new double[in_values.length];
-		for(int i=0; i<in_values.length; i++){
-			out_values[i]=in_values[i]*in_values[i]+1;
-		} 
-		return out_values;
+	private short[] lmsXaviShort(short[] x,short[] y,int N,double muu){
+		final long start=System.currentTimeMillis();
+		final int M=y.length;
+		final short[] xhat=new short[M];
+		final double[] thetahat=new double[N];
+		int i;
+		int n;
+		int m;
+		int o;
+		final double xn0=x[N];
+		double xn;
+		double k;
+		final double k0=xn0*muu;
+		double xhatt;
+		for (i=N;--i>=0;){
+			thetahat[i]=k0*y[N-i-1];
+		}
+		for (n=M-N-1;--n>0;){
+			m=M-N-1-n;
+			o=m+N-1;
+			xn=x[o+1];
+			xhatt=0;
+			for (i=N;--i>=0;){
+				xhatt+=y[o-i]*thetahat[i];
+			}
+			xhat[o+1]=(short)xhatt;
+			k=(xn-xhatt)*muu;
+			if (n%3==0){
+				for (i=N;--i>=0;){
+					thetahat[i]+=k*y[o-i];
+				}
+			}
+		}
+		int time=(int) (System.currentTimeMillis()-start);
+		System.out.println("timeLMS="+time);
+		System.out.println(""+(M-N-1));
+		return xhat;
 	}
 
 

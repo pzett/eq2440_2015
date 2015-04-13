@@ -28,14 +28,14 @@ PathToAPKFile=' C:\Users\EQ2440\Desktop\Project Workspace\Task7\bin\FrameWork.ap
 
 % Generate random data input, and save on the file indata.txt
 no_of_real=4096;
-data_in=randn(1,no_of_real);
+data_in=floor(randn(1,no_of_real)*2^5);
 fid=fopen('indata.txt','wt');
 fprintf(fid,'%d \n',no_of_real);
 for i1=1:no_of_real
     fprintf(fid,'%f \n',data_in(i1));
 end;
 fclose(fid);
-data_in2=randn(1,no_of_real);
+data_in2=floor(randn(1,no_of_real)*2^5);
 fid2=fopen('indata2.txt','wt');
 fprintf(fid2,'%d \n',no_of_real);
 for i1=1:no_of_real
@@ -59,15 +59,15 @@ pause(1);
 cmd_str='adb shell am start -a android.intent.action.MAIN -n se.kth.android.FrameWork/se.kth.android.FrameWork.FrameWork';
 system(cmd_str);
 
-pause(10);
+pause(5);
 
 % Copy the results back to working directory
 copy_file_from_sdcard_to_working_directory('outdata.txt');
 
 % Read the results from the file
 data_out_phone=load('outdata.txt');
-muu=0.001;
-order=400;
+muu=0.00001;
+order=100;
 [thetahat,data_out_matlab]=lmsXavi(data_in',data_in2',order,muu);
 
 figure(1);
