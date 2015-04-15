@@ -5,7 +5,7 @@
 \contentsline {section}{\numberline {4}Sketch of solution}{2}{section.4}
 \contentsline {section}{\numberline {5}Goals}{3}{section.5}
 \contentsline {section}{\numberline {6}Organisation}{4}{section.6}
-\contentsline {section}{\numberline {7}Tasks \& Time and Resource Plan}{5}{section.7}
+\contentsline {section}{\numberline {7}Tasks \& Time and Resource Allocation Plan}{5}{section.7}
 \contentsline {section}{\numberline {8}Risk Analysis}{6}{section.8}
 \contentsline {section}{\numberline {9}Documents and Rules}{7}{section.9}
 \contentsline {section}{\numberline {10}Project Model}{7}{section.10}

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  15 APR 2015 15:12
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  15 APR 2015 16:06
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1117,7 +1117,7 @@ Package atveryend Info: Empty hook `AfterLastShipout' on input line 344.
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 344.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 344.
 Package rerunfilecheck Info: File `project_plan.out' has not changed.
-(rerunfilecheck)             Checksum: F95035271CFB8DFCCA134800CAE00535;564.
+(rerunfilecheck)             Checksum: 362EC4A068EB0DB572E9C4F64DDBC1C1;575.
 
 
 LaTeX Warning: There were undefined references.
@@ -1127,7 +1127,7 @@ Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 344.
 Here is how much of TeX's memory you used:
  10106 strings out of 493488
  149653 string characters out of 3141326
- 277922 words of memory out of 3000000
+ 276922 words of memory out of 3000000
  13201 multiletter control sequences out of 15000+200000
  11661 words of font info for 43 fonts, out of 3000000 for 9000
  957 hyphenation exceptions out of 8191
@@ -1139,7 +1139,7 @@ Here is how much of TeX's memory you used:
 usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></us
 r/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr
 /local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on project_plan.pdf (21 pages, 855246 bytes).
+Output written on project_plan.pdf (21 pages, 855285 bytes).
 PDF statistics:
  343 PDF objects out of 1000 (max. 8388607)
  260 compressed objects within 3 object streams
