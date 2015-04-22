@@ -135,7 +135,7 @@ public class StudentCode extends StudentCodeBase {
 		}
 		hasStarted=true;
 		timeChangedFloor=System.currentTimeMillis();
-		meanLimit=0.3;
+		meanLimit=0.27;
 		userInput=2;
 	}
 
@@ -200,8 +200,8 @@ public class StudentCode extends StudentCodeBase {
 			long currentTime=System.currentTimeMillis();
 			boolean canChange=(currentTime-timeChangedFloor>3000);
 			moving=true;
-			oneDown=(mean1>meanLimit && mean2<-meanLimit);
-			oneUp=(mean1<-meanLimit && mean2>meanLimit);
+			oneDown=(mean1>meanLimit-0.05 && mean2<-meanLimit+0.05);
+			oneUp=(mean1<-meanLimit+0.05 && mean2>meanLimit-0.05);
 			twoDown=(mean1>meanLimit && mean3<-meanLimit);
 			twoUp=(mean1<-meanLimit && mean3>meanLimit);
 			threeDown=(mean1>meanLimit && mean4<-meanLimit);
@@ -212,7 +212,7 @@ public class StudentCode extends StudentCodeBase {
 			fiveUp=(mean1<-meanLimit && mean6>meanLimit);
 			sixDown=(mean1>meanLimit && mean7<-meanLimit);
 			sixUp=(mean1<-meanLimit && mean7>meanLimit);
-			if (canChange && mean1<0.35 && mean1>-0.35){
+			if (canChange && mean1<0.33 && mean1>-0.33){
 				if (oneDown || oneUp || twoDown || twoUp || threeDown || threeUp || fourDown || fourUp || fiveDown || fiveUp || sixDown || sixUp){
 					changedFloor=true;
 					timeChangedFloor=System.currentTimeMillis();
@@ -244,11 +244,21 @@ public class StudentCode extends StudentCodeBase {
 				}else if (sixUp){
 					userInput+=6;
 				}
+				mean1=0;
+				mean2=0;
+				mean3=0;
+				mean4=0;
+				mean5=0;
+				mean6=0;
+				mean7=0;
+				for (int i=0;i<z.size();i++){
+					z.set(i,0.0);
+				}
 				changedFloor=false;
 			}
-			accelerometerData="You're on the floor "+userInput+"\n"+"oneDown="+oneDown+"\n"+"oneUp="+oneUp+"\n"+"twoDown="+twoDown+"\n"+"twoUp="+twoUp+"\n"+"threeDown="+threeDown+"\n"+"threeUp="+threeUp+"\n"+"fourDown="+fourDown+"\n"+"fourUp="+fourUp+"\n"+"fiveDown="+fiveDown+"\n"+"fiveUp="+fiveUp+"\n"+"sixDown="+sixDown+"\n"+"sixUp="+sixUp;
+			accelerometerData="You're on the floor "+userInput+"\n"+"z="+z.get(0)+"\n"+"mean1="+mean1;
 		}
-		this.set_output_text(this.accelerometerData);
+		set_output_text(accelerometerData);
 	};       
 
 
@@ -270,7 +280,7 @@ public class StudentCode extends StudentCodeBase {
 		if (this.z.size()>lengthZ){
 			this.z.remove(lengthZ);
 		}
-		this.z.add(0, z-9.875);
+		this.z.add(0, z-9.1);
 		double z0=this.z.get(0);
 		double z300=this.z.get(300);
 		double z600=this.z.get(600);
@@ -293,7 +303,6 @@ public class StudentCode extends StudentCodeBase {
 		mean6-=z1800/300;
 		mean7+=z1800/300;
 		mean7-=z2100/300;
-		accelerometerData="z="+(z-9.875)+"\n"+"lengthZ="+this.z.size()+"\n"+"mean1="+mean1+"\n"+"mean2="+mean2;
 	}
 
 	public void gyroscope(long time, double x, double y, double z)
