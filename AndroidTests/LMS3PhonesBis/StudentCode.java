@@ -60,6 +60,7 @@ public class StudentCode extends StudentCodeBase {
 	byte[] the_sound_file_contents2=null;
 	ByteBuffer the_sound_file_contents_bb2=null; 
 
+
 	short buffer[]; 
 	short noise[];
 	double[] thetahat;
@@ -100,7 +101,7 @@ public class StudentCode extends StudentCodeBase {
 
 		// If message communication is used between phones in the project, enable it here and set server address, type and group names
 		useMessaging = true;   
-		messageServer = "192.168.1.12";  
+		messageServer = "192.168.1.13";  
 		messageServerType = PHONE_SERVER;//LINUX_MESSAGE_SERVER; // WEB_MESSAGE_SERVER
 
 		String temp[] =  {"sender","noise","receiver"};
@@ -133,8 +134,10 @@ public class StudentCode extends StudentCodeBase {
 	// This is called when the user presses start in the menu, reinitialize any data if needed
 	public void start()
 	{	
-		orderLMS=20;
-		mu=0.00000000001;
+		//orderLMS=20;
+		//mu=0.00000000001;
+		orderLMS=200;
+		mu=0.0000000001;
 		thetahat=new double[orderLMS];
 		first=true;
 		counter=0;
@@ -145,6 +148,7 @@ public class StudentCode extends StudentCodeBase {
 		play=false;
 		started1=false;
 		started2=false;
+		maxTot=0;
 	}
 
 	// This is called when the user presses stop in the menu, do any post processing here
@@ -164,6 +168,7 @@ public class StudentCode extends StudentCodeBase {
 	String wifi_ap = "Start value";
 	int counter=0;
 	double mu;
+	double maxTot;
 
 	// Fill in the process function that will be called according to interval above
 	/*
@@ -219,21 +224,38 @@ public class StudentCode extends StudentCodeBase {
 			if (play){
 				short[] signal=new short[bufferLength+orderLMS];
 				short[] noise=new short[bufferLength+orderLMS];
+				short[] toPlay=new short[bufferLength];
+				int diff=senderBuffer.size()-noiseBuffer.size();
+
 				int i;
-				for (i=bufferLength;--i>=0;){
-					signal[i+orderLMS]=senderBuffer.get(1)[i];
-					noise[i+orderLMS]=noiseBuffer.get(1)[i];
-					if (i<orderLMS){
-						signal[i]=senderBuffer.get(0)[bufferLength-i-1];
-						noise[i]=noiseBuffer.get(0)[bufferLength-i-1];
+				if(diff>=0){
+					for (i=bufferLength;--i>=0;){
+						signal[i+orderLMS]=senderBuffer.get(1+diff)[i];
+						noise[i+orderLMS]=noiseBuffer.get(1)[i];
+						toPlay[i]=senderBuffer.get(1+diff)[i];
+						if (i<orderLMS){
+							signal[orderLMS-i-1]=senderBuffer.get(diff)[bufferLength-i-1];
+							noise[orderLMS-i-1]=noiseBuffer.get(0)[bufferLength-i-1];
+						}
+					}
+				}else{
+					for (i=bufferLength;--i>=0;){
+						signal[i+orderLMS]=senderBuffer.get(1)[i];
+						noise[i+orderLMS]=noiseBuffer.get(1-diff)[i];
+						toPlay[i]=senderBuffer.get(1)[i];
+						if (i<orderLMS){
+							signal[orderLMS-i-1]=senderBuffer.get(0)[bufferLength-i-1];
+							noise[orderLMS-i-1]=noiseBuffer.get(-diff)[bufferLength-i-1];
+						}
 					}
 				}
+
 				short[] noiseEstimate;
-				noiseEstimate=lmsXaviShortBis(signal, noise, orderLMS, mu);
+				noiseEstimate=nlmsShort(signal, noise, orderLMS, mu);
 				for (i=bufferLength;--i>=0;){
-					signal[i]-=noiseEstimate[i];
+					//toPlay[i]-=noiseEstimate[i];
 				}
-				sound_out(noiseEstimate,bufferLength);
+				sound_out(toPlay,bufferLength);
 				noiseBuffer.remove(0);
 				senderBuffer.remove(0);
 				double max=0;
@@ -241,8 +263,11 @@ public class StudentCode extends StudentCodeBase {
 					if (Math.abs(thetahat[n])>max){
 						max=thetahat[n];
 					}
+					if(Math.abs(thetahat[n])>maxTot){
+						maxTot=thetahat[n];
+					}
 				}
-				messageData="mu="+mu+"\n"+"i1-i2="+(i1-i2)+"\n"+"counter="+counter+"\n"+"thetahatMax="+max+"\n"+"lengthSenderBuffer="+senderBuffer.size()+"\n"+"lengthNoiseBuffer="+noiseBuffer.size();
+				messageData="mu="+mu+"\n"+"i1-i2="+(i1-i2)+"\n"+"counter="+counter+"\n"+"thetahatMax="+max+"\n"+"thetahatMaxTot="+maxTot+"\n"+"lengthSenderBuffer="+senderBuffer.size()+"\n"+"lengthNoiseBuffer="+noiseBuffer.size();
 			}else{
 				if (senderID==0){
 					started1=true;
@@ -538,7 +563,7 @@ public class StudentCode extends StudentCodeBase {
 		System.out.println(""+(M-N-1));
 		return xhat;
 	}
-	
+
 	private short[] lmsXaviShortBis(short[] x,short[] y,int N,double muu){
 		final long start=System.currentTimeMillis();
 		final int M=y.length;
@@ -570,7 +595,53 @@ public class StudentCode extends StudentCodeBase {
 			}
 			xhat[o+1-N]=(short)xhatt;
 			k=(xn-xhatt)*muu;
-			if (m%2==0){
+			if (m%1==0){
+				for (i=N;--i>=0;){
+					thetahat[i]+=k*y[o-i];
+				}
+			}
+		}
+		int time=(int) (System.currentTimeMillis()-start);
+		System.out.println("timeLMS="+time);
+		System.out.println(""+(M-N-1));
+		return xhat;
+	}
+
+	private short[] nlmsShort(short[] x,short[] y,int N,double muu){
+		final long start=System.currentTimeMillis();
+		final int M=y.length;
+		final short[] xhat=new short[M-N];
+		//final double[] thetahat=new double[N];
+		int i;
+		int n;
+		int m;
+		int o;
+		double normY;
+		final double xn0=x[N];
+		double xn;
+		double k;
+		final double k0=xn0*muu;
+		double xhatt;
+		if (first){
+			for (i=N;--i>=0;){
+				thetahat[i]=k0*y[N-i-1];
+			}
+			first=false;
+		}
+
+		for (n=M-N-1;--n>0;){
+			m=M-N-1-n;
+			o=m+N-1;
+			xn=x[o+1];
+			xhatt=0;
+			normY=0;
+			for (i=N;--i>=0;){
+				xhatt+=y[o-i]*thetahat[i];
+				normY+=y[o-i]*y[o-i];
+			}
+			xhat[o+1-N]=(short)xhatt;
+			k=(xn-xhatt)*muu*N/normY;
+			if (m%10==0){
 				for (i=N;--i>=0;){
 					thetahat[i]+=k*y[o-i];
 				}
