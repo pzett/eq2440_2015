@@ -5,9 +5,13 @@ clc
 
 %Decide de order of the filter
 
-N=200
+N=1000
 
 %Time analysis of recorded date
+[noise1,fs]=audioread('NOISE1.m4a');
+[voicenoise1,fs]=audioread('VOICENOISE1.m4a');
+[noise1,fs]=audioread('NOISE1.m4a');
+[voicenoise1,fs]=audioread('VOICENOISE1.m4a');
 [noise1,fs]=audioread('NOISE1.m4a');
 [voicenoise1,fs]=audioread('VOICENOISE1.m4a');
 
@@ -37,22 +41,42 @@ muu1max=(2/lambdamax);
 
 %Deciding parameter muu
 muu2=1e-5;
-muu3=1e-4;
+muu3=5e-4;
 muulms=muu3
 
 %Filtering
-[thetahatlms,xhatlms]=lms(x,y,N,muu3);
-[thetahatlmsThomas,xhatlmsThomas]=lmsThomas(x,y,N,muu3);
+tic
+[thetahatlms,xhatlms]=lmsXavi(x,y,N,muu3);
 slms=x-xhatlms;
-slmsThomas=x-xhatlmsThomas;
+toc
 
+
+%[thetahatlmsThomas,xhatlmsThomas]=lmsThomas(x,y,N,muu3);
+%slmsThomas=x-xhatlmsThomas;
 
 %% RLS filtering
 
 %Deciding parameters: order and lambda
-Nrls=20
-lambda=0.997;
+Nrls=10
+lambda=0.999;
 
 %Filtering
-[thetahatrls,xhatrls]=rls(x,y,Nrls,lambda);
+[thetahatrls,xhatrls]=rlsXavi(x,y,Nrls,lambda);
 srls=x-xhatrls;
+
+%% KALMAN Filtering
+dim=80;
+%Setting parameters to put in kalman function
+x0=zeros(dim,1);
+%x0=zeros(numel(Alms),1);
+Q0=ones(dim);
+%Q0=zeros(numel(Alms));
+F=eye(dim);
+G=[1;zeros(dim-1,1)]; 
+H=y(50001:50001+dim-1)';
+R1=1;
+R2=5;
+
+%[yhatkalman,xhatfilt,xhatpred,P,Q]=kalman(x,F,G,H,R1,R2,x0,Q0);
+
+%% Wiener Filtering
