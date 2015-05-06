@@ -38,11 +38,15 @@ import com.google.zxing.qrcode.detector.Detector;
 
 
 
+
+
 //import se.kth.android.FrameWork.FrameWork;
 import se.kth.android.FrameWork.StudentCodeBase;
 
 //import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 //import android.graphics.Color;
 //import android.graphics.Paint;
 //import android.graphics.Rect;
@@ -71,14 +75,18 @@ public class StudentCode extends StudentCodeBase {
 	boolean play;
 	ArrayList<short[]> senderBuffer;
 	ArrayList<short[]> noiseBuffer;
-	ArrayList<Long> senderTimes;
-	ArrayList<Long> noiseTimes;
 	int i1;
 	int i2;
 	boolean started1;
 	boolean started2;
 	int bufferLength;
 	int senderID;
+	int timeLMS;
+	boolean diffCalculated;
+	boolean playSender;
+	boolean noiseCancellation;
+	int diff;
+	float meanDiff;
 
 	// This is called before any other functions are initialized so that parameters for these can be set
 	public void init()
@@ -136,7 +144,7 @@ public class StudentCode extends StudentCodeBase {
 	public void start()
 	{	
 		orderLMS=500;
-		mu=0.0000000001;
+		mu=(float) 0.00001;
 		thetahat=new double[orderLMS];
 		first=true;
 		counter=0;
@@ -148,6 +156,11 @@ public class StudentCode extends StudentCodeBase {
 		started1=false;
 		started2=false;
 		maxTot=0;
+		diffCalculated=false;
+		playSender=false;
+		diff=0;
+		meanDiff=0;
+		noiseCancellation=false;
 	}
 
 	// This is called when the user presses stop in the menu, do any post processing here
@@ -166,7 +179,7 @@ public class StudentCode extends StudentCodeBase {
 	String messageData;
 	String wifi_ap = "Start value";
 	int counter=0;
-	double mu;
+	float mu;
 	double maxTot;
 
 	// Fill in the process function that will be called according to interval above
@@ -178,12 +191,21 @@ public class StudentCode extends StudentCodeBase {
 		}else if (myGroupID==1){
 			messageData="I am the noise";
 		}else if(this.myGroupID==2){	
-			if (play){
+			if (play && senderBuffer.size()>1+Math.abs(diff) && noiseBuffer.size()>1+Math.abs(diff)){		
+				if(!diffCalculated){
+					diff=senderBuffer.size()-noiseBuffer.size();
+					diffCalculated=true;
+				}else{
+					if(counter<20){
+						meanDiff+=((double)(senderBuffer.size()-noiseBuffer.size()))/20;
+						counter++;
+					}else{
+						diff=Math.round(meanDiff);
+					}
+				}
 				short[] signal=new short[bufferLength+orderLMS];
 				short[] noise=new short[bufferLength+orderLMS];
 				short[] toPlay=new short[bufferLength];
-				int diff=senderBuffer.size()-noiseBuffer.size();
-
 				int i;
 				if(diff>=0){
 					for (i=bufferLength;--i>=0;){
@@ -206,32 +228,38 @@ public class StudentCode extends StudentCodeBase {
 						}
 					}
 				}
+				double max=0;
+				if(noiseCancellation){
+					short[] noiseEstimate;
+					noiseEstimate=nlmsShort(signal, noise, orderLMS, mu);
+					for (i=bufferLength;--i>=0;){
+						toPlay[i]-=noiseEstimate[i];
+					}
 
-				short[] noiseEstimate;
-				noiseEstimate=nlmsShort(signal, noise, orderLMS, mu);
-				for (i=bufferLength;--i>=0;){
-					toPlay[i]-=noiseEstimate[i];
+					for (int n=0;n<thetahat.length;n++){
+						if (Math.abs(thetahat[n])>max){
+							max=thetahat[n];
+						}
+						if(Math.abs(thetahat[n])>maxTot){
+							maxTot=thetahat[n];
+						}
+					}
 				}
+
 				sound_out(toPlay,bufferLength);
 				noiseBuffer.remove(0);
 				senderBuffer.remove(0);
-				double max=0;
-				for (int n=0;n<thetahat.length;n++){
-					if (Math.abs(thetahat[n])>max){
-						max=thetahat[n];
-					}
-					if(Math.abs(thetahat[n])>maxTot){
-						maxTot=thetahat[n];
-					}
-				}
-				//messageData="senderTime="+senderTimes.get(1)+"\n"+"noiseTime="+noiseTimes.get(1);
-				//noiseTimes.remove(0);
-				//senderTimes.remove(0);
-				messageData="mu="+mu+"\n"+"i1-i2="+(i1-i2)+"\n"+"counter="+counter+"\n"+"thetahatMax="+max+"\n"+"thetahatMaxTot="+maxTot+"\n"+"lengthSenderBuffer="+senderBuffer.size()+"\n"+"lengthNoiseBuffer="+noiseBuffer.size();
+				i1--;i2--;
+				messageData="mu="+mu+"  //  "+"counter="+counter+"\n"+"diff="+diff+"  //  "
+				+"meanDiff="+meanDiff+"\n"+"noiseCancellation="+noiseCancellation+"\n"+
+						"thetahatMax="+max+"\n"+"thetahatMaxTot="+maxTot+"\n"+
+				"lengthSenderBuffer="+senderBuffer.size()+"\n"+"lengthNoiseBuffer="
+						+noiseBuffer.size()+"\n"+"timeLMS="+timeLMS;
 			}else{
 				if (senderID==0){
 					started1=true;
-				}else if (senderID==1){
+				}
+				if (senderID==1){
 					started2=true;
 				}
 			}
@@ -273,54 +301,58 @@ public class StudentCode extends StudentCodeBase {
 	{			
 		if (myGroupID==0 || myGroupID==1){
 			p_streaming_buffer_out(samples, length, messageGroups[2]);
-			/*StudentMessage message=StudentMessage.fromString("");
-			message.time=System.currentTimeMillis();
-			message.group=myGroupID;
-			message_out(message,2);*/
 		}
 	}
 
 
 	public void screen_touched(float x, float y) 
 	{
+		if (myGroupID==2){
+			System.out.println("x="+x+"  //  y="+y);
+			if(y>150 && y<300){
+				noiseCancellation=!noiseCancellation;
+				int i=0;
+				for(i=thetahat.length;i-->0;){
+					thetahat[i]=0;
+				}
+			}
+			if(y>370 && y<520){
+				if(x<360){
+					mu+=0.000005;
+				}else{
+					mu-=0.000005;
+				}
+			}
+		}
 	} 
 
 	// Implement your phone to phone receive messaging here
 	public void message_in(StudentMessage message)
 	{
-		/*
-		if (myGroupID==2 && play){
-			String msgString=message.toString();
-			String[] strings = msgString.split(",");
-			long time=Long.parseLong(strings[0]);
-			int groupID=Integer.parseInt(strings[1]);
-			if(groupID==0){
-				senderTimes.add(time);
-			}
-			if(groupID==1){
-				noiseTimes.add(time);
-			}
-		}*/
-
 	}
 
 	// Implement any plotting you need here 
 	public void plot_data(Canvas plotCanvas, int width, int height) 
-	{		
-
-		if((latestImage != null) && ((useSensors & CAMERA) == CAMERA)) // If camera is enabled, display
-		{
-			plot_camera_image(plotCanvas,latestImage,imageWidth,imageHeight,width,height);
-		}				
-		if((latestRGBImage != null) && ((useSensors & CAMERA_RGB) == CAMERA_RGB)) // If camera is enabled, display
-		{
-			plot_camera_image_rgb(plotCanvas,latestRGBImage,imageWidth,imageHeight,width,height);
-		}				
+	{				
+		if (myGroupID==2){
+			
+			Paint writting=new Paint();
+			writting.setColor(Color.WHITE);
+			writting.setTextSize(40);
+			plotCanvas.drawRect(10, 50, 710, 200, blue);
+			plotCanvas.drawRect(10, 270, 360, 420, green);
+			plotCanvas.drawRect(360, 270, 710, 420, red);
+			plotCanvas.drawText("noiseCancellation=!noiseCancellation", 20, 145, writting);
+			plotCanvas.drawText("Change the value of mu:", 40, 250, writting);
+			plotCanvas.drawText("+ 5e-6",100 , 365 , writting);
+			plotCanvas.drawText("- 5e-6",460 , 365 , writting);
+			
+		}
 	}
 
 
 	public void stringFromUser(String user_input){		
-		mu=Double.parseDouble(user_input);
+		mu=Float.parseFloat(user_input);
 	}
 
 
@@ -345,20 +377,21 @@ public class StudentCode extends StudentCodeBase {
 		if (myGroupID==2){
 			if (senderId==0 && started2){
 				senderBuffer.add(buffer);
-				//senderTimes.add(System.currentTimeMillis());
-				if (!play){
+				//if (!play){
 					i1++;
 					play=(i1>3 && i2>3);
-				}
-			}else if (senderId==1 && started1){
+				//}
+			}
+			if (senderId==1 && started1){
 				noiseBuffer.add(buffer);
-				//noiseTimes.add(System.currentTimeMillis());
-				if (!play){
+				//if (!play){
 					i2++;
 					play=(i1>3 && i2>3);
-				}
+				//}
 			}
 			bufferLength=length;
+
+
 		}
 	}
 
@@ -458,7 +491,7 @@ public class StudentCode extends StudentCodeBase {
 			};
 
 			// Call the function to be tested 
-			out_values=nlmsShort(in_values,in_values2,40,0.00000005);
+			out_values=nlmsShort(in_values,in_values2,orderLMS,mu);
 
 			// Write file on sdcard 
 			for(int i=0; i<in_values.length; i++){
@@ -489,6 +522,49 @@ public class StudentCode extends StudentCodeBase {
 		double xhatt;
 		if (first){
 			for (i=N;--i>=0;){
+				thetahat[i]=0;
+			}
+			first=false;
+		}
+
+		for (n=M-N-1;--n>0;){
+			m=M-N-1-n;
+			o=m+N-1;
+			xn=x[o+1];
+			xhatt=0;
+			normY=0;
+			for (i=N;--i>=0;){
+				xhatt+=y[o-i]*thetahat[i];
+				normY+=y[o-i]*y[o-i];
+			}
+			xhat[o+1-N]=(short)xhatt;
+			k=(xn-xhatt)*muu*N/(normY+1);
+			if (m%10==0){
+				for (i=N;--i>=0;){
+					thetahat[i]+=k*y[o-i];
+				}
+			}
+		}
+		timeLMS=(int) (System.currentTimeMillis()-start);
+		return xhat;
+	}
+
+	private short[] nlmsShortFloat(short[] x,short[] y,int N,float muu){
+		final long start=System.currentTimeMillis();
+		final int M=y.length;
+		final short[] xhat=new short[M-N];
+		int i;
+		int n;
+		int m;
+		int o;
+		float normY;
+		final float xn0=x[N];
+		float xn;
+		float k;
+		final float k0=xn0*muu;
+		float xhatt;
+		if (first){
+			for (i=N;--i>=0;){
 				thetahat[i]=k0*y[N-i-1];
 			}
 			first=false;
@@ -505,18 +581,17 @@ public class StudentCode extends StudentCodeBase {
 				normY+=y[o-i]*y[o-i];
 			}
 			xhat[o+1-N]=(short)xhatt;
-			k=(xn-xhatt)*muu*N/normY;
+			k=(float) ((xn-xhatt)*muu*N/normY);
 			if (m%10==0){
 				for (i=N;--i>=0;){
 					thetahat[i]+=k*y[o-i];
 				}
 			}
 		}
-		int time=(int) (System.currentTimeMillis()-start);
-		System.out.println("timeNLMS="+time);
-		System.out.println(""+(M-N-1));
+		timeLMS=(int) (System.currentTimeMillis()-start);
 		return xhat;
 	}
+
 
 	public void playsoundexample(){
 		if (init_done && (!file_loaded) && (!(d_filename==null))) {
