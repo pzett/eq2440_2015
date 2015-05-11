@@ -62,7 +62,7 @@ import android.net.wifi.ScanResult;
 
 public class StudentCode extends StudentCodeBase {
 
-	/* Varibles need for plaing sound example */
+	/* Variables needed for playing sound example */
 	boolean init_done=false;
 	boolean file_loaded=false;
 	byte[] the_sound_file_contents=null;
@@ -82,9 +82,8 @@ public class StudentCode extends StudentCodeBase {
 		// Add sensors your project will use
 		useSensors =  SOUND_IN;// CAMERA;//CAMERA_RGB;//WIFI_SCAN | SOUND_OUT; //GYROSCOPE;//SOUND_IN|SOUND_OUT;//WIFI_SCAN | ACCELEROMETER | MAGNETIC_FIELD | PROXIMITY | LIGHT;//TIME_SYNC|SOUND_IN;//TIME_SYNC | ACCELEROMETER | MAGNETIC_FIELD | PROXIMITY | LIGHT | SOUND_IN;
 
-
 		// Set sample rate for sound in/out, 8000 for emulator, 8000, 11025, 22050 or 44100 for target device
-		sampleRate = 11025;
+		sampleRate = 22050;
 
 		// If CAMERA_RGB or CAMERA, use camera GUI?
 		useCameraGUI=false;
@@ -114,9 +113,8 @@ public class StudentCode extends StudentCodeBase {
 		// reads it. If this is the case set useConcurrentLocks to true
 		useConcurrentLocks = false;
 
-
 		// If you want a text on screen before start is pressed put it here
-		introText = "This is the empty version of FrameWork";
+		introText = "This is the awesome version of the Framework";
 
 		// Stuff for the playing of sound example
 		init_done=true;
@@ -128,26 +126,43 @@ public class StudentCode extends StudentCodeBase {
 	// This is called when the user presses start in the menu, reinitialize any data if needed
 	public void start()
 	{	
-		state=WAITING;
-		orderLMS=100;
-		mu=(float) 0.0001;
-		thetahat=new double[orderLMS];
-		first=true;
-		counter=0;
-		senderBuffer=new ArrayList<short[]>();
-		noiseBuffer=new ArrayList<short[]>();
-		i1=0;
-		i2=0;
-		received=false;
-		started1=false;
-		started2=false;
-		maxTot=0;
-		diffCalculated=false;
-		playSender=false;
-		diff=0;
-		meanDiff=0;
-		noiseCancellation=false;
-		delay=0;
+		//State Variables
+		state=WAITING;	//Starting state
+		
+		//LMS Variables
+		orderLMS=100;	//Order of the LMS algorithm
+		thetahat=new double[orderLMS];	//Taps of the LMS algorithm
+		mu=(float) 0.0001;	//The mu variable of the LMS
+		modifiedmu=mu;
+		deltaMu=(float) 0.0001; //Shifting value for mu
+		first=true;	//Tells if it's the first execution of the LMS algorithm
+		maxTot=0;	//Maximum of all taps for all times
+		
+		//Buffering Variables
+		senderBuffer=new ArrayList<short[]>();	//ArrayList of the signal buffers
+		noiseBuffer=new ArrayList<short[]>();	//ArrayList of the noise buffers
+		i1=0;	//Counts the number of recorded buffers for the signal
+		i2=0;	//Counts the number of recorded buffers for the noise
+		started1=false; //Tells if sender phone is online
+		started2=false;	//Tells if noise phone is online
+
+		//Delay Variables
+		diffCalculated=false;	//Tells if the difference of ArrayLists length has been calculated
+		diff=0;	//Difference of length
+		meanDiff=0;	//Mean difference
+		counter=0;	//Count the number of time we average
+		delay=0;	//Delay in number of samples
+
+		//Synchronization Variables
+		received=false;	//Tells if we have received the 10 buffers for the WAITING state
+		noiseCancellation=false;	//Tells if we apply the noise cancellation or not
+
+		//Recording Variables
+		recordNoise=false;	//Tells if we record the noise estimate on .txt file or not
+		out = new SimpleOutputFile();	//The .txt file we use
+		out.open("outnoise.txt");	//We open the .txt file for writting
+		valueMu = new SimpleOutputFile();
+		valueMu.open("valuemu.txt");
 	}
 
 	// This is called when the user presses stop in the menu, do any post processing here
@@ -165,19 +180,24 @@ public class StudentCode extends StudentCodeBase {
 	String screenData;
 	String messageData;
 	String wifi_ap = "Start value";
+	
 	//State Variables
 	int state;
 	public static final int WAITING=1;
 	public static final int CORRELATION=2;
 	public static final int EMPTY=3;
 	public static final int PLAY=4;
+	
 	//LMS Variables
 	double[] thetahat;
 	int orderLMS;
 	float mu;
+	float modifiedmu;
+	float deltaMu;
 	boolean first;
 	int timeLMS;
 	double maxTot;
+	
 	//Buffering Variables
 	ArrayList<short[]> senderBuffer;
 	ArrayList<short[]> noiseBuffer;
@@ -187,26 +207,31 @@ public class StudentCode extends StudentCodeBase {
 	boolean started2;
 	int bufferLength;
 	int senderID;
+	
 	//Delay Variables
 	boolean diffCalculated;
 	int diff;
 	float meanDiff;
-	int counter=0;
+	int counter;
 	int delay;
 	int timeDelay;
+	
 	//Synchronization Variables
 	boolean received;
-	boolean playSender;
 	boolean noiseCancellation;
-
-
+	
+	//Recording Variables
+	boolean recordNoise;
+	SimpleOutputFile out;
+	SimpleOutputFile valueMu;
+	long startRecord;
 
 
 	// Fill in the process function that will be called according to interval above
 	public void process()
 	{ 
-
-		set_output_text(messageData);		
+		set_output_text(messageData);	
+		//Detect if the phone is the noise, the receiver or the signal
 		if(myGroupID==0){
 			messageData="I am the signal";
 		}else if (myGroupID==1){
@@ -214,7 +239,12 @@ public class StudentCode extends StudentCodeBase {
 		}else if(this.myGroupID==2){
 			switch(state){
 			case WAITING:
+				//WAITING for 10 buffers to be kept in memory
+				messageData="Waiting for enough buffers";
 				if(received){
+					//When the 10 buffers are received, we calculate the average difference of 
+					//the length of the ArrayLists of the noise and signal 
+					//(this gives an approximation of the delay between the two)
 					if(!diffCalculated){
 						diff=senderBuffer.size()-noiseBuffer.size();
 						diffCalculated=true;
@@ -230,6 +260,7 @@ public class StudentCode extends StudentCodeBase {
 						}
 					}
 				}else{
+					//Synchronize the moment when we start to record the buffers
 					if (senderID==0){
 						started1=true;
 					}
@@ -239,11 +270,13 @@ public class StudentCode extends StudentCodeBase {
 				}
 				break;
 			case CORRELATION:
+				//Calculates the cross-correlation between the 10 buffers in memory
+				//and returns the delay by finding the maximum of the cross-correlation
+				messageData="Calculating the correlation";
 				short[] signalBig=new short[10*bufferLength];
 				short[] noiseBig=new short[10*bufferLength];
 				int k;
 				int j;
-
 				if (diff>=0){
 					for (j=10;j-->0;){
 						for (k=bufferLength;k-->0;){
@@ -263,6 +296,8 @@ public class StudentCode extends StudentCodeBase {
 				state=EMPTY;
 				break;
 			case EMPTY:
+				//Remove some useless buffers in order to minimize the delay
+				messageData="Emptying buffers";
 				while(senderBuffer.size()>2+Math.abs(diff) && noiseBuffer.size()>2+Math.abs(diff)){
 					senderBuffer.remove(0);
 					noiseBuffer.remove(0);
@@ -270,70 +305,93 @@ public class StudentCode extends StudentCodeBase {
 				state=PLAY;
 				break;
 			case PLAY:
+				//Use the recorded buffers to execute the LMS algorithm and play the result
 				short[] signal=new short[bufferLength+orderLMS];
 				short[] noise=new short[bufferLength+orderLMS];
 				short[] toPlay=new short[bufferLength];
 				int i;
-				/*
 				if(diff>=0){
 					for (i=bufferLength;--i>=0;){
+						//Get the signal part
 						signal[i+orderLMS]=senderBuffer.get(1+diff)[i];
-						noise[i+orderLMS]=noiseBuffer.get(1)[i];
-						toPlay[i]=senderBuffer.get(1+diff)[i];
 						if (i<orderLMS){
 							signal[orderLMS-i-1]=senderBuffer.get(diff)[bufferLength-i-1];
-							noise[orderLMS-i-1]=noiseBuffer.get(0)[bufferLength-i-1];
+						}
+						//Get the part to play
+						toPlay[i]=senderBuffer.get(1+diff)[i];
+						//Get the noise part, taking in consideration the delay
+						if (delay>0){
+							if (i<orderLMS+delay){
+								noise[orderLMS+delay-i-1]=noiseBuffer.get(0)[bufferLength-i-1];
+							}
+							if (i+delay<bufferLength){
+								noise[i+orderLMS+delay]=noiseBuffer.get(1)[i];
+							}
+						}else{
+							if (orderLMS+delay>0){
+								if (i<orderLMS+delay){
+									noise[orderLMS+delay-i-1]=noiseBuffer.get(0)[bufferLength-i-1];
+								}
+								noise[orderLMS+delay+i]=noiseBuffer.get(1)[i];
+								if (i<-delay){
+									noise[orderLMS+delay+bufferLength+i]=noiseBuffer.get(2)[i];
+								}
+							}else{
+								if (i>-orderLMS-delay){
+									noise[i+orderLMS+delay]=noiseBuffer.get(1)[i];
+								}
+								if (i<-delay){
+									noise[bufferLength+i+orderLMS+delay]=noiseBuffer.get(2)[i];
+								}
+							}
 						}
 					}
 				}else{
 					for (i=bufferLength;--i>=0;){
+						//Get the signal part
 						signal[i+orderLMS]=senderBuffer.get(1)[i];
-						noise[i+orderLMS]=noiseBuffer.get(1-diff)[i];
-						toPlay[i]=senderBuffer.get(1)[i];
-						if (i<orderLMS){
-							signal[orderLMS-i-1]=senderBuffer.get(0)[bufferLength-i-1];
-							noise[orderLMS-i-1]=noiseBuffer.get(-diff)[bufferLength-i-1];
-						}
-					}
-				}
-				*/
-				if(diff>=0){
-					for (i=bufferLength;--i>=0;){
-						signal[i+orderLMS]=senderBuffer.get(1+diff)[i];
-						if (i+orderLMS-delay<noise.length){
-							noise[i+orderLMS-delay]=noiseBuffer.get(1)[i];
-						}
-						toPlay[i]=senderBuffer.get(1+diff)[i];
-						if (i<orderLMS){
-							signal[orderLMS-i-1]=senderBuffer.get(diff)[bufferLength-i-1];
-						}
-						if(i<orderLMS-delay){
-							noise[orderLMS-delay-i-1]=noiseBuffer.get(0)[bufferLength-i-1];
-						}
-					}
-				}else{
-					for (i=bufferLength;--i>=0;){
-						signal[i+orderLMS]=senderBuffer.get(1)[i];
-						if (i+orderLMS-delay<noise.length){
-							noise[i+orderLMS-delay]=noiseBuffer.get(1-diff)[i];
-						}
-						toPlay[i]=senderBuffer.get(1)[i];
 						if (i<orderLMS){
 							signal[orderLMS-i-1]=senderBuffer.get(0)[bufferLength-i-1];
 						}
-						if(i<orderLMS-delay){
-							noise[orderLMS-delay-i-1]=noiseBuffer.get(-diff)[bufferLength-i-1];
+						//Get the part to play
+						toPlay[i]=senderBuffer.get(1)[i];
+						//Get the noise part, taking in consideration the delay
+						if (delay>0){
+							if (i<orderLMS+delay){
+								noise[orderLMS+delay-i-1]=noiseBuffer.get(-diff)[bufferLength-i-1];
+							}
+							if (i+delay<bufferLength){
+								noise[i+orderLMS+delay]=noiseBuffer.get(1-diff)[i];
+							}
+						}else{
+							if (orderLMS+delay>0){
+								if (i<orderLMS+delay){
+									noise[orderLMS+delay-i-1]=noiseBuffer.get(-diff)[bufferLength-i-1];
+								}
+								noise[orderLMS+delay+i]=noiseBuffer.get(1-diff)[i];
+								if (i<-delay){
+									noise[orderLMS+delay+bufferLength+i]=noiseBuffer.get(2-diff)[i];
+								}
+							}else{
+								if (i>-orderLMS-delay){
+									noise[i+orderLMS+delay]=noiseBuffer.get(1-diff)[i];
+								}
+								if (i<-delay){
+									noise[bufferLength+i+orderLMS+delay]=noiseBuffer.get(2-diff)[i];
+								}
+							}
 						}
 					}
 				}
 				double max=0;
 				if(noiseCancellation){
+					//Apply the noise cancellation
 					short[] noiseEstimate;
 					noiseEstimate=nlmsShort(signal, noise, orderLMS, mu);
 					for (i=bufferLength;--i>=0;){
 						toPlay[i]-=noiseEstimate[i];
 					}
-
+					//We calculate the maximum values of the taps to verify that it doesn't diverge
 					for (int n=0;n<thetahat.length;n++){
 						if (Math.abs(thetahat[n])>max){
 							max=thetahat[n];
@@ -342,16 +400,30 @@ public class StudentCode extends StudentCodeBase {
 							maxTot=thetahat[n];
 						}
 					}
+					//Helps recording the noise estimate to debug by using Matlab
+					if (recordNoise){
+						int p;
+						for(p=bufferLength;p-->0;){
+							out.writeDouble(noiseEstimate[p]);
+							
+						};
+						valueMu.writeDouble((double)modifiedmu);
+						if(startRecord-System.currentTimeMillis()>10000){
+							out.close();
+							valueMu.close();
+							recordNoise=false;
+						}
+
+					}
 				}
-
-
-				if (senderBuffer.size()>1+Math.abs(diff) && noiseBuffer.size()>1+Math.abs(diff)){
+				//Plays the denoised signal and remove the used buffers
+				if (senderBuffer.size()>2+Math.abs(diff) && noiseBuffer.size()>2+Math.abs(diff)){
 					sound_out(toPlay,bufferLength);
 					noiseBuffer.remove(0);
 					senderBuffer.remove(0);
 				}
-
-				messageData="mu="+mu+"  //  "+"counter="+counter+"  //  "+"delay="+delay+"\n"+"diff="+diff+"  //  "
+				//Message to plot
+				messageData="mu="+modifiedmu+"  //  "+"counter="+counter+"  //  "+"delay="+delay+"\n"+"diff="+diff+"  //  "
 						+"meanDiff="+meanDiff+"\n"+"noiseCancellation="+noiseCancellation+"\n"+
 						"thetahatMax="+max+"\n"+"thetahatMaxTot="+maxTot+"\n"+
 						"lengthSenderBuffer="+senderBuffer.size()+"\n"+"lengthNoiseBuffer="
@@ -359,12 +431,10 @@ public class StudentCode extends StudentCodeBase {
 
 				break;
 			}
-
 		}
-
-
 	};     
 
+	//Calculate the estimate of x given y
 	private short[] nlmsShort(short[] x,short[] y,int N,double muu){
 		final long start=System.currentTimeMillis();
 		final int M=y.length;
@@ -383,8 +453,7 @@ public class StudentCode extends StudentCodeBase {
 			}
 			first=false;
 		}
-
-		for (n=M-N-1;--n>0;){
+		for (n=M-N;--n>=0;){
 			m=M-N-1-n;
 			o=m+N-1;
 			xn=x[o+1];
@@ -395,17 +464,21 @@ public class StudentCode extends StudentCodeBase {
 				normY+=y[o-i]*y[o-i];
 			}
 			xhat[o+1-N]=(short)xhatt;
+			modifiedmu=(float) (muu*N/(normY+1));
 			k=(xn-xhatt)*muu*N/(normY+1);
-			if (m%10==0){
+			if (m%1==0){
 				for (i=N;--i>=0;){
 					thetahat[i]+=k*y[o-i];
 				}
 			}
 		}
+		//Variable that gives the execution speed of the algorithm
 		timeLMS=(int) (System.currentTimeMillis()-start);
 		return xhat;
 	}
 
+	//Calculate the delay between two sequences noise and signal
+	//Based on the maximum of the cross-correlation
 	public int calculateDelay(short[] signal,short[] noise){
 		long start=System.currentTimeMillis();
 		double[] correlation = new double[2*10*bufferLength];
@@ -433,6 +506,7 @@ public class StudentCode extends StudentCodeBase {
 				maxIndex=i;
 			}
 		}
+		//Variable that gives the execution speed of the algorithm
 		timeDelay=(int)(System.currentTimeMillis()-start);
 		return maxIndex-10*bufferLength;
 	}
@@ -476,9 +550,11 @@ public class StudentCode extends StudentCodeBase {
 	}
 
 
+	
 	public void screen_touched(float x, float y) 
 	{
 		if (myGroupID==2){
+			//Change the value of noiseCancellation
 			if(y>150 && y<300){
 				noiseCancellation=!noiseCancellation;
 				int i=0;
@@ -486,12 +562,18 @@ public class StudentCode extends StudentCodeBase {
 					thetahat[i]=0;
 				}
 			}
+			//Change the value of mu
 			if(y>370 && y<520){
 				if(x<360){
-					mu+=0.000005;
+					mu+=deltaMu;
 				}else{
-					mu-=0.000005;
+					mu-=deltaMu;
 				}
+			}
+			//Launch a recording of the estimate of the noise
+			if(y>520){
+				recordNoise=true;
+				startRecord=System.currentTimeMillis();
 			}
 		}
 	} 
@@ -501,15 +583,9 @@ public class StudentCode extends StudentCodeBase {
 	{
 	}
 
-
-
-
-
-
-
-	// Implement any plotting you need here 
 	public void plot_data(Canvas plotCanvas, int width, int height) 
 	{		
+		//Plots the interface
 		if (myGroupID==2){
 			Paint writting=new Paint();
 			writting.setColor(Color.WHITE);
@@ -519,12 +595,13 @@ public class StudentCode extends StudentCodeBase {
 			plotCanvas.drawRect(360, 270, 710, 420, red);
 			plotCanvas.drawText("noiseCancellation=!noiseCancellation", 20, 145, writting);
 			plotCanvas.drawText("Change the value of mu:", 40, 250, writting);
-			plotCanvas.drawText("+ 5e-6",100 , 365 , writting);
-			plotCanvas.drawText("- 5e-6",460 , 365 , writting);
+			plotCanvas.drawText("+"+deltaMu,100 , 365 , writting);
+			plotCanvas.drawText("-"+deltaMu,460 , 365 , writting);
 		}			
 	}
 
 
+	//Enables us to fix the value of mu
 	public void stringFromUser(String user_input){		
 		mu=Float.parseFloat(user_input);
 	}
@@ -577,9 +654,6 @@ public class StudentCode extends StudentCodeBase {
 				}
 				break;
 			}
-
-
-
 		}
 	}
 
@@ -597,8 +671,6 @@ public class StudentCode extends StudentCodeBase {
 		imageHeight = height;
 
 	}
-
-
 
 	public void camera_image_rgb(byte[] image, int width, int height) // For color RGB888 interleaved
 	{
