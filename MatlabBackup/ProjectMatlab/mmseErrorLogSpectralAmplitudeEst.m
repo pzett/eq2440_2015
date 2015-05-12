@@ -105,7 +105,7 @@ X=zeros(size(Y)); % Initialize X (memory allocation)
 
 h=waitbar(0,'Wait...');
 tic
-for i=1:numberOfFrames
+for i=1:numberOfFrames-1
     %%%%%%%%%%%%%%%%VAD and Noise Estimation START
     if i<=NIS % If initial silence ignore VAD
         SpeechFlag=0;
