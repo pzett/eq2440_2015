@@ -15,6 +15,9 @@ import java.util.List;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
+import org.apache.commons.math3.complex.*;
+import org.apache.commons.math3.transform.*;
+
 import com.google.zxing.Binarizer;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.ChecksumException;
@@ -35,6 +38,10 @@ import com.google.zxing.qrcode.detector.Detector;
 
 //import org.apache.commons.net.ntp.TimeInfo;
 //import org.apache.commons.net.ntp.TimeStamp;
+
+
+
+
 
 
 
@@ -149,6 +156,7 @@ public class StudentCode extends StudentCodeBase {
 		//Buffering Variables
 		senderBuffer=new ArrayList<short[]>();	//ArrayList of the signal buffers
 		noiseBuffer=new ArrayList<short[]>();	//ArrayList of the noise buffers
+		toFilterBuffer=new ArrayList<short[]>();
 		i1=0;	//Counts the number of recorded buffers for the signal
 		i2=0;	//Counts the number of recorded buffers for the noise
 		started1=false; //Tells if sender phone is online
@@ -210,14 +218,27 @@ public class StudentCode extends StudentCodeBase {
 	boolean firstMMSE;
 	int numberSubdivision;
 	int W;
-	double SP;
 	double[] wnd;
 	int NIS;
+	double[] N;
+	double[] lambdaD;
+	int noiseCounter;
+	int noiseLength;
+	double[] G;
+	double[] gamma;
+	double alpha;
+	int noiseMargin;
+	int hangover;
+	boolean speechFlag;
+	int timeMMSE;
 
 
 	//Buffering Variables
 	ArrayList<short[]> senderBuffer;
 	ArrayList<short[]> noiseBuffer;
+	ArrayList<short[]> toFilterBuffer;
+	short[] toFilter;
+	double[] previousBuffer;
 	int i1;
 	int i2;
 	boolean started1;
@@ -273,6 +294,7 @@ public class StudentCode extends StudentCodeBase {
 							diff=Math.round(meanDiff);
 							received=false;
 							i1=0;i2=0;
+							toFilter=new short[bufferLength];
 							state=CORRELATION;
 						}
 					}
@@ -325,7 +347,6 @@ public class StudentCode extends StudentCodeBase {
 				//Use the recorded buffers to execute the LMS algorithm and play the result
 				short[] signal=new short[bufferLength+orderLMS];
 				short[] noise=new short[bufferLength+orderLMS];
-				short[] toPlay=new short[bufferLength];
 				int i;
 				if(diff>=0){
 					for (i=bufferLength;--i>=0;){
@@ -335,7 +356,7 @@ public class StudentCode extends StudentCodeBase {
 							signal[orderLMS-i-1]=senderBuffer.get(diff)[bufferLength-i-1];
 						}
 						//Get the part to play
-						toPlay[i]=senderBuffer.get(1+diff)[i];
+						toFilter[i]=senderBuffer.get(1+diff)[i];
 						//Get the noise part, taking in consideration the delay
 						if (delay>0){
 							if (i<orderLMS+delay){
@@ -371,7 +392,7 @@ public class StudentCode extends StudentCodeBase {
 							signal[orderLMS-i-1]=senderBuffer.get(0)[bufferLength-i-1];
 						}
 						//Get the part to play
-						toPlay[i]=senderBuffer.get(1)[i];
+						toFilter[i]=senderBuffer.get(1)[i];
 						//Get the noise part, taking in consideration the delay
 						if (delay>0){
 							if (i<orderLMS+delay){
@@ -406,12 +427,12 @@ public class StudentCode extends StudentCodeBase {
 					short[] noiseEstimate;
 					noiseEstimate=nlmsShort(signal, noise, orderLMS, mu);
 					for (i=bufferLength;--i>=0;){
-						toPlay[i]-=noiseEstimate[i];
+						toFilter[i]-=noiseEstimate[i];
 					}
-					//Apply the Log-Spectral-MMSE
+					toFilterBuffer.add(toFilter);
+					//Apply log-Spectral-MMSE
 
-
-
+					logMMSE();
 
 
 					//We calculate the maximum values of the taps to verify that it doesn't diverge
@@ -434,17 +455,24 @@ public class StudentCode extends StudentCodeBase {
 							recordNoise=false;
 						}
 					}
+				}else{
+					toFilterBuffer.add(toFilter);
 				}
+
+
 				//Plays the denoised signal and remove the used buffers
 				if (senderBuffer.size()>2+Math.abs(diff) && noiseBuffer.size()>2+Math.abs(diff)){
-					sound_out(toPlay,bufferLength);
+					if (toFilterBuffer.size()>=2){
+						sound_out(toFilter,bufferLength);
+						toFilterBuffer.remove(0);
+					}
 					noiseBuffer.remove(0);
 					senderBuffer.remove(0);
 				}
 				//Message to plot
 				messageData="mu="+mu+"  //  "+"counter="+counter+"  //  "+"delay="+delay+"\n"+"mu'="+modifiedmu+"diff="+diff+"  //  "
 						+"meanDiff="+meanDiff+"\n"+"noiseCancellation="+noiseCancellation+"\n"+
-						"thetahatMax="+max+"\n"+"thetahatMaxTot="+maxTot+"\n"+
+						"timeMMSE="+timeMMSE+"\n"+
 						"lengthSenderBuffer="+senderBuffer.size()+"\n"+"lengthNoiseBuffer="
 						+noiseBuffer.size()+"\n"+"timeLMS="+timeLMS+"  //  "+"timeDelay="+timeDelay;
 
@@ -533,25 +561,153 @@ public class StudentCode extends StudentCodeBase {
 
 
 	//Implementation of the log-spectral-MMSE algorithm
-	private short[] logMMSE(short[] signal){
+	private void logMMSE(){
+		long startTime=System.currentTimeMillis();
 		if(firstMMSE){
-			W=bufferLength/numberSubdivision;
+			W=2*bufferLength/numberSubdivision;
 			wnd=new double[W];
 			int i;
 			for (i=W;i-->0;){
 				wnd[i]=0.54-0.46*Math.cos(2*Math.PI*i/(W-1));
 			}
-			SP=0.4;
 			NIS=12;
-			firstMMSE=false;
+			alpha=0.99;
+			noiseCounter=0;
+			noiseLength=9;
+			gamma=new double[(W/2)+1];
+			G=new double[(W/2)+1];
+			for(i=(W/2)+1;i-->0;){
+				gamma[i]=1.0;
+				G[i]=1.0;
+			}
+			noiseMargin=3;
+			hangover=8;
+			speechFlag=false;
+			previousBuffer=new double[bufferLength];
 		}
 
+		FastFourierTransformer fft=new FastFourierTransformer(DftNormalization.STANDARD);
+		double[] segmentation=new double[W];
+		ArrayList<Complex[]> segments=new ArrayList<Complex[]>();
 
+		//Segmentation and FFT
+		int i,j;
+		for(i=numberSubdivision-1;i-->0;){
+			for(j=W;j-->0;){
+				segmentation[j]=wnd[j]*toFilterBuffer.get(0)[j+i*W/2];
+			}
+			segments.add(0,fft.transform(segmentation, TransformType.FORWARD));
+		}
+		i=numberSubdivision-1;
+		for(j=W/2;j-->0;){
+			segmentation[j]=wnd[j]*toFilterBuffer.get(0)[j+i*W/2];
+			segmentation[j+W/2]=wnd[j+W/2]*toFilterBuffer.get(1)[j];
+		}
+		segments.add(i,fft.transform(segmentation, TransformType.FORWARD));
+		//Angle and Abs
+		ArrayList<double[]> phases=new ArrayList<double[]>();
+		ArrayList<double[]> norms=new ArrayList<double[]>();
+		double[] phase=new double[(W/2)+1];
+		double[] norm=new double[(W/2)+1];
+		for(i=numberSubdivision;i-->0;){
+			for(j=W/2+1;j-->0;){
+				phase[j]=segments.get(i)[j].getArgument();
+				norm[j]=segments.get(i)[j].abs();
+			}
+			phases.add(0,phase);
+			norms.add(0, norm);
+		}
+		if(firstMMSE){
+			N=new double[(W/2)+1];
+			lambdaD=new double[(W/2)+1];
+			for(i=(W/2)+1;i-->0;){
+				for(j=numberSubdivision;j-->0;){
+					N[i]+=norms.get(j)[i]/numberSubdivision;
+					lambdaD[i]+=norms.get(j)[i]*norms.get(j)[i]/numberSubdivision;
+				}
+			}
+			firstMMSE=false;
+		}
+		double gammaNew=0.0;
+		double xi=0.0;
+		double nu=0.0;
+		double exp=0.0;
+		double[] X=new double[gamma.length];
+		Complex[] out=new Complex[W];
+		Complex angle=new Complex(0, 0);
+		ArrayList<double[]> outs=new ArrayList<double[]>();
+		for(i=numberSubdivision;i-->0;){
+			vad(norms.get(i),N);
 
+			if(!speechFlag){
+				for(j=N.length;j-->0;){
+					N[j]=(noiseLength*N[j]+norms.get(i)[j])/(noiseLength+1);
+					lambdaD[j]=(noiseLength*lambdaD[j]+norms.get(i)[j]*norms.get(i)[j])/(noiseLength+1);
+				}
+			}
+			for(j=gamma.length;j-->0;){
+				gammaNew=norms.get(i)[j]*norms.get(i)[j]/lambdaD[j];
+				if(gammaNew-1>0){
+					xi=alpha*G[j]*G[j]*gamma[j]+(1.0-alpha)*(gammaNew-1);
+				}else{
+					xi=alpha*G[j]*G[j]*gamma[j];
+				}
+				gamma[j]=gammaNew;
+				nu=gamma[j]*xi/(1.0+xi);
+				exp=expint(nu);
+				G[j]=(xi/(1.0+xi))*exp;
+				X[j]=G[j]*norms.get(i)[j];
+			}
+			for(j=gamma.length;j-->0;){
+				angle=new Complex(0, phases.get(i)[j]);
+				out[j]=angle.multiply(X[j]);
+				if(j+gamma.length<out.length){
+					angle=angle.conjugate();
+					out[j+gamma.length]=angle.multiply(X[gamma.length-j-1]);
+				}
+			}
+			out=fft.transform(out, TransformType.INVERSE);
+			if (i==0){
+				for(j=W;j-->0;){
+					toFilter[j]=(short)(previousBuffer[j]+out[j].getReal());
+				}
+			}else if(i!=0 && i<numberSubdivision-1){
+				for(j=W;j-->0;){
+					toFilter[j+i*W/2]=(short)(out[j].getReal());
+				}
+			}else{
+				for(j=W/2;j-->0;){
+					toFilter[j+i*W/2]=(short)(out[j].getReal());
+					previousBuffer[j]=(short)(out[j+(W/2)].getReal());
+				}
+			}
 
-		return null;
+		}
+		timeMMSE=(int)(System.currentTimeMillis()-startTime);
 	}
 
+	public void vad(double[] norm,double[] noise){
+		double dist=0.0;
+		double val=0.0;
+		int i;
+		for(i=norm.length;i-->=0;){
+			val=20*(Math.log10(norm[i])-Math.log10(noise[i]));
+			if(val>=0){
+				dist+=val;
+			}
+		}
+		dist/=norm.length;
+		if(dist<noiseMargin){
+			noiseCounter++;
+		}else{
+			noiseCounter=0;
+		}
+		if(noiseCounter>hangover){
+			speechFlag=false;
+		}else{
+			speechFlag=true;
+		}
+	}
 
 	//---------------------------------------------------------------------- 
 	//
