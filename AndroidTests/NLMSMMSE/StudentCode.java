@@ -15,8 +15,16 @@ import java.util.List;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-import org.apache.commons.math3.complex.*;
-import org.apache.commons.math3.transform.*;
+
+
+
+
+
+
+import org.apache.commons.math3.complex.Complex;
+import org.apache.commons.math3.transform.DftNormalization;
+import org.apache.commons.math3.transform.FastFourierTransformer;
+import org.apache.commons.math3.transform.TransformType;
 
 import com.google.zxing.Binarizer;
 import com.google.zxing.BinaryBitmap;
@@ -38,6 +46,10 @@ import com.google.zxing.qrcode.detector.Detector;
 
 //import org.apache.commons.net.ntp.TimeInfo;
 //import org.apache.commons.net.ntp.TimeStamp;
+
+
+
+
 
 
 
@@ -348,79 +360,82 @@ public class StudentCode extends StudentCodeBase {
 				short[] signal=new short[bufferLength+orderLMS];
 				short[] noise=new short[bufferLength+orderLMS];
 				int i;
-				if(diff>=0){
-					for (i=bufferLength;--i>=0;){
-						//Get the signal part
-						signal[i+orderLMS]=senderBuffer.get(1+diff)[i];
-						if (i<orderLMS){
-							signal[orderLMS-i-1]=senderBuffer.get(diff)[bufferLength-i-1];
-						}
-						//Get the part to play
-						toFilter[i]=senderBuffer.get(1+diff)[i];
-						//Get the noise part, taking in consideration the delay
-						if (delay>0){
-							if (i<orderLMS+delay){
-								noise[orderLMS+delay-i-1]=noiseBuffer.get(0)[bufferLength-i-1];
+				if (senderBuffer.size()>2+Math.abs(diff) && noiseBuffer.size()>2+Math.abs(diff)){
+					if(diff>=0){
+						for (i=bufferLength;--i>=0;){
+							//Get the signal part
+							signal[i+orderLMS]=senderBuffer.get(1+diff)[i];
+							if (i<orderLMS){
+								signal[orderLMS-i-1]=senderBuffer.get(diff)[bufferLength-i-1];
 							}
-							if (i+delay<bufferLength){
-								noise[i+orderLMS+delay]=noiseBuffer.get(1)[i];
-							}
-						}else{
-							if (orderLMS+delay>0){
+							//Get the part to play
+							toFilter[i]=senderBuffer.get(1+diff)[i];
+							//Get the noise part, taking in consideration the delay
+							if (delay>0){
 								if (i<orderLMS+delay){
 									noise[orderLMS+delay-i-1]=noiseBuffer.get(0)[bufferLength-i-1];
 								}
-								noise[orderLMS+delay+i]=noiseBuffer.get(1)[i];
-								if (i<-delay){
-									noise[orderLMS+delay+bufferLength+i]=noiseBuffer.get(2)[i];
-								}
-							}else{
-								if (i>-orderLMS-delay){
+								if (i+delay<bufferLength){
 									noise[i+orderLMS+delay]=noiseBuffer.get(1)[i];
 								}
-								if (i<-delay){
-									noise[bufferLength+i+orderLMS+delay]=noiseBuffer.get(2)[i];
+							}else{
+								if (orderLMS+delay>0){
+									if (i<orderLMS+delay){
+										noise[orderLMS+delay-i-1]=noiseBuffer.get(0)[bufferLength-i-1];
+									}
+									noise[orderLMS+delay+i]=noiseBuffer.get(1)[i];
+									if (i<-delay){
+										noise[orderLMS+delay+bufferLength+i]=noiseBuffer.get(2)[i];
+									}
+								}else{
+									if (i>-orderLMS-delay){
+										noise[i+orderLMS+delay]=noiseBuffer.get(1)[i];
+									}
+									if (i<-delay){
+										noise[bufferLength+i+orderLMS+delay]=noiseBuffer.get(2)[i];
+									}
 								}
 							}
 						}
-					}
-				}else{
-					for (i=bufferLength;--i>=0;){
-						//Get the signal part
-						signal[i+orderLMS]=senderBuffer.get(1)[i];
-						if (i<orderLMS){
-							signal[orderLMS-i-1]=senderBuffer.get(0)[bufferLength-i-1];
-						}
-						//Get the part to play
-						toFilter[i]=senderBuffer.get(1)[i];
-						//Get the noise part, taking in consideration the delay
-						if (delay>0){
-							if (i<orderLMS+delay){
-								noise[orderLMS+delay-i-1]=noiseBuffer.get(-diff)[bufferLength-i-1];
+					}else{
+						for (i=bufferLength;--i>=0;){
+							//Get the signal part
+							signal[i+orderLMS]=senderBuffer.get(1)[i];
+							if (i<orderLMS){
+								signal[orderLMS-i-1]=senderBuffer.get(0)[bufferLength-i-1];
 							}
-							if (i+delay<bufferLength){
-								noise[i+orderLMS+delay]=noiseBuffer.get(1-diff)[i];
-							}
-						}else{
-							if (orderLMS+delay>0){
+							//Get the part to play
+							toFilter[i]=senderBuffer.get(1)[i];
+							//Get the noise part, taking in consideration the delay
+							if (delay>0){
 								if (i<orderLMS+delay){
 									noise[orderLMS+delay-i-1]=noiseBuffer.get(-diff)[bufferLength-i-1];
 								}
-								noise[orderLMS+delay+i]=noiseBuffer.get(1-diff)[i];
-								if (i<-delay){
-									noise[orderLMS+delay+bufferLength+i]=noiseBuffer.get(2-diff)[i];
-								}
-							}else{
-								if (i>-orderLMS-delay){
+								if (i+delay<bufferLength){
 									noise[i+orderLMS+delay]=noiseBuffer.get(1-diff)[i];
 								}
-								if (i<-delay){
-									noise[bufferLength+i+orderLMS+delay]=noiseBuffer.get(2-diff)[i];
+							}else{
+								if (orderLMS+delay>0){
+									if (i<orderLMS+delay){
+										noise[orderLMS+delay-i-1]=noiseBuffer.get(-diff)[bufferLength-i-1];
+									}
+									noise[orderLMS+delay+i]=noiseBuffer.get(1-diff)[i];
+									if (i<-delay){
+										noise[orderLMS+delay+bufferLength+i]=noiseBuffer.get(2-diff)[i];
+									}
+								}else{
+									if (i>-orderLMS-delay){
+										noise[i+orderLMS+delay]=noiseBuffer.get(1-diff)[i];
+									}
+									if (i<-delay){
+										noise[bufferLength+i+orderLMS+delay]=noiseBuffer.get(2-diff)[i];
+									}
 								}
 							}
 						}
 					}
 				}
+
 				double max=0;
 				if(noiseCancellation){
 					//Apply the LMS noise cancellation
@@ -436,14 +451,16 @@ public class StudentCode extends StudentCodeBase {
 
 
 					//We calculate the maximum values of the taps to verify that it doesn't diverge
-					for (int n=0;n<thetahat.length;n++){
-						if (Math.abs(thetahat[n])>max){
-							max=thetahat[n];
+					/*
+					for (int n=0;n<toFilter.length;n++){
+						if (Math.abs(toFilter[n])>max){
+							max=toFilter[n];
 						}
-						if(Math.abs(thetahat[n])>maxTot){
-							maxTot=thetahat[n];
+						if(Math.abs(toFilter[n])>maxTot){
+							maxTot=toFilter[n];
 						}
 					}
+					*/
 					//Helps recording the noise estimate to debug by using Matlab
 					if (recordNoise){
 						int p;
@@ -455,6 +472,7 @@ public class StudentCode extends StudentCodeBase {
 							recordNoise=false;
 						}
 					}
+					
 				}else{
 					toFilterBuffer.add(toFilter);
 				}
@@ -465,14 +483,16 @@ public class StudentCode extends StudentCodeBase {
 					if (toFilterBuffer.size()>=2){
 						sound_out(toFilter,bufferLength);
 						toFilterBuffer.remove(0);
+						noiseBuffer.remove(0);
+						senderBuffer.remove(0);
 					}
-					noiseBuffer.remove(0);
-					senderBuffer.remove(0);
+
 				}
 				//Message to plot
 				messageData="mu="+mu+"  //  "+"counter="+counter+"  //  "+"delay="+delay+"\n"+"mu'="+modifiedmu+"diff="+diff+"  //  "
 						+"meanDiff="+meanDiff+"\n"+"noiseCancellation="+noiseCancellation+"\n"+
-						"timeMMSE="+timeMMSE+"\n"+
+						"timeMMSE="+timeMMSE+"  //  "+"speechFlag="+speechFlag+"\n"+
+						"max="+max+"  //  "+"maxTot="+maxTot+"\n"+
 						"lengthSenderBuffer="+senderBuffer.size()+"\n"+"lengthNoiseBuffer="
 						+noiseBuffer.size()+"\n"+"timeLMS="+timeLMS+"  //  "+"timeDelay="+timeDelay;
 
@@ -564,7 +584,7 @@ public class StudentCode extends StudentCodeBase {
 	private void logMMSE(){
 		long startTime=System.currentTimeMillis();
 		if(firstMMSE){
-			W=2*bufferLength/numberSubdivision;
+			W=2*bufferLength/numberSubdivision; // Why multiplied by 2?
 			wnd=new double[W];
 			int i;
 			for (i=W;i-->0;){
@@ -594,14 +614,14 @@ public class StudentCode extends StudentCodeBase {
 		int i,j;
 		for(i=numberSubdivision-1;i-->0;){
 			for(j=W;j-->0;){
-				segmentation[j]=wnd[j]*toFilterBuffer.get(0)[j+i*W/2];
+				segmentation[j]=wnd[j]*toFilterBuffer.get(0)[j+i*W/2]/32000;
 			}
 			segments.add(0,fft.transform(segmentation, TransformType.FORWARD));
 		}
 		i=numberSubdivision-1;
 		for(j=W/2;j-->0;){
-			segmentation[j]=wnd[j]*toFilterBuffer.get(0)[j+i*W/2];
-			segmentation[j+W/2]=wnd[j+W/2]*toFilterBuffer.get(1)[j];
+			segmentation[j]=wnd[j]*toFilterBuffer.get(0)[j+i*W/2]/32000;
+			segmentation[j+W/2]=wnd[j+W/2]*toFilterBuffer.get(1)[j]/32000;
 		}
 		segments.add(i,fft.transform(segmentation, TransformType.FORWARD));
 		//Angle and Abs
@@ -631,7 +651,7 @@ public class StudentCode extends StudentCodeBase {
 		double gammaNew=0.0;
 		double xi=0.0;
 		double nu=0.0;
-		double exp=0.0;
+		double exp=0.0; 
 		double[] X=new double[gamma.length];
 		Complex[] out=new Complex[W];
 		Complex angle=new Complex(0, 0);
@@ -654,9 +674,12 @@ public class StudentCode extends StudentCodeBase {
 				}
 				gamma[j]=gammaNew;
 				nu=gamma[j]*xi/(1.0+xi);
-				exp=expint(nu);
+				exp=Math.exp(0.5*expint(nu)); // SHOULD BE exp(1/2*expint(nu))
 				G[j]=(xi/(1.0+xi))*exp;
 				X[j]=G[j]*norms.get(i)[j];
+				if(Math.abs(X[j])>maxTot){ // ??
+					maxTot=Math.abs(X[j]); // ??
+				}
 			}
 			for(j=gamma.length;j-->0;){
 				angle=new Complex(0, phases.get(i)[j]);
@@ -669,16 +692,16 @@ public class StudentCode extends StudentCodeBase {
 			out=fft.transform(out, TransformType.INVERSE);
 			if (i==0){
 				for(j=W;j-->0;){
-					toFilter[j]=(short)(previousBuffer[j]+out[j].getReal());
+					toFilter[j]=(short)(previousBuffer[j]+out[j].getReal()*5000);
 				}
 			}else if(i!=0 && i<numberSubdivision-1){
 				for(j=W;j-->0;){
-					toFilter[j+i*W/2]=(short)(out[j].getReal());
+					toFilter[j+i*W/2]=(short)(out[j].getReal()*5000);
 				}
 			}else{
 				for(j=W/2;j-->0;){
-					toFilter[j+i*W/2]=(short)(out[j].getReal());
-					previousBuffer[j]=(short)(out[j+(W/2)].getReal());
+					toFilter[j+i*W/2]=(short)(out[j].getReal()*5000);
+					previousBuffer[j]=(short)(out[j+(W/2)].getReal()*5000);
 				}
 			}
 
@@ -690,7 +713,7 @@ public class StudentCode extends StudentCodeBase {
 		double dist=0.0;
 		double val=0.0;
 		int i;
-		for(i=norm.length;i-->=0;){
+		for(i=norm.length;i-->0;){
 			val=20*(Math.log10(norm[i])-Math.log10(noise[i]));
 			if(val>=0){
 				dist+=val;
