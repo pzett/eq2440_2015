@@ -75,9 +75,9 @@ toc
 % Last Modified: 21-01-05
 IS = 0.25;
 signal = e;
-
-W=fix(.025*fs); %Window length is 25 ms
-SP=0.4; %Shift percentage is 40% (10ms) %Overlap-Add method works good with this value(.4)
+signal(2000)= 1000; 
+W=512; %Window length is 25 ms
+SP=0.5; %Shift percentage is 40% (10ms) %Overlap-Add method works good with this value(.4)
 wnd=hamming(W);
 
 
