@@ -163,7 +163,7 @@ public class StudentCode extends StudentCodeBase {
 
 		//Log-Spectral-MMSE Variables
 		firstMMSE=true;
-		numberSubdivision=4;
+		numberSubdivision=8;
 
 		//Buffering Variables
 		senderBuffer=new ArrayList<short[]>();	//ArrayList of the signal buffers
@@ -447,7 +447,9 @@ public class StudentCode extends StudentCodeBase {
 					toFilterBuffer.add(toFilter);
 					//Apply log-Spectral-MMSE
 
+
 					logMMSE();
+
 
 
 					//We calculate the maximum values of the taps to verify that it doesn't diverge
@@ -460,7 +462,7 @@ public class StudentCode extends StudentCodeBase {
 							maxTot=toFilter[n];
 						}
 					}
-					*/
+					 */
 					//Helps recording the noise estimate to debug by using Matlab
 					if (recordNoise){
 						int p;
@@ -472,7 +474,7 @@ public class StudentCode extends StudentCodeBase {
 							recordNoise=false;
 						}
 					}
-					
+
 				}else{
 					toFilterBuffer.add(toFilter);
 				}
@@ -583,8 +585,9 @@ public class StudentCode extends StudentCodeBase {
 	//Implementation of the log-spectral-MMSE algorithm
 	private void logMMSE(){
 		long startTime=System.currentTimeMillis();
+		//Initialization for first time logMMSE is used
 		if(firstMMSE){
-			W=2*bufferLength/numberSubdivision; // Why multiplied by 2?
+			W=2*bufferLength/numberSubdivision;
 			wnd=new double[W];
 			int i;
 			for (i=W;i-->0;){
@@ -605,11 +608,21 @@ public class StudentCode extends StudentCodeBase {
 			speechFlag=false;
 			previousBuffer=new double[bufferLength];
 		}
-
+		//Local variables
 		FastFourierTransformer fft=new FastFourierTransformer(DftNormalization.STANDARD);
 		double[] segmentation=new double[W];
 		ArrayList<Complex[]> segments=new ArrayList<Complex[]>();
-
+		ArrayList<double[]> phases=new ArrayList<double[]>();
+		ArrayList<double[]> norms=new ArrayList<double[]>();
+		double[] phase=new double[(W/2)+1];
+		double[] norm=new double[(W/2)+1];
+		double gammaNew=0.0;
+		double xi=0.0;
+		double nu=0.0;
+		double exp=0.0; 
+		double[] X=new double[gamma.length];
+		Complex[] out=new Complex[W];
+		Complex angle=new Complex(0, 0);
 		//Segmentation and FFT
 		int i,j;
 		for(i=numberSubdivision-1;i-->0;){
@@ -624,11 +637,7 @@ public class StudentCode extends StudentCodeBase {
 			segmentation[j+W/2]=wnd[j+W/2]*toFilterBuffer.get(1)[j]/32000;
 		}
 		segments.add(i,fft.transform(segmentation, TransformType.FORWARD));
-		//Angle and Abs
-		ArrayList<double[]> phases=new ArrayList<double[]>();
-		ArrayList<double[]> norms=new ArrayList<double[]>();
-		double[] phase=new double[(W/2)+1];
-		double[] norm=new double[(W/2)+1];
+		//Calculate arguments and norms of the FFTs
 		for(i=numberSubdivision;i-->0;){
 			for(j=W/2+1;j-->0;){
 				phase[j]=segments.get(i)[j].getArgument();
@@ -637,6 +646,7 @@ public class StudentCode extends StudentCodeBase {
 			phases.add(0,phase);
 			norms.add(0, norm);
 		}
+		//Initialize the noise estimate
 		if(firstMMSE){
 			N=new double[(W/2)+1];
 			lambdaD=new double[(W/2)+1];
@@ -648,23 +658,18 @@ public class StudentCode extends StudentCodeBase {
 			}
 			firstMMSE=false;
 		}
-		double gammaNew=0.0;
-		double xi=0.0;
-		double nu=0.0;
-		double exp=0.0; 
-		double[] X=new double[gamma.length];
-		Complex[] out=new Complex[W];
-		Complex angle=new Complex(0, 0);
-		ArrayList<double[]> outs=new ArrayList<double[]>();
+		//Loop over the segments
 		for(i=numberSubdivision;i-->0;){
+			//Voice detection
 			vad(norms.get(i),N);
-
+			//If not voice, we update the noise estimate
 			if(!speechFlag){
 				for(j=N.length;j-->0;){
 					N[j]=(noiseLength*N[j]+norms.get(i)[j])/(noiseLength+1);
 					lambdaD[j]=(noiseLength*lambdaD[j]+norms.get(i)[j]*norms.get(i)[j])/(noiseLength+1);
 				}
 			}
+			//We update the variables used to calculate the output
 			for(j=gamma.length;j-->0;){
 				gammaNew=norms.get(i)[j]*norms.get(i)[j]/lambdaD[j];
 				if(gammaNew-1>0){
@@ -674,22 +679,26 @@ public class StudentCode extends StudentCodeBase {
 				}
 				gamma[j]=gammaNew;
 				nu=gamma[j]*xi/(1.0+xi);
-				exp=Math.exp(0.5*expint(nu)); // SHOULD BE exp(1/2*expint(nu))
+				exp=Math.exp(0.5*expint(nu));
 				G[j]=(xi/(1.0+xi))*exp;
 				X[j]=G[j]*norms.get(i)[j];
-				if(Math.abs(X[j])>maxTot){ // ??
-					maxTot=Math.abs(X[j]); // ??
+				//DEBUG
+				if(Math.abs(X[j])>maxTot){
+					maxTot=Math.abs(X[j]);
 				}
 			}
+			//Retrieve the cleaned signal
+			//First in complex form
 			for(j=gamma.length;j-->0;){
 				angle=new Complex(0, phases.get(i)[j]);
+				angle=angle.exp();
 				out[j]=angle.multiply(X[j]);
-				if(j+gamma.length<out.length){
-					angle=angle.conjugate();
-					out[j+gamma.length]=angle.multiply(X[gamma.length-j-1]);
-				}
-			}
+				angle=angle.conjugate();
+				out[out.length-j-1]=angle.multiply(X[gamma.length-j-1]);
+
+			}	
 			out=fft.transform(out, TransformType.INVERSE);
+			//Then in its short form
 			if (i==0){
 				for(j=W;j-->0;){
 					toFilter[j]=(short)(previousBuffer[j]+out[j].getReal()*5000);
@@ -704,11 +713,12 @@ public class StudentCode extends StudentCodeBase {
 					previousBuffer[j]=(short)(out[j+(W/2)].getReal()*5000);
 				}
 			}
-
 		}
 		timeMMSE=(int)(System.currentTimeMillis()-startTime);
 	}
 
+
+	//Voice detection algorithm
 	public void vad(double[] norm,double[] noise){
 		double dist=0.0;
 		double val=0.0;
@@ -779,14 +789,11 @@ public class StudentCode extends StudentCodeBase {
 		546168.42050691155735758, 278581.34710520842139357,
 		79231.787945279043698718, 12842.808586627297365998,
 		1163.5769915320848035459, 54.199632588522559414924, 1.0 };
-	private static double expint(double x)
-	{
-		if (Double.isNaN(x))
-			return x;
+	private static double expint(double x){
+		if (Double.isNaN(x)){return x;}
 		// Local variables 
 		double sump, sumq;
 		double w, y, ei;
-
 		if (x == 0.0) {
 			ei = Double.POSITIVE_INFINITY;
 		} else {
