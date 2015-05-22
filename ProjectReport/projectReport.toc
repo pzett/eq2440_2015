@@ -6,11 +6,11 @@
 \contentsline {section}{\numberline {1.4}Goal}{6}{section.1.4}
 \contentsline {section}{\numberline {1.5}Organizationn and Human Resources}{6}{section.1.5}
 \contentsline {chapter}{\numberline {2}Methodology}{9}{chapter.2}
-\contentsline {section}{\numberline {2.1}Management Group}{9}{section.2.1}
-\contentsline {section}{\numberline {2.2}Theory Group}{9}{section.2.2}
-\contentsline {section}{\numberline {2.3}Android Group}{9}{section.2.3}
-\contentsline {section}{\numberline {2.4}Multimedia Group}{9}{section.2.4}
-\contentsline {section}{\numberline {2.5}Cross-Duties}{9}{section.2.5}
+\contentsline {section}{\numberline {2.1}Theory Group}{9}{section.2.1}
+\contentsline {section}{\numberline {2.2}Android Group}{9}{section.2.2}
+\contentsline {section}{\numberline {2.3}Multimedia Group}{9}{section.2.3}
+\contentsline {section}{\numberline {2.4}Management Group}{9}{section.2.4}
+\contentsline {section}{\numberline {2.5}Cross-Groups Duties}{10}{section.2.5}
 \contentsline {chapter}{\numberline {3}Theory}{11}{chapter.3}
 \contentsline {chapter}{\numberline {4}Android}{13}{chapter.4}
 \contentsline {chapter}{\numberline {5}Conclusions}{15}{chapter.5}

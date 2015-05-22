@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  22 MAY 2015 16:46
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  22 MAY 2015 17:09
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -809,7 +809,7 @@ Package caption Info: End \AtBeginDocument code.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-<images/other/scenario.png, id=60, 780.9175pt x 398.48875pt>
+<images/other/scenario.png, id=64, 780.9175pt x 398.48875pt>
 File: images/other/scenario.png Graphic file (type png)
 
 <use images/other/scenario.png>
@@ -853,23 +853,23 @@ File: images/other/scenario.png Graphic file (type png)
  <use images/other/scenario.png>
 Package pdftex.def Info: images/other/scenario.png used on input line 195.
 (pdftex.def)             Requested size: 284.52756pt x 145.18877pt.
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 224.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 223.
 
 
 (/usr/local/texlive/2012/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 224.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 223.
  [6] [7] [8
 
 ]
 Chapter 2.
-[9] [10
-
-]
+[9] [10]
 Chapter 3.
-[11] [12
+[11
+
+] [12
 
 ]
 Chapter 4.
@@ -877,12 +877,12 @@ Chapter 4.
 
 ]
 Chapter 5.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 323.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 334.
 [15]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 323.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 334.
  (./projectReport.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 323.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 323.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 334.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 334.
 
 
 Package rerunfilecheck Warning: File `projectReport.out' has changed.
@@ -890,21 +890,21 @@ Package rerunfilecheck Warning: File `projectReport.out' has changed.
 (rerunfilecheck)                or use package `bookmark'.
 
 Package rerunfilecheck Info: Checksums for `projectReport.out':
-(rerunfilecheck)             Before: 572601D3FD55214BCE6F2EA4B76DEFD3;812
-(rerunfilecheck)             After:  5093B7A85784BA872F4C2E39178D2334;871.
+(rerunfilecheck)             Before: 2140B59153CC38C282B4DEECD0AE444D;871
+(rerunfilecheck)             After:  B9003D8AD81AA3C0E78AFC67FAD88A01;878.
 
 LaTeX Warning: There were undefined references.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 323.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 334.
  ) 
 Here is how much of TeX's memory you used:
- 10848 strings out of 493488
- 158619 string characters out of 3141326
- 289189 words of memory out of 3000000
- 13940 multiletter control sequences out of 15000+200000
+ 10850 strings out of 493488
+ 158646 string characters out of 3141326
+ 288189 words of memory out of 3000000
+ 13942 multiletter control sequences out of 15000+200000
  12313 words of font info for 45 fonts, out of 3000000 for 9000
  957 hyphenation exceptions out of 8191
- 42i,6n,58p,777b,451s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 42i,6n,58p,777b,399s stack positions out of 5000i,500n,10000p,200000b,50000s
 </usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb>
@@ -913,10 +913,10 @@ usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></us
 r/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl10.pfb></usr
 /local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/
 local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on projectReport.pdf (15 pages, 494964 bytes).
+Output written on projectReport.pdf (15 pages, 495843 bytes).
 PDF statistics:
- 194 PDF objects out of 1000 (max. 8388607)
- 165 compressed objects within 2 object streams
+ 200 PDF objects out of 1000 (max. 8388607)
+ 171 compressed objects within 2 object streams
  34 named destinations out of 1000 (max. 500000)
- 118 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 126 words of extra memory for PDF output out of 10000 (max. 10000000)
 
