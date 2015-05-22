@@ -172,24 +172,145 @@ Per ZETTERBERG
 
 \chapter{Background}
 
-	\section{Introduction of the problem}
+	\section{Introduction of noisy environments}
+	\label{sec:intronoise}
 	
-	Nowadays the scenarios with phone calls involved are increasing every day. This fact implies an increase of the probability of being in a noisy scenario, specially in big cities. As a result of the discomfort that the users suffer and claim, engineering and science have worked with different approaches to solve this problem.
-	
-	The nature and origin of the noise affects directly to the solutions to implement, being it one of the biggest obstacles: a high performance of the implementation in different situations is a technical and a comfort requierement. Considering that the noise can be white or colored, coming from a concrete source or considered as background noise, and it could last from miliseconds to minutes, the solutions have to be adaptive enough to follow the noise and cancel it in the best possible way. 
-	
-	
+It is a fact that the scenarios with phone calls involved are increasing every day. This situation implies an increase of the probability of being in a noisy scenario, specially in big cities. As a result of the discomfort that the users suffer in these noisy environments, engineering and science have worked with different approaches to solve this problem.
+
+The diversity of noise nature and its sources lead the engineering to a big challenge: develop high performance soltions in these diverse environments. When facing noise cancellation is very important to take into account the variability that the noise may experience, as previously said. Duration of the noise sequences (from \textit{ms} to long sequences), color of the noise and stationarity are possible classifications of the noise and each classification implies different ways of treating it. Therefore, a lot of systems are using combined techniques to reach the best possible performance, which has been naturally the case of this project.
 
 	\section{Historical Overview}
+	Before presenting the proposed solutions and approaches of the project, it is needed a historical overview to understand how have the group been influenced and which have been the patterns of research.
+
+
+	\section{Description of the project}
+	\label{sec:introproblem}
+	
+	The problem proposed by the course \textit{EQ2440} has been a "Noise and echo cancellation of a teleconference". The general scenario is that the first of the two speakers of the teleconference is in a noisy environment and the clear goal is to cancel as much noise as possible in order that the second speaker could receive a cleaner speech and make the conversation more comfortable. As said in \ref{sec_intronoise}, there are different approaches to solve this problem, where several of them require the availability of pure noise recordings, in our case recorded with a third phone placed close to the noise source. To have a clearer overview of the scenario the Figure \ref{scenario2} shows an approximate scheme easy to understand.
+	
+	When talking about denoising a teleconference there are two factors to take into account, techniques to cancel the noise and the possibility of their implementation in a real time application. The real time application has been, as expected, a big challenge because it implies good performance in terms of cancellation with the minimum reachable delay to conserve the naturalness of the conversation.
+	
+		\begin{figure}[h]
+		\centering
+		\includegraphics[width=10cm]{images/other/scenario}
+		\caption{Scenario to solve}
+		\label{scenario2}
+		\end{figure}
+	
+	
 	
 	\section{Goal}
+	As commented in \ref{sec:introproblem}, the goal is to cancel the noise contribution in the conversation between the two speakers of the teleconferences. With the purpose to simplify the scenario, it will be assumed that only one of the speakers is surrounded by noise and the main noise source is known as well.
 	
-	\section{Organization}
+	As in every engineering project, the group had to find a compromise between performance in noise cancellation and viability of implementation in real life. As it will be explained in \ref{sec:methodology}, the computational cost is a big constrain and the best performance of certain approaches (\ref{sec:theory}) introduce too much delay because of this reason. As a consequence, not always the best solution will be possible to implement in the real time version of the project.
+	
+	As a contrast, the personal goals of the project members are to learn form the teamwork environment, learn a research methodology, research criteria and certain skills of management that might be used in the performance of a Master Thesis (as an inmidate future) and in a research or business environment.
+	
+	The new knowledge acquisition is obviously another personal goal of all the team members.
+	
+	
+	
+	
+	\section{Organizationn and Human Resources}
 
+The organization of the project consists in electrical engineering students at different stages of the studies and within different specializations. In order to make the team as efficient as possible, the project has been divided in four different groups: \textit{Theory Group}, \textit{Android Group}, \textit{Multimedia Group} and \textit{Management Group}, all of them explained in detail in \ref{sec:methodology}.
+
+In terms of making easier the transfer of information between groups, the makeup of the groups has followed a cross-specialization criteria. Therefore, there are team members in more than one group, and it has been possible due to the wide scope of skills that the team members have.
+
+The distribution of the team members has been as follows.
+
+\begin{itemize}
+
+\item Animesh Das
+	\begin{itemize}
+	\item Role: Management Group
+	\item e-mail:animeshu1989@gmail.com (animeshd@kth.se)
+	\item Telephone: +46 737155575
+	\end{itemize}
+	
+\item Jonas Sedin
+	\begin{itemize}
+	\item Role: Theory Group \& Android Group
+	\item e-mail: sedinjo@gmail.com (jonassed@kth.se)
+	\item Telephone: +46 704252951
+	\end{itemize}
+	
+\item Mohammad Abdulla
+	\begin{itemize}
+	\item Role: Android Group \& Multimedia Group
+	\item e-mail: hamodiilatch@gmail.com (mabdulla@kth.se)
+	\item Telephone: +46 737393276
+	\end{itemize}
+	
+\item Thomas Gaudy
+	\begin{itemize}
+	\item Role: Android Group
+	\item e-mail: gaudy.thomas@gmail.com (gaudy@kth.se)
+	\item Telephone: +46 760936034
+	\end{itemize}
+	
+\item Xavier Bush
+	\begin{itemize}
+	\item Role: Theory Group \& Management Group (Project Leader)
+	\item e-mail: xavier.bush@gmail.com (xbush@kth.se)
+	\item Telephone: +46 764141834
+	\end{itemize}
+	
+	
+\end{itemize}
+
+The sponsor members as Project Examiner/Supervisor and Project Support are:
+
+\begin{itemize}
+\item Per Zetterberg
+	\begin{itemize}
+	\item Role: Project Examiner
+	\item e-mail: perz@ee.kth.se
+	\item Telephone: +46 8 790 77 85
+	\end{itemize}
+	
+\item Hadi Ghauch
+	\begin{itemize}
+	\item Role: Group Assistant
+	\item e-mail: ghauch@kth.se
+	\end{itemize}
+	
+\item Martin Ohlsson
+	\begin{itemize}
+	\item Role: Android Guru
+	\item e-mail: martinoh@kth.se
+	\item Telephone: +46 87907818
+	\end{itemize}
+\end{itemize}
 
 \chapter{Methodology}
+\label{sec:methodology}
+
+This chapter shows the methodology that the group has followed since the projecte started. On the first hand, it goes without saying that the project group has followed the \textit{Scientific Method} in the implementation of the project. On the second hand, the 
+
+
+\begin{itemize}
+\item \textit{Theory Group}: its goal is to find theory solutions for the noise cancellation problem having in mind potential computational problems.
+\item \textit{Android Group}: its goal is to implement in Android the solutions given by the \textit{Theory Group}. This group will handle as well all the technical aspects of the communication between the mobilephones.
+\item \textit{Multimedia Group}: the purpose of the group is to create the presentations and video to show the results of the project
+\item \textit{Management Group}: the drawing up of the Project Plan, Progress Report and Project Report are the main duties of this group, as well as the creation of all the tools needed to make a good follow up of the work in the project. 
+\end{itemize}
+
+
+
+\section{Management Group}
+
+\section{Theory Group}
+
+\section{Android Group}
+
+\section{Multimedia Group}
+
+\section{Cross-Duties}
+
 
 \chapter{Theory}
+\label{sec:theory}
 
 \chapter{Android}
 
