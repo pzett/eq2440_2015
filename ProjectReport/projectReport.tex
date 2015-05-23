@@ -180,6 +180,7 @@ It is a fact that the scenarios with phone calls involved are increasing every d
 The diversity of noise nature and its sources lead the engineering to a big challenge: develop high performance soltions in these diverse environments. When facing noise cancellation is very important to take into account the variability that the noise may experience, as previously said. Duration of the noise sequences (from \textit{ms} to long sequences), color of the noise and stationarity are possible classifications of the noise and each classification implies different ways of treating it. Therefore, a lot of systems are using combined techniques to reach the best possible performance, which has been naturally the case of this project.
 
 	\section{Historical Overview}
+	\label{historya}
 	Before presenting the proposed solutions and approaches of the project, it is needed a historical overview to understand how have the group been influenced and which have been the patterns of research.
 
 
@@ -289,43 +290,80 @@ This chapter shows the methodology that the group has followed since the project
 
 	\section{Theory Group}
 
-The\textit{Theory Group} has as its main goal to find theory solutions for the noise cancellation problem having in mind potential computational problems.
+The\textit{Theory Group} had as its main goal finding solutions to cancel the present noise in the teleconference. Nevertheless, a constraint of the group has been the computational cost that the implementation have, where all the details may be found in \ref{sec:theory}.
 
+The fact that three members of the project had recent and good background in Adaptive Signal Processing, which has been one of the chosen approaches to face the noise cancellation, made easier the making of the groups. Moreover, the \textit{Theory Group} avoided the first stage in theory research, which is the most difficult part when starting a new project.
+
+In terms of methodology, the \textit{Theory Group} has followed next steps:
+
+\begin{itemize}
+\item Make research in suitable algorithms.
+\item Test the performance in MATLAB.
+\item Check the computational cost in MATLAB.
+\item Check the possibility to transfer the solutions from MATLAB to Android.
+\end{itemize}
+
+Because of the presence of Jonas Sedin in the \textit{Theory Group} and the \textit{Android Group}, it has been possible to design theory solutions think in the availability to transfer them to Android programation.
 
 	\section{Android Group}
 	
-	Its goal is to implement in Android the solutions given by the \textit{Theory Group}. This group will handle as well all the technical aspects of the communication between the mobilephones.
+	This group has had two different duties:
 	
+	\begin{itemize}
+	\item Android tasks: these tasks aimed to be an introdution to the Android programming.
+	\item Noise cancellation in Android: has been the transfer from the proposed solution in the \textit{Theory Group} to Android.
+	\item Real time application: optimize the code to decrease the computational cost and make possible a real time application.
+	\end{itemize}
+	
+	In this case, even if Thomas Gaudy has not been a part of the \textit{Theory Group}, his background in Adaptive Signal Processing has helped in the implementation of the proposed solutions.
 	
 	\section{Multimedia Group}
 
-the purpose of the group is to create the presentations and video to show the results of the project
+This group is only formed by Mohammad Abdulla who has taken care of all the technical preparation of the presentations of the project:
+
+\begin{itemize}
+\item Video of the project: explanation of the project with real examples.
+\item Power Point Presentation: power point to use in the Grand Final Presentation.
+\item Bloopers Video: video containing bloopers and funny moments during the performance of the project.
+\end{itemize}
 
 	\section{Management Group}
 
-The \textit{Management Group} has taken car of the drawing up of those tasks that were oriented to plan, follow up and present the work of the project. The main documents are listed below:
+The \textit{Management Group} has taken car of the drawing up of those tasks that were oriented to plan, follow up and present the work of the project.
+
+The main documents are listed below:
 
 \begin{itemize}
 \item Project Plan: document that cointained a brief description of the project, time resources and planning and tasks planning.
-
-\item Progress Report: document containing the follow up of the projects in terms of achievements and resources. It is a updated version of the Project Plan
-
+\item Progress Report: document containing the follow up of the projects in terms of achievements and resources. It is a updated version of the Project Plan. The last Progress Report can be found in \ref{sec:appendix}.
 \item Project Report: this precise document. It contains the description of all the project in all the areas.
 \end{itemize}
 
+Besides the main documents, the \textit{Management Group} has taken care of next tasks:
 
-In terms of making easier the transfer of information between groups, the makeup of the groups has followed a cross-specialization criteria. Therefore, there are team members in more than one group, and it has been possible due to the wide scope of skills that the team members have (\ref{organization}).
+\begin{itemize}
+\item Meetings: there has been no need to schedule meetings because of the small size of the group and the cross-group duties.
+\item  Scheduling: the planning of all the tasks was designed by this group and it has been properly followed.
+\end{itemize}
 
 
 \section{Cross-Groups Duties}
 
+In terms of making easier the transfer of information between groups, the makeup of the groups has followed a cross-specialization criteria. Therefore, there are team members in more than one group, and it has been possible due to the wide scope of skills that the team members have (\ref{organization}).
+
+With this makeup, there have
 
 \chapter{Theory}
 \label{sec:theory}
 
+The \textit{Theory Group} has been working within different scenarios but mainly has followed what is called \textit{Adaptive Signal Processing}, as it has been explained in \ref{sec:history}
+
 \chapter{Android}
 
 \chapter{Conclusions}
+
+\chapter{Appendices}
+\label{sec:appendix}
 
 %\include{Chapter1}			% Incluye "Chapter1.tex"
 
