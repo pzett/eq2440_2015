@@ -12,6 +12,15 @@
 \contentsline {section}{\numberline {2.4}Management Group}{10}{section.2.4}
 \contentsline {section}{\numberline {2.5}Cross-Groups Duties}{10}{section.2.5}
 \contentsline {chapter}{\numberline {3}Theory}{11}{chapter.3}
+\contentsline {section}{\numberline {3.1}Successful Approaches}{11}{section.3.1}
+\contentsline {subsection}{\numberline {3.1.1}LMS Algorithm \& NMLS}{11}{subsection.3.1.1}
+\contentsline {subsubsection}{Introduction}{11}{section*.4}
+\contentsline {subsubsection}{Implementation \& Results}{12}{section*.5}
+\contentsline {subsection}{\numberline {3.1.2}Wiener Non-Causal Filtering}{12}{subsection.3.1.2}
+\contentsline {subsection}{\numberline {3.1.3}Speech Enhancement Using a-Minimum Mean- Square Error Short-Time Spectral Amplitude Estimator}{12}{subsection.3.1.3}
+\contentsline {section}{\numberline {3.2}Unsuccessful Approaches}{12}{section.3.2}
+\contentsline {subsection}{\numberline {3.2.1}Kalman Filtering}{12}{subsection.3.2.1}
+\contentsline {subsection}{\numberline {3.2.2}RLS}{12}{subsection.3.2.2}
 \contentsline {chapter}{\numberline {4}Android}{13}{chapter.4}
 \contentsline {chapter}{\numberline {5}Conclusions}{15}{chapter.5}
 \contentsline {chapter}{\numberline {6}Appendices}{17}{chapter.6}

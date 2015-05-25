@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  23 MAY 2015 17:14
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  25 MAY 2015 15:58
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -809,7 +809,7 @@ Package caption Info: End \AtBeginDocument code.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-<images/other/scenario.png, id=68, 780.9175pt x 398.48875pt>
+<images/other/scenario.png, id=96, 780.9175pt x 398.48875pt>
 File: images/other/scenario.png Graphic file (type png)
 
 <use images/other/scenario.png>
@@ -837,7 +837,7 @@ s/other/scenario.png>] [2
 \openout4 = `projectReport.toc'.
 
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \vbox (badness 6893) has occurred while \output is active []
 
  [3]
 [4
@@ -853,30 +853,58 @@ File: images/other/scenario.png Graphic file (type png)
  <use images/other/scenario.png>
 Package pdftex.def Info: images/other/scenario.png used on input line 196.
 (pdftex.def)             Requested size: 284.52756pt x 145.18877pt.
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 224.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 222.
 
 
 (/usr/local/texlive/2012/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 224.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 222.
  [6] [7] [8
 
 ]
 Chapter 2.
+
+Underfull \hbox (badness 10000) in paragraph at lines 305--306
+
+ []
+
 [9] [10]
 Chapter 3.
 
-LaTeX Warning: Reference `sec:history' on page 11 undefined on input line 359.
+LaTeX Warning: Reference `sec:history' on page 11 undefined on input line 360.
 
 [11
 
-] [12
-
 ]
+
+LaTeX Warning: Reference `fig:lmstime100' on page 12 undefined on input line 41
+4.
+
+
+LaTeX Warning: Reference `fig:lmstfreq100' on page 12 undefined on input line 4
+14.
+
+
+LaTeX Warning: Reference `fig:lmstime1000' on page 12 undefined on input line 4
+14.
+
+
+LaTeX Warning: Reference `fig:lmstfreq1000' on page 12 undefined on input line 
+414.
+
+
+Overfull \hbox (5.39484pt too wide) in paragraph at lines 418--418
+[]\OT1/cmr/bx/n/12 Speech En-hance-ment Us-ing a-Minimum Mean- Square Er-ror Sh
+ort-
+ []
+
+[12]
 Chapter 4.
-[13] [14
+[13
+
+] [14
 
 ]
 Chapter 5.
@@ -884,40 +912,44 @@ Chapter 5.
 
 ]
 Chapter 6.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 372.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 439.
 [17]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 372.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 439.
  (./projectReport.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 372.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 372.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 439.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 439.
 Package rerunfilecheck Info: File `projectReport.out' has not changed.
-(rerunfilecheck)             Checksum: 5C1051E8A1216E8431879B057BF5CFDA;924.
+(rerunfilecheck)             Checksum: 5914BD52ECB5EB48FDB2585D7604F089;1494.
 
 
 LaTeX Warning: There were undefined references.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 372.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 439.
  ) 
 Here is how much of TeX's memory you used:
- 10857 strings out of 493488
- 158717 string characters out of 3141326
+ 10882 strings out of 493488
+ 159098 string characters out of 3141326
  288189 words of memory out of 3000000
- 13946 multiletter control sequences out of 15000+200000
- 12313 words of font info for 45 fonts, out of 3000000 for 9000
+ 13960 multiletter control sequences out of 15000+200000
+ 12620 words of font info for 46 fonts, out of 3000000 for 9000
  957 hyphenation exceptions out of 8191
  42i,6n,58p,777b,401s stack positions out of 5000i,500n,10000p,200000b,50000s
 </usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb>
-</usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></
-usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></us
-r/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl10.pfb></usr
-/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/
-local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on projectReport.pdf (17 pages, 499790 bytes).
+</usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><
+/usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></u
+sr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr
+/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/l
+ocal/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/loca
+l/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl10.pfb></usr/local
+/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/
+texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/te
+xlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
+Output written on projectReport.pdf (17 pages, 541689 bytes).
 PDF statistics:
- 218 PDF objects out of 1000 (max. 8388607)
- 187 compressed objects within 2 object streams
- 37 named destinations out of 1000 (max. 500000)
- 134 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 278 PDF objects out of 1000 (max. 8388607)
+ 242 compressed objects within 3 object streams
+ 48 named destinations out of 1000 (max. 500000)
+ 190 words of extra memory for PDF output out of 10000 (max. 10000000)
 

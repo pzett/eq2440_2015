@@ -210,8 +210,6 @@ The diversity of noise nature and its sources lead the engineering to a big chal
 	The new knowledge acquisition is obviously another personal goal of all the team members.
 	
 	
-	
-	
 	\section{Organizationn and Human Resources}
 	\label{organization}
 
@@ -298,12 +296,15 @@ In terms of methodology, the \textit{Theory Group} has followed next steps:
 
 \begin{itemize}
 \item Make research in suitable algorithms.
+\item Record with the given mobile phones both signals: 'voice+noise' and 'noise'. 
 \item Test the performance in MATLAB.
 \item Check the computational cost in MATLAB.
 \item Check the possibility to transfer the solutions from MATLAB to Android.
 \end{itemize}
 
-Because of the presence of Jonas Sedin in the \textit{Theory Group} and the \textit{Android Group}, it has been possible to design theory solutions think in the availability to transfer them to Android programation.
+Because of the presence of Jonas Sedin in the \textit{Theory Group} and the \textit{Android Group}, it has been possible to design theory solutions think in the availability to transfer them to Android coding.\\
+
+
 
 	\section{Android Group}
 	
@@ -356,7 +357,73 @@ With this makeup, there have
 \chapter{Theory}
 \label{sec:theory}
 
-The \textit{Theory Group} has been working within different scenarios but mainly has followed what is called \textit{Adaptive Signal Processing}, as it has been explained in \ref{sec:history}
+The \textit{Theory Group} has been working within different scenarios but mainly has followed what is called \textit{Adaptive Signal Processing}, as it has been explained in \ref{sec:history}. Some of them have ended in good performance algorithms where only two of them have been transferred to Android and some other have not reached the wanted outcome.
+
+In terms of goals, it has been very important for the group to reach a good noise cancellation and preserving as much as possible the voice quality.
+
+\section{Successful Approaches}
+
+	\subsection{LMS Algorithm \& NMLS}
+	
+		\subsubsection{Introduction}
+	
+	The LMS (Least Mean Square) Algorithm is an adaptive filtering technique used to estimate the unwanted component in the signal that wants to be filtered and, a posteriori, subtract it to "clean" the wanted signal.
+	
+	To use this technique it is a needed to have both signals, the one that contains the useful informationnn($y(n)$) and the noisy one ($x(n)$).
+	
+	The process used in this technique is a recursive calculation samples by sample were $N$ previous taps of the wanted signal are used to calculate the current filter sample, used later on for the subtraction.
+	
+	The original problem to solve in LMS is shown in the Equation \ref{eq:lmsgeneral1}, where is clearly visible that the LMS minimizes the MSE using the instantaneous error.
+	
+		\begin{equation}
+	\label{eq:lmsgeneral1}
+		\hat{\theta}(n) = \hat{\theta}(n-1) -\frac{\mu}{2})\frac{\partial}{\partial \theta}MSE(n,\theta)\rvert_{\theta=\hat{\theta(n-1)}}
+	\end{equation}
+	
+	Where after the appropriate calculations, the final version ready to implement in MATLAB is next:
+	
+	\begin{equation}
+	\label{eq:lmsgeneral2}
+		\hat{\theta}(n) = \hat{\theta}(n-1) + \mu Y(n)(x(n)-Y^{T}(n)\hat{\theta}(n-1))
+	\end{equation}
+	
+	In the Equation \ref{eq:lmsgeneral2}:
+	
+	\begin{itemize}
+	\item $\hat{\theta(n)}$: estimation of the current sample of the filter
+	\item $\hat{\theta(n)}$: estimation of the previous sample of the filter
+	\item $Y(n)$: vector that contains the $N$ taps used in the implementation
+	\item $x(n$): sample of the unwanted signal
+	\end{itemize}
+	
+	In terms of cost operation, LMS is very efficient thus only needs O(N) operations in each iteration. A priori, this is feasible for a real time implementation and this one of the reason that made us start with this approach.
+	
+	\subsubsection{Implementation \& Results}
+	
+	The implementation used in MATLAB is based on the one that Jonas, Thomas and Xavier have done during the course of \textit{Adaptive Signal Processing (EQ2400)}.
+	
+	Once all the recordings where done, the first tests of the LMS gave different performances depending on the number of previous taps used to calculate the filter.
+	
+	\begin{itemize}
+	\item $N=1000$: very good performance with too much delay
+	\item $N=100$: good performance
+	\end{itemize}
+	
+	These results are reasonable: it exists a linear dependency of the performance with the number of previous samples used to calculate the current one.
+	
+	To show some graphic results of the performance of this algorithm, Figures \ref{fig:lmstime100} and \ref{fig:lmstfreq100} show the time and frequency response of the filtered sequence with $N=100$ taps in comparison with the original sequences (on the top of the figures). On the other hand,  the Figures \ref{fig:lmstime1000} and \ref{fig:lmstfreq1000} show the same comparison as before but with a filter of $N=1000$ taps.
+
+	\subsection{Wiener Non-Causal Filtering}
+	
+	\subsection{Speech Enhancement Using a-Minimum Mean- Square Error Short-Time Spectral Amplitude Estimator}
+
+
+\section{Unsuccessful Approaches}
+
+	\subsection{Kalman Filtering}
+	
+	
+	\subsection{RLS}
 
 \chapter{Android}
 
