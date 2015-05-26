@@ -363,7 +363,7 @@ In terms of goals, it has been very important for the group to reach a good nois
 
 \section{Successful Approaches}
 
-	\subsection{LMS Algorithm \& NMLS}
+	\subsection{LMS Algorithm}
 	
 		\subsubsection{Introduction}
 	
@@ -409,9 +409,53 @@ In terms of goals, it has been very important for the group to reach a good nois
 	\item $N=100$: good performance
 	\end{itemize}
 	
+	Another very important parameter to consider is the \textit{Step Size} $\mu$. The value of $\mu$ has a direct impact on the stability and convergence of the algorithm. The general rule of choosing the right \textit{step size} is shown in \ref{eq:stepsize}
+	
+	\begin{equation}
+	0 < \mu <\frac{2}{\lambda_{1}} 
+	\end{equation}
+	
+	where $\lambda_{1}$ is the maximu eigen value of $I-\mu \Sigma_{YY}$.
+	
+	Even though there is an upper limit for the value of $\mu$, there is not a lower limit (besides $0$). Therefore, the group followed a test-and-set empirical criteria where different $\mu$ values where tested and the value who gave the best auditive performance was the chosen. In the last case, the best performance was given by $\mu=5 \cdot 10^{-5}.$
+	
 	These results are reasonable: it exists a linear dependency of the performance with the number of previous samples used to calculate the current one.
 	
-	To show some graphic results of the performance of this algorithm, Figures \ref{fig:lmstime100} and \ref{fig:lmstfreq100} show the time and frequency response of the filtered sequence with $N=100$ taps in comparison with the original sequences (on the top of the figures). On the other hand,  the Figures \ref{fig:lmstime1000} and \ref{fig:lmstfreq1000} show the same comparison as before but with a filter of $N=1000$ taps.
+	To show some graphic results of the performance of this algorithm, on the one hand Figure \ref{fig:lmstime100} and \ref{fig:lmstfreq100} show the time and frequency response of the filtered sequence with $N=100$ taps in comparison with the original recording. There is some audible noise reduction that in the figure can be seen in the noisy frames where there is more presence of noise in the original plot than in the filtered one. When it comes to the frequency domain, we can appreciate that there are several small peaks at low frequencies and the contribution of the peak at $f=0.6$ (where $fs=44.1$ KHz) has been slightly decreased.
+	
+	On the other hand,  the Figures \ref{fig:lmstime1000} and \ref{fig:lmstfreq1000} show the same comparison as before but with a filter of $N=1000$ taps. In this case the Figure \ref{fig:lmstime1000} shows that the noise has less presence. The drawback comes with a certain distortion in the audio file that can be seen in the Figure \ref{fig:lmsfreq1000} as a modification in the frequency domain with new peaks in a coarser spectral response at lower frequencies.
+	
+	In terms of computational time, in MATLAB the LMS with $N=100$ taps takes 2.22 seconds, while the LMS with $N=1000$ takes 3.78 seconds (increasing of a 70\%). This does not make a huge difference in MATLAB but in a real time application it might, therefore it will be treated by the \textit{Android Group}.
+	
+		\begin{figure}[h]
+		\centering
+		\includegraphics[width=15cm]{images/theory/lms100tapstime.jpg}
+		\caption{Time Domain - LMS result with N=100}
+		\label{fig:lmstime100}
+		\end{figure}
+		
+		
+		\begin{figure}[h]
+		\centering
+		\includegraphics[width=15cm]{images/theory/lms100tapsfreq.jpg}
+		\caption{Frequency Domain - LMS result with N=100}
+		\label{fig:lmsfreq100}
+		\end{figure}
+		
+		\begin{figure}[h]
+		\centering
+		\includegraphics[width=15cm]{images/theory/lms1000tapstime.jpg}
+		\caption{Time Domain - LMS result with N=1000}
+		\label{fig:lmstime1000}
+		\end{figure}
+		
+		
+		\begin{figure}[h]
+		\centering
+		\includegraphics[width=15cm]{images/theory/lms100tapsfreq.jpg}
+		\caption{Frequency Domain - LMS result with N=1000}
+		\label{fig:lmsfreq1000}
+		\end{figure}
 
 	\subsection{Wiener Non-Causal Filtering}
 	
