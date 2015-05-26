@@ -371,7 +371,7 @@ In terms of goals, it has been very important for the group to reach a good nois
 	
 	To use this technique it is a needed to have both signals, the one that contains the useful information ($y(n)$) and the noisy one ($x(n)$).
 	
-	The process used in this technique is a recursive calculation samples by sample were $N$ previous taps of the wanted signal are used to calculate the current filter sample, used later on for the subtraction.
+	The process used in this technique is a recursive calculation samples by sample were $N$ previous samples of the wanted signal are used to calculate the current filter sample, used later on for the subtraction.
 	
 	The original problem to solve in LMS is shown in the Equation \ref{eq:lmsgeneral1}, where is clearly visible that the LMS minimizes the MSE using the instantaneous error.
 	
@@ -392,40 +392,55 @@ In terms of goals, it has been very important for the group to reach a good nois
 	\begin{itemize}
 	\item $\hat{\theta(n)}$: estimation of the current sample of the filter
 	\item $\hat{\theta(n)}$: estimation of the previous sample of the filter
-	\item $Y(n)$: vector that contains the $N$ taps used in the implementation
-	\item $x(n$): sample of the unwanted signal
+	\item $Y(n)$: vector that contains the $N$ samples used in the implementation
+	\item $x(n$): sample of the wanted signal
+	\item $\mu$: step size
 	\end{itemize}
 	
+	A very important parameter to consider is the \textit{Step Size} $\mu$. The value of $\mu$ has a direct impact on the stability and convergence of the algorithm. The general rule of choosing the right \textit{step size} is shown in \ref{eq:stepsize}
+	
+	\begin{equation}
+	\label{lmsmu}
+	0 < \mu <\frac{2}{\lambda_{1}} 
+	\end{equation}
+	
+	where $\lambda_{1}$ is the maximum eigen value of $I-\mu \Sigma_{YY}$.
+	
 	In terms of cost operation, LMS is very efficient thus only needs O(N) operations in each iteration. A priori, this is feasible for a real time implementation and this one of the reason that made us start with this approach.
+	
+	Nevertheless, the implementation of LMS for noise cancellation is a little bit different. As showed in Figure \ref{fig:simplms}, the purpose is to estimate $x_{1}(n)$ from $x(n)$, i.e. calculate $\hat{x_{1}}(n)$ to then subtract if from $z(n)=s(n)+x(n)$ from the received signal at the receiver phone. In conclusion, it is necessary that de \textit{Adaptive Filer} emulate the \textit{Channel}.
+	
+		\begin{figure}[h]
+		\centering
+		\includegraphics[width=8cm]{images/theory/SimplifiedLMS.jpg}
+		\caption{Simplified boxes scheme of LMS (Noise Cancellation)}
+		\label{fig:simplms}
+		\end{figure}
+		
 	
 	\subsubsection{Implementation \& Results}
 	
 	The implementation used in MATLAB is based on the one that Jonas, Thomas and Xavier have done during the course of \textit{Adaptive Signal Processing (EQ2400)}.
 	
-	Once all the recordings where done, the first tests of the LMS gave different performances depending on the number of previous taps used to calculate the filter.
+	Once all the recordings where done, the first tests of the LMS gave different performances depending on the number of previous samples used to calculate the filter.
 	
 	\begin{itemize}
-	\item $N=1000$: very good performance with too much delay
 	\item $N=100$: good performance
+	\item $N=1000$: better performance with a big computational cost
 	\end{itemize}
 	
-	Another very important parameter to consider is the \textit{Step Size} $\mu$. The value of $\mu$ has a direct impact on the stability and convergence of the algorithm. The general rule of choosing the right \textit{step size} is shown in \ref{eq:stepsize}
+	Even though there is an upper limit for the value of $\mu$ (\ref{eq:lmsus}), there is not a lower limit (besides $0$). Therefore, the group followed a test-and-set empirical criteria where different $\mu$ values where tested and the value who gave the best auditive performance was the chosen. In the last case, the best performance was given by $\mu=5 \cdot 10^{-5}.$
 	
-	\begin{equation}
-	0 < \mu <\frac{2}{\lambda_{1}} 
-	\end{equation}
+	These results are reasonable: it exists a linear dependency of the performance with the number of previous samples used to calculate the current estimation.
 	
-	where $\lambda_{1}$ is the maximu eigen value of $I-\mu \Sigma_{YY}$.
+	To show some graphic results of the performance of this algorithm, on the one hand Figure \ref{fig:lmstime100} and \ref{fig:lmsfreq100} show the time and frequency response of the filtered sequence with $N=100$ samples in comparison with the original recording. There is some audible noise reduction that in the figure can be seen in the noisy frames where there is more presence of noise in the original plot than in the filtered one. When it comes to the frequency domain, we can appreciate that there are several small peaks at low frequencies and the contribution of the peak at $f=0.6$ (where $fs=44.1$ KHz) has been slightly decreased.
 	
-	Even though there is an upper limit for the value of $\mu$, there is not a lower limit (besides $0$). Therefore, the group followed a test-and-set empirical criteria where different $\mu$ values where tested and the value who gave the best auditive performance was the chosen. In the last case, the best performance was given by $\mu=5 \cdot 10^{-5}.$
+	On the other hand,  the Figures \ref{fig:lmstime1000} and \ref{fig:lmsfreq1000} show the same comparison as before but with a filter of $N=1000$ samples. In this case the Figure \ref{fig:lmstime1000} shows that the noise has less presence. The drawback comes with a certain distortion in the audio file that can be seen in the Figure \ref{fig:lmsfreq1000} as a modification in the frequency domain with new peaks in a coarser spectral response at lower frequencies.
 	
-	These results are reasonable: it exists a linear dependency of the performance with the number of previous samples used to calculate the current one.
+	In terms of computational time, in MATLAB the LMS with $N=100$ samples takes 2.22 seconds, while the LMS with $N=1000$ takes 3.78 seconds (increasing of a 70\%). This does not make a huge difference in MATLAB but in a real time application it might, therefore it will be treated by the \textit{Android Group}.
 	
-	To show some graphic results of the performance of this algorithm, on the one hand Figure \ref{fig:lmstime100} and \ref{fig:lmstfreq100} show the time and frequency response of the filtered sequence with $N=100$ taps in comparison with the original recording. There is some audible noise reduction that in the figure can be seen in the noisy frames where there is more presence of noise in the original plot than in the filtered one. When it comes to the frequency domain, we can appreciate that there are several small peaks at low frequencies and the contribution of the peak at $f=0.6$ (where $fs=44.1$ KHz) has been slightly decreased.
-	
-	On the other hand,  the Figures \ref{fig:lmstime1000} and \ref{fig:lmstfreq1000} show the same comparison as before but with a filter of $N=1000$ taps. In this case the Figure \ref{fig:lmstime1000} shows that the noise has less presence. The drawback comes with a certain distortion in the audio file that can be seen in the Figure \ref{fig:lmsfreq1000} as a modification in the frequency domain with new peaks in a coarser spectral response at lower frequencies.
-	
-	In terms of computational time, in MATLAB the LMS with $N=100$ taps takes 2.22 seconds, while the LMS with $N=1000$ takes 3.78 seconds (increasing of a 70\%). This does not make a huge difference in MATLAB but in a real time application it might, therefore it will be treated by the \textit{Android Group}.
+
+	As a clarification, the reason why the group has tested different number of samples in the LMS is because the lack of synchronization between $z(n)$ and $x(n)$: with a bigger N the delay between both signals is solved in terms of filtering.
 	
 		\begin{figure}[h]
 		\centering
@@ -464,10 +479,49 @@ In terms of goals, it has been very important for the group to reach a good nois
 	
 	Wiener Filtering is another approach used in Signal Processing with many purposes and noise cancellation is one of them. Inside Wiener Filtering there are many different algorithms to use from which we have chosen Non-Causal infinite dimensional Wiener filtering \cite{asp}.
 	
-	One of the biggest differences between LMS Algorithm shown previously and Wiener Filtering is the number of phones involved in the filtering. Wiener Filtering does not need recording of pure noise, therefore the information of the noise will be substracted directly from the mobile of the speaker's in the noisy environment.
+	A general non-causal linear estimator is given by 
+	
+	
+	\begin{equation}
+	\label{eq:nonc1}
+		\hat{x(n)} = \sum \limits_{k=-\infty}^\infty \theta(n,k)y(n-k)
+	\end{equation}
+	
+	To solve this problem, given the estimator, the group has followed a spectral factorization technique that defines the optinar linear filter as
+	
+		\begin{equation}
+	\label{eq:nonc1}
+		H(z)=\frac{\Phi_{xy}(z)}{\Phi_{y}(z)}
+	\end{equation}
+	
+	Therefore, the group's goal is to find $\Phi_{xy}(z)$ and $\Phi_{y}(z)$.
 	
 	
 	\subsubsection{Implementation \& Results}
+	
+		There are many differences between LMS and Non-Causal Filtering. These are the most important:
+		
+		\begin{itemize}
+		\item Number of phones=2. In this case, to extract the needed information about the noise it is not needed the third phone that was used to record pure noise.
+		
+		\item The processing is done by frames.
+		
+		\item A voice unvoice detector is needed.
+		\end{itemize}
+		
+		The developed voice-unvoice detector used is energy-based. As the filtering is done frame by frame, the detector will calculate the variance of the frame and, on behalf of a $\sigma_{ref}$ previously set. A compromise is needed because a high $\sigma_{ref}$ has a good accuracy in the speech detection (less voice presence) but there are some noise frames with part of consonants at the end or the beginning of a noise block (see Figure \ref{high}). Contrary, a small $\sigma_{ref}$ guarantees a pure noise sample but it adds noise presence in the voiced samples. As a result, we used a high $\sigma_{ref}$, thus what we want to estimate the better is the noise, so it is what we really want to update and filter afterwards. 
+		
+		Once the frame is decided to be voiced or unvoiced the proper calculation of $\Phi_{xy}(z)$ and $\Phi_{y}(z)$ is next step. To do so, the group has used MATLAB functions used previously in the \textit{Adaptive Signal Processing (EQ2400)} course. These functions require information about the noise and voice frames such as their variances and means. Therefore, to calculate them the MATLAB code follows next steps:
+		
+		\begin{itemize}
+		\item It is assumed that the teleconference starts with a noise frame
+			\item Voice-Unvoice detection of the frame
+		\begin{itemize}
+			\item If the frame is unvoiced: $\mu_{unvoiced}$ and $\sigma_{unvoiced}$ are updated
+			\item If the frame is detected as voiced: $\mu_{voiced}$ and $\sigma_{voiced}$
+			\end{itemize}
+		\end{itemize}
+		
 	
 	\subsection{Speech Enhancement Using a-Minimum Mean- Square Error Short-Time Spectral Amplitude Estimator}
 
