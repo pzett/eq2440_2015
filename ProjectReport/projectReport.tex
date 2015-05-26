@@ -18,6 +18,7 @@
 % Matematicas
 \usepackage{amsfonts}
 \usepackage{amsmath}
+\usepackage{mathtools}
 \usepackage{amsthm}
 \usepackage{amssymb}
 \usepackage{anysize}
@@ -471,6 +472,11 @@ In terms of goals, it has been very important for the group to reach a good nois
 		\caption{Frequency Domain - LMS result with N=1000}
 		\label{fig:lmsfreq1000}
 		\end{figure}
+		
+		
+	\subsection{Speech Enhancement Using a-Minimum Mean- Square Error Short-Time Spectral Amplitude Estimator}
+	\label{sec:enhancement}
+
 
 	\subsection{Wiener Non-Causal Filtering}
 	
@@ -509,7 +515,15 @@ In terms of goals, it has been very important for the group to reach a good nois
 		\item A voice unvoice detector is needed.
 		\end{itemize}
 		
-		The developed voice-unvoice detector used is energy-based. As the filtering is done frame by frame, the detector will calculate the variance of the frame and, on behalf of a $\sigma_{ref}$ previously set. A compromise is needed because a high $\sigma_{ref}$ has a good accuracy in the speech detection (less voice presence) but there are some noise frames with part of consonants at the end or the beginning of a noise block (see Figure \ref{high}). Contrary, a small $\sigma_{ref}$ guarantees a pure noise sample but it adds noise presence in the voiced samples. As a result, we used a high $\sigma_{ref}$, thus what we want to estimate the better is the noise, so it is what we really want to update and filter afterwards. 
+		The developed voice-unvoice detector used is energy-based. As the filtering is done frame by frame, the detector will calculate the variance of the frame and, on behalf of a $\sigma_{ref}$ previously set. A compromise is needed because a high $\sigma_{ref}$ has a good accuracy in the speech detection (less voice presence) but there are some noise frames with part of consonants at the end or the beginning of a noise block. Contrary, a small $\sigma_{ref}$ guarantees a pure noise sample but it adds noise presence in the voiced samples. As a result, we used a high $\sigma_{ref}$, thus what we want to estimate the better is the noise, so it is what we really want to update and filter afterwards.  An example of how the detector works is shown in Figure \ref{fig:detector}.
+		
+		\begin{figure}[h]
+		\centering
+		\includegraphics[width=15cm]{images/theory/highsigma.jpg}
+		\caption{Voice-Unvoice detector}
+		\label{fig:detector}
+		\end{figure}
+		
 		
 		Once the frame is decided to be voiced or unvoiced the proper calculation of $\Phi_{xy}(z)$ and $\Phi_{y}(z)$ is next step. To do so, the group has used MATLAB functions used previously in the \textit{Adaptive Signal Processing (EQ2400)} course. These functions require information about the noise and voice frames such as their variances and means. Therefore, to calculate them the MATLAB code follows next steps:
 		
@@ -520,18 +534,83 @@ In terms of goals, it has been very important for the group to reach a good nois
 			\item If the frame is unvoiced: $\mu_{unvoiced}$ and $\sigma_{unvoiced}$ are updated
 			\item If the frame is detected as voiced: $\mu_{voiced}$ and $\sigma_{voiced}$
 			\end{itemize}
+			
+		\item Filter the frame
+			\begin{itemize}
+			\item If the frame is unvoiced should be totally removed
+			\item If the frame is voiced the noise should be reduced
+			\end{itemize}
+			\item No overlap between frames
 		\end{itemize}
 		
+		After applying these steps the results have been partly satisfactory. As can be appreciated in the Figure \ref{fig:nonc}, the noise is highly reduced in the unvoiced frames. On the other hand, the drawback comes in shape of unstable regions, as can be seen at first sight between seconds 4 and 5. Figure \ref{fig:noncunstable} shows a zoom in in an unstable region, and a possible explanation of it is that the functions used in the non-causal filtering is the inserting of a zero 60 samples-vector at the end of each filtered signal, in each frame in our case.
+		
+		To try to solve this problem, a solution to filter overlapped frames has been implemented. The main purpose of if was to avoid unstable regions and the zero-sample vectors. Meanwhile the second problem has been successfully solved, a bigger unstable appeared, as shown in Figure \ref{fig:noncunstableoverlap}. A curious results is the perfect shape of a decreasing exponential that it has.
+		
+		However, the members of the theory group have been working in parallel, while this problem was trying to be solved the performance of \ref{sec:enhancement} gave extraordinary results and the research to solve this problem was stopped.
+		
 	
-	\subsection{Speech Enhancement Using a-Minimum Mean- Square Error Short-Time Spectral Amplitude Estimator}
+		
+		\begin{figure}[h]
+		\centering
+		\includegraphics[width=15cm]{images/theory/nonc.jpg}
+		\caption{Unstable region in non-causal filtering}
+		\label{fig:nonc}
+		\end{figure}		
+		
+		\begin{figure}[h]
+		\centering
+		\includegraphics[width=15cm]{images/theory/noncunstable.jpg}
+		\caption{Unstable region in non-causal filtering}
+		\label{fig:noncunstable}
+		\end{figure}
+		
+		\begin{figure}[h]
+		\centering
+		\includegraphics[width=15cm]{images/theory/noncunstableoverlap.jpg}
+		\caption{Unstable region in non-causal filtering}
+		\label{fig:noncunstableoverlap}
+		\end{figure}		
+	
 
 
 \section{Unsuccessful Approaches}
 
+In this section are presented some of the unsuccessful approaches of the theory group. The reasons of the unreached success come from different natures, as will be explained above in each algorithm or technique.
+
 	\subsection{Kalman Filtering}
+	Kalman Filtering is an Adaptive Filtering technique highly used in tracking and predicting, for instance. Therefore it was considered as a suitable option to face the noise cancellation problem of this project. But, unfortunately this technique showed two main drawbacks:
 	
+	\begin{itemize}
+	\item Computational cost too high. Therefore not possible the transfer to the Android coding.
+	\item Difficulties to find a right State-Space Model showed in Equation \ref{eq:kalman}, i.e. problems to find \textit{F, G, H, v(n) and w(n)}
+	\end{itemize}
+	
+	
+	\begin{subequations}
+	\label{eq:kalman}
+	\begin{align}
+	x(n+1)=Fx(n)+Gw(n)\\
+	y(n)=Hx(n)+v(n)	
+	\end{align}
+	
+	\end{subequations}
+	
+	For the reasons above, this way was dropped in the first weeks of the project.
 	
 	\subsection{RLS}
+	
+	The REcursive Least Squeares (RLS) Algorithm \cite{asp} is supposed to have a better convergence and result than the LMS Algorithm. The problem that RLS tries to solve is the FIR Wiener one, where the aim is to estimate the proxess $x(n)$ using a fixed number of observations from another process ${y(n)}$ using a liner estimator
+	
+	\begin{equation}
+	\hat{x}(n)=\sum \limits_{k=-0}^{N-1} \theta(k)y(n-k)=Y^T (n)\theta
+	\end{equation}
+	
+	where $Y(n)= [y(n),y(n-1),\dots,y(N-N+1)]^T$ are the saples that have to be filtered and the crierion is $MSE(\theta)=E{(x(n)-\hat{x(n)})^2}$.
+	
+	Nevertheless, the option was tested during the first days of the project and dropped after checking the Computational Cost: O($N^2$) vs the  O($N$) of the LMS.
+
+
 
 \chapter{Android}
 
