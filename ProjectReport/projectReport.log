@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  26 MAY 2015 14:28
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  26 MAY 2015 14:49
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -721,14 +721,7 @@ File: lstmisc.sty 2007/02/22 1.4 (Carsten Heinz)
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 
-(./projectReport.aux
-
-LaTeX Warning: Label `fig:lmstime100' multiply defined.
-
-
-LaTeX Warning: Label `fig:lmstime1000' multiply defined.
-
-)
+(./projectReport.aux)
 \openout1 = `projectReport.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 116.
@@ -745,7 +738,8 @@ LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 116.
 LaTeX Font Info:    ... okay on input line 116.
 LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 116.
 LaTeX Font Info:    ... okay on input line 116.
- (/usr/local/texlive/2012/texmf-dist/tex/context/base/supp-pdf.mkii
+
+(/usr/local/texlive/2012/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count132
 \scratchdimen=\dimen142
@@ -881,6 +875,9 @@ Chapter 3.
 
 LaTeX Warning: Reference `sec:history' on page 11 undefined on input line 360.
 
+
+Package natbib Warning: Citation `asp' on page 11 undefined on input line 370.
+
 [11
 
 ]
@@ -895,11 +892,7 @@ LaTeX Warning: Reference `fig:lmstfreq100' on page 12 undefined on input line 4
 LaTeX Warning: Reference `fig:lmstfreq1000' on page 12 undefined on input line 
 426.
 
-
-LaTeX Warning: Reference `fig:lmsfreq1000' on page 12 undefined on input line 4
-26.
-
-<images/theory/lms100tapstime.jpg, id=202, 977.6525pt x 445.665pt>
+<images/theory/lms100tapstime.jpg, id=203, 977.6525pt x 445.665pt>
 File: images/theory/lms100tapstime.jpg Graphic file (type jpg)
 
 <use images/theory/lms100tapstime.jpg>
@@ -910,7 +903,7 @@ Package pdftex.def Info: images/theory/lms100tapstime.jpg used on input line 43
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<images/theory/lms100tapsfreq.jpg, id=203, 836.12375pt x 554.07pt>
+<images/theory/lms100tapsfreq.jpg, id=204, 836.12375pt x 554.07pt>
 File: images/theory/lms100tapsfreq.jpg Graphic file (type jpg)
 
 <use images/theory/lms100tapsfreq.jpg>
@@ -921,7 +914,7 @@ Package pdftex.def Info: images/theory/lms100tapsfreq.jpg used on input line 44
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<images/theory/lms1000tapstime.jpg, id=204, 885.3075pt x 426.59375pt>
+<images/theory/lms1000tapstime.jpg, id=205, 885.3075pt x 426.59375pt>
 File: images/theory/lms1000tapstime.jpg Graphic file (type jpg)
 
 <use images/theory/lms1000tapstime.jpg>
@@ -942,13 +935,16 @@ Package pdftex.def Info: images/theory/lms100tapsfreq.jpg used on input line 45
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Overfull \hbox (5.39484pt too wide) in paragraph at lines 462--462
+Package natbib Warning: Citation `asp' on page 12 undefined on input line 465.
+
+[12]
+Overfull \hbox (5.39484pt too wide) in paragraph at lines 472--472
 []\OT1/cmr/bx/n/12 Speech En-hance-ment Us-ing a-Minimum Mean- Square Er-ror Sh
 ort-
  []
 
-[12] [13 <./images/theory/lms100tapstime.jpg>] [14 <./images/theory/lms100tapsf
-req.jpg> <./images/theory/lms1000tapstime.jpg>] [15] [16
+[13 <./images/theory/lms100tapstime.jpg>] [14 <./images/theory/lms100tapsfreq.j
+pg> <./images/theory/lms1000tapstime.jpg>] [15] [16
 
 ]
 Chapter 4.
@@ -960,28 +956,29 @@ Chapter 5.
 
 ]
 Chapter 6.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 483.
+No file projectReport.bbl.
+
+Package natbib Warning: There were undefined citations.
+
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 497.
 [21]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 483.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 497.
  (./projectReport.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 483.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 483.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 497.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 497.
 Package rerunfilecheck Info: File `projectReport.out' has not changed.
 (rerunfilecheck)             Checksum: E9AFAF537D6E7E853E46E466051E2780;1484.
 
 
 LaTeX Warning: There were undefined references.
 
-
-LaTeX Warning: There were multiply-defined labels.
-
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 483.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 497.
  ) 
 Here is how much of TeX's memory you used:
- 10911 strings out of 493488
- 159768 string characters out of 3141326
+ 10915 strings out of 493488
+ 159799 string characters out of 3141326
  291189 words of memory out of 3000000
- 13975 multiletter control sequences out of 15000+200000
+ 13976 multiletter control sequences out of 15000+200000
  12620 words of font info for 46 fonts, out of 3000000 for 9000
  957 hyphenation exceptions out of 8191
  42i,6n,58p,777b,401s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -997,10 +994,10 @@ l/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl10.pfb></usr/local
 /texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/
 texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/te
 xlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on projectReport.pdf (21 pages, 692867 bytes).
+Output written on projectReport.pdf (21 pages, 693465 bytes).
 PDF statistics:
- 308 PDF objects out of 1000 (max. 8388607)
- 265 compressed objects within 3 object streams
- 57 named destinations out of 1000 (max. 500000)
+ 311 PDF objects out of 1000 (max. 8388607)
+ 268 compressed objects within 3 object streams
+ 59 named destinations out of 1000 (max. 500000)
  205 words of extra memory for PDF output out of 10000 (max. 10000000)
 

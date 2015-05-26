@@ -367,9 +367,9 @@ In terms of goals, it has been very important for the group to reach a good nois
 	
 		\subsubsection{Introduction}
 	
-	The LMS (Least Mean Square) Algorithm is an adaptive filtering technique used to estimate the unwanted component in the signal that wants to be filtered and, a posteriori, subtract it to "clean" the wanted signal.
+	The LMS (Least Mean Square) Algorithm \cite{asp} is an adaptive filtering technique used to estimate the unwanted component in the signal that wants to be filtered and, a posteriori, subtract it to "clean" the wanted signal.
 	
-	To use this technique it is a needed to have both signals, the one that contains the useful informationnn($y(n)$) and the noisy one ($x(n)$).
+	To use this technique it is a needed to have both signals, the one that contains the useful information ($y(n)$) and the noisy one ($x(n)$).
 	
 	The process used in this technique is a recursive calculation samples by sample were $N$ previous taps of the wanted signal are used to calculate the current filter sample, used later on for the subtraction.
 	
@@ -459,6 +459,16 @@ In terms of goals, it has been very important for the group to reach a good nois
 
 	\subsection{Wiener Non-Causal Filtering}
 	
+	\subsubsection{Introduction}
+	
+	
+	Wiener Filtering is another approach used in Signal Processing with many purposes and noise cancellation is one of them. Inside Wiener Filtering there are many different algorithms to use from which we have chosen Non-Causal infinite dimensional Wiener filtering \cite{asp}.
+	
+	One of the biggest differences between LMS Algorithm shown previously and Wiener Filtering is the number of phones involved in the filtering. Wiener Filtering does not need recording of pure noise, therefore the information of the noise will be substracted directly from the mobile of the speaker's in the noisy environment.
+	
+	
+	\subsubsection{Implementation \& Results}
+	
 	\subsection{Speech Enhancement Using a-Minimum Mean- Square Error Short-Time Spectral Amplitude Estimator}
 
 
@@ -475,6 +485,10 @@ In terms of goals, it has been very important for the group to reach a good nois
 
 \chapter{Appendices}
 \label{sec:appendix}
+
+
+\bibliographystyle{plain}
+\bibliography{ref}
 
 %\include{Chapter1}			% Incluye "Chapter1.tex"
 
