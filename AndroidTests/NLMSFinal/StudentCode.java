@@ -187,7 +187,7 @@ public class StudentCode extends StudentCodeBase {
 		counter=0;	//Count the number of time we average
 		delay=0;	//Delay in number of samples
 		totalDelay=0;	//Full delay in number of samples
-		numberBuffers=5;	//Number of buffers used to calculate the crosscorrelation
+		numberBuffers=10;	//Number of buffers used to calculate the crosscorrelation
 
 		//Synchronization Variables
 		received=false;	//Tells if we have received the 10 buffers for the WAITING state
@@ -465,12 +465,13 @@ public class StudentCode extends StudentCodeBase {
 					senderBuffer.remove(0);
 				}
 				//Message to plot
-				messageData="mu="+mu+"  //  "+"counter="+counter+"  //  "+"delay="+delay+"\n"+"mu'="+modifiedmu+"diff="+diff+"  //  "
-						+"meanDiff="+meanDiff+"\n"+"noiseCancellation="+noiseCancellation+"\n"+
-						"timeVD="+timeVD+"  //  "+"speechFlag="+speechFlag+"\n"+
-						"totalDelay="+totalDelay+"\n"+
-						"lengthSenderBuffer="+senderBuffer.size()+"\n"+"lengthNoiseBuffer="
-						+noiseBuffer.size()+"\n"+"timeLMS="+timeLMS+"  //  "+"timeDelay="+timeDelay;
+				messageData="Here are a few interesting parameters:"+"\n"+
+						"mu="+mu+"  //  "+"mu'="+modifiedmu+"\n"+
+						"diff="+diff+"  //  "+"delay="+delay+"  //  "+"totalDelay="+totalDelay+"\n"+
+						"noiseCancellation="+noiseCancellation+"  //  "+"VD="+VD+"  //  "+"speechFlag="+speechFlag+"\n"+
+						"timeVD="+timeVD+"  //  "+"timeLMS="+timeLMS+"\n"+
+						"lengthSenderBuffer="+senderBuffer.size()+"\n"+
+						"lengthNoiseBuffer="+noiseBuffer.size();
 				break;
 			}
 		}
@@ -697,11 +698,9 @@ public class StudentCode extends StudentCodeBase {
 					mu-=deltaMu;
 				}
 			}
-			//Launch a recording of the estimate of the noise
-			//Used for debugging
-			if(y>520){
-				recordNoise=true;
-				startRecord=System.currentTimeMillis();
+			//Reinitialize the state machine
+			if(y>530 && y<630){
+				state=WAITING;
 			}
 		}
 	} 
@@ -722,11 +721,13 @@ public class StudentCode extends StudentCodeBase {
 			plotCanvas.drawRect(360, 50, 710, 200, orange);
 			plotCanvas.drawRect(10, 270, 360, 420, green);
 			plotCanvas.drawRect(360, 270, 710, 420, red);
+			plotCanvas.drawRect(10,430,710,530,yellow);
 			plotCanvas.drawText("noiseC=!noiseC", 20, 145, writting);
 			plotCanvas.drawText("VD=!VD", 460, 145, writting);
 			plotCanvas.drawText("Change the value of mu:", 40, 250, writting);
 			plotCanvas.drawText("+"+deltaMu,100 , 365 , writting);
 			plotCanvas.drawText("-"+deltaMu,460 , 365 , writting);
+			plotCanvas.drawText("Re-init", 40, 500, writting);
 		}			
 	}
 
