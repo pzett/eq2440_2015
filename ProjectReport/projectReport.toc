@@ -19,18 +19,18 @@
 \contentsline {subsection}{\numberline {3.1.2}Speech Enhancement Systems: logMMSE}{13}{subsection.3.1.2}
 \contentsline {subsubsection}{Introduction}{13}{section*.11}
 \contentsline {subsubsection}{Implementation \& Results}{16}{section*.12}
-\contentsline {subsection}{\numberline {3.1.3}Wiener Non-Causal Filtering}{16}{subsection.3.1.3}
-\contentsline {subsubsection}{Introduction}{16}{section*.13}
-\contentsline {subsubsection}{Implementation \& Results}{17}{section*.14}
-\contentsline {section}{\numberline {3.2}Unsuccessful Approaches}{18}{section.3.2}
+\contentsline {subsection}{\numberline {3.1.3}Wiener Non-Causal Filtering}{18}{subsection.3.1.3}
+\contentsline {subsubsection}{Introduction}{18}{section*.15}
+\contentsline {subsubsection}{Implementation \& Results}{18}{section*.16}
+\contentsline {section}{\numberline {3.2}Unsuccessful Approaches}{19}{section.3.2}
 \contentsline {subsection}{\numberline {3.2.1}Kalman Filtering}{19}{subsection.3.2.1}
-\contentsline {subsection}{\numberline {3.2.2}RLS}{19}{subsection.3.2.2}
-\contentsline {chapter}{\numberline {4}Android}{21}{chapter.4}
-\contentsline {section}{\numberline {4.1}Code Training}{21}{section.4.1}
-\contentsline {section}{\numberline {4.2}Coding for Noise Cancellation}{21}{section.4.2}
-\contentsline {subsection}{\numberline {4.2.1}State Diagram}{22}{subsection.4.2.1}
-\contentsline {subsection}{\numberline {4.2.2}NLMS}{23}{subsection.4.2.2}
-\contentsline {section}{\numberline {4.3}The Application}{24}{section.4.3}
-\contentsline {chapter}{\numberline {5}Conclusions}{25}{chapter.5}
-\contentsline {chapter}{\numberline {6}Appendices}{27}{chapter.6}
-\contentsline {chapter}{\numberline {7}Bibliography}{29}{chapter.7}
+\contentsline {subsection}{\numberline {3.2.2}RLS}{20}{subsection.3.2.2}
+\contentsline {chapter}{\numberline {4}Android}{23}{chapter.4}
+\contentsline {section}{\numberline {4.1}Code Training}{23}{section.4.1}
+\contentsline {section}{\numberline {4.2}Coding for Noise Cancellation}{23}{section.4.2}
+\contentsline {subsection}{\numberline {4.2.1}State Diagram}{24}{subsection.4.2.1}
+\contentsline {subsection}{\numberline {4.2.2}NLMS}{25}{subsection.4.2.2}
+\contentsline {section}{\numberline {4.3}The Application}{26}{section.4.3}
+\contentsline {chapter}{\numberline {5}Conclusions}{27}{chapter.5}
+\contentsline {chapter}{\numberline {6}Appendices}{29}{chapter.6}
+\contentsline {chapter}{\numberline {7}Bibliography}{31}{chapter.7}

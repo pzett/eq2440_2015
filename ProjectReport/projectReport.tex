@@ -366,6 +366,7 @@ In terms of goals, it has been very important for the group to reach a good nois
 \section{Successful Approaches}
 
 	\subsection{LMS Algorithm}
+	\label{lms}
 	
 		\subsubsection{Introduction}
 	
@@ -479,10 +480,11 @@ In terms of goals, it has been very important for the group to reach a good nois
 	\label{sec:enhancement}
 	
 	\subsubsection{Introduction}
+	\label{sec:logmmseintro}
 	
 The \textit{logMMSE} is a a type of speech enhancement system that, applied after the LMS filter, has been provided the best performance in terms of noise cancellation above all the technique implemented by the theory group with outstanding results of noise cancellation and computational cost.
 	
-	To be familiar with the term, a speech enhancement system is a transform-based system that uses a single microphone which main goal is noise reduction. For the outer system, the time domain signal is first framed and windowed.  These frames are generally overlapping. Then a transform, typically \textit{FFT}, is applied to each and every frame. After the processing system, the gain is applied to the transform coefficients and the inverse transform is performed followed by an overlap-and-add method that is to compensate for the windowing and framing \citep{speech}.
+	To be familiar with the term, a speech enhancement system is a transform-based system that uses a single microphone which main goal is noise reduction. For the outer system, the time domain signal is first framed and windowed.  These frames are generally overlapping. Then a transform, typically \textit{FFT}, is applied to each and every frame. After the processing system, the gain is applied to the transform coefficients and the inverse transform is performed followed by an overlap-and-add method that is to compensate for the windowing and framing \cite{speech}.
 
 	
 	The observed signal is given by:
@@ -545,7 +547,7 @@ The problem in this point is to estimate the Fourier Expansion Coefficients usin
 For estimating the noise variance, it is used a so-called Voice Activity Detection that tells whenever there is no voice present, and that enables the estimation of only the noise variance, only the noise is present. During moments when there is speech and noise, the noise variance of the past when there is only noise present is used. This is valid if the noise does not change too dramatically. The Voice Activity Detection works by comparing the spectral distance between the noise and the speech.
 
 	
-	For estimating the a priori SNR, we use a popular technique which is called decision-directed a priori SNR estimation \citep{speech}.
+	For estimating the a priori SNR, we use a popular technique which is called decision-directed a priori SNR estimation \cite{speech}.
 	
 		\begin{equation}
 		\hat{\xi_{k}}(n)= \alpha \frac{\hat{A_{k}}^2 (n-1)}{\lambda_{d} (k,n-1)} + (1-\alpha) P(\gamma_{k}(n)-1), 0 \leq \alpha \leq 1
@@ -560,11 +562,43 @@ For estimating the noise variance, it is used a so-called Voice Activity Detecti
   \end{cases}
 \]
 	
-	And in our case alpha is 0.99
-This is one of the simpler ways to estimate the a priori SNR and a very effective one.
 	
 	\subsubsection{Implementation \& Results}
 
+The implementation in MATLAB of the logMMSE has been done with the help of an already implemented logMMSE function in the website \textit{www.mathworks.com}.
+
+As said in \ref{sec:logmmseintro}, the input of the logMMSE function is the output of the LMS function. In this way, the performance of logMMSE is maximized.
+
+To clarify the utilization of the logMMSE the parameters needed an their values are stated below:
+
+\begin{itemize}
+\item $\alpha=0.99$; This is one of the simpler ways to estimate the a priori SNR and a very effective one.
+\end{itemize}
+
+Finally, and using the same kind of analysis than in the previous section, the results will be presented in the time domain and in the frequency domain.
+
+First, Figure \ref{fig:logmmse1} shows the time plots of the different signals: the original, the output of the LMS filter and the output of the logMMSE filter. It can be appreciated that there is a certain unwanted gain in certain parts of the last plot, corresponding to the output of the logMMSE. Even though, this does not affect to the quality of the auditive results and, furthermore, the noise is almost 100\% cancelled.
+
+In the Figure \ref{fig:logmmse2} we have the different plots overlapped and it is easier to see how the noise is reduced.
+
+
+		\begin{figure}[h]
+		\centering
+		\includegraphics[width=15cm]{images/theory/logmmse2.jpg}
+		\caption{Plots of the original signal, the LMS filtered signal and the logMMSE filtered}
+		\label{fig:logmmse1}
+		\end{figure}
+		
+		
+		\begin{figure}[h]
+		\centering
+		\includegraphics[width=15cm]{images/theory/logmmse3.jpg}
+		\caption{Overlapped plots: original, LMS output and logMMSE output}
+		\label{fig:logmmse2}
+		\end{figure}
+
+
+Finally, about the computational time, the new system lasts 6 seconds to filter 8 seconds of recording, which makes it efficient.
 
 	\subsection{Wiener Non-Causal Filtering}
 	
@@ -688,7 +722,7 @@ In this section are presented some of the unsuccessful approaches of the theory 
 	
 	\subsection{RLS}
 	
-	The REcursive Least Squeares (RLS) Algorithm \cite{asp} is supposed to have a better convergence and result than the LMS Algorithm. The problem that RLS tries to solve is the FIR Wiener one, where the aim is to estimate the proxess $x(n)$ using a fixed number of observations from another process ${y(n)}$ using a liner estimator
+	The REcursive Least Squeares (RLS) Algorithm \cite{asp} is supposed to have a better convergence and result than the LMS Algorithm. The problem that RLS tries to solve is the FIR Wiener one, where the aim is to estimate the process $x(n)$ using a fixed number of observations from another process ${y(n)}$ using a liner estimator
 	
 	\begin{equation}
 	\hat{x}(n)=\sum \limits_{k=-0}^{N-1} \theta(k)y(n-k)=Y^T (n)\theta
@@ -704,7 +738,7 @@ In this section are presented some of the unsuccessful approaches of the theory 
 
 The Android part has been the most challenging in the whole project: implement a real time application with signal treatment implies code optimisation skills. Even though Android environment coding was a new experience for all the members of the group, the results have been outstanding.
 
-The coding environment of Android is Eclipse and the language used is JAVA, objecte oriented and assumed to be known by the reader. Moreover, the used \textit{Android} platform is \textit{Android 5.1}
+The coding environment of Android is Eclipse and the language used is JAVA, object oriented and assumed to be known by the reader. Moreover, the used \textit{Android} platform is \textit{Android 5.1}
 
 I this chapter it is going to be presented the followed steps and reached results during the performance of the project.
 
@@ -730,7 +764,7 @@ Other technical requirements are:
 
 	\subsection{State Diagram}
 	
-	To have a full understanding about how does the coding work, it is necessary to explain the different states that take place in the coding (see Figure \ref{fig:states}). The list of states and their explanation are above:
+	To have a full understanding about how does the coding work, it is necessary to define a state machine diagram (see Figure \ref{fig:states}). The list of states and their explanation are above:
 	
 	\begin{itemize}
 	\item \textbf{Waiting}: starting state. This state is used to wait for both signal and noise phone to be online and to send buffers. Then, buffers are been filled until T1 happens.
@@ -747,9 +781,9 @@ Other technical requirements are:
 	\item \textbf{Play}: the most complex state. It can be divided as follows:
 	
 		\begin{itemize}
-		\item \textit{Initialization phase}: variables that will be used are initialized, particularly the noise, signal and \textit{to\_be\_played} arrays. The\textit{to\_be\_played} arrays is basically the same as the signal array,  but of a smaller length since more samples are needed on the signal array to apply the NLMS (\ref{sec:nlms}) algorithm, otherwise we some samples could be missed.
+		\item \textit{Initialization phase}: variables that will be used are initialized, particularly the noise, signal and \textit{to\_be\_played} arrays. The \textit{to\_be\_played} arrays is basically the same as the signal array,  but of a smaller length since more samples are needed on the signal array to apply the NLMS (\ref{sec:nlms}) algorithm, otherwise we some samples could be missed.
 		
-		\item \textit{Noise cancellation phase}: the algorithm goes through this phase if we ask it to do it; otherwise it skips to the next phase. This phase applies the NLMS algorithm between the signal and the noise arrays. Then the result is subtracted to the “to be played” array.
+		\item \textit{Noise cancellation phase}: the algorithm goes through this phase if we ask it to do it; otherwise it skips to the next phase. This phase applies the NLMS algorithm between the signal and the noise arrays. Then the result is subtracted to the \textit{to\_be\_played} array.
 		
 		\item \textit{Voice detection phase}: this algorithm uses the \textit{to\_be\_played} array (after NLMS or not) to detect if there is voice or not. If there is no voice, some parts of the array are set to zero.
 		\item \textit{Playing phase}: the processed array \textit{to\_be\_played} is played and the noise cancellation is analysed.
@@ -778,7 +812,7 @@ Other technical requirements are:
 		
 		\subsection{NLMS}
 		
-		The \textit{Android Group} had to made some changes from the material sent by the \textit{Theory Group}. Due to some saturation, the \textit{NLMS Algorithm} was successfully tested.
+		The \textit{Android Group} had to make some changes from the material sent by the \textit{Theory Group}. Due to some saturation, the \textit{NLMS Algorithm} was successfully tested.
 		
 		A few problems that may appear on the LMS are related to stability due to the signal power. Hence the step-size may have to be chosen unnecessarily small. However, the LMS can be made insensitive to the signal power by using a normalized step-size \cite{asp}:
 		
