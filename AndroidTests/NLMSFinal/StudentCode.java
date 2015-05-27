@@ -143,7 +143,11 @@ public class StudentCode extends StudentCodeBase {
 		useConcurrentLocks = false;
 
 		// If you want a text on screen before start is pressed put it here
-		introText = "This is the awesome version of the Framework";
+		introText = "You are about to experience the power of NLMS algorithm for noise cancellation in real-time."+"\n"+"\n"+
+					"To start the demonstration first click on the start button and select in the order:"+"\n"+
+					"1- Receiver (server phone)"+"\n"+
+					"2- Sender (speech + noise phone)"+"\n"+
+					"3- Noise (noise phone)";
 
 		// Stuff for the playing of sound example
 		init_done=true;
@@ -156,47 +160,47 @@ public class StudentCode extends StudentCodeBase {
 	public void start()
 	{	
 		//State Variables
-		state=WAITING;	//Starting state
+		state=WAITING;
+		backToWAITING=false;
 
 		//LMS Variables
-		orderLMS=20;	//Order of the LMS algorithm
-		thetahat=new double[orderLMS];	//Taps of the LMS algorithm
-		mu=(float) 0.01;	//The mu variable of the LMS
-		modifiedmu=mu;	//The mu variable of the NLMS
-		deltaMu=(float) 0.001; //Shifting value for mu
-		firstLMS=true;	//Tells if it's the first execution of the LMS algorithm
-		maxTot=0;	//Maximum of all taps for all times
+		orderLMS=20;
+		thetahat=new double[orderLMS];
+		mu=(float) 0.01;
+		modifiedmu=mu;
+		deltaMu=(float) 0.001;
+		firstLMS=true;
 
-		//Log-Spectral-MMSE Variables
-		firstVD=true;	//Tells if it's the first execution of the VD algorithm
-		VD=false;	//Tells if we apply the VD detection algorithm
-		numberSubdivision=8;	//Number of subdivision of the buffer we use for the VD
+		//Voice Detection Variables
+		firstVD=true;
+		VD=false;
+		numberSubdivision=8;
 
 		//Buffering Variables
-		senderBuffer=new ArrayList<short[]>();	//ArrayList of the signal buffers
-		noiseBuffer=new ArrayList<short[]>();	//ArrayList of the noise buffers
-		i1=0;	//Counts the number of recorded buffers for the signal
-		i2=0;	//Counts the number of recorded buffers for the noise
-		started1=false; //Tells if sender phone is online
-		started2=false;	//Tells if noise phone is online
+		senderBuffer=new ArrayList<short[]>();
+		noiseBuffer=new ArrayList<short[]>();
+		i1=0;
+		i2=0;
+		started1=false;
+		started2=false;
 
 		//Delay Variables
-		diffCalculated=false;	//Tells if the difference of ArrayLists length has been calculated
-		diff=0;	//Difference of length
-		meanDiff=0;	//Mean difference
-		counter=0;	//Count the number of time we average
-		delay=0;	//Delay in number of samples
-		totalDelay=0;	//Full delay in number of samples
-		numberBuffers=10;	//Number of buffers used to calculate the crosscorrelation
+		diff=0;
+		delay=0;
+		totalDelay=0;
+		numberBuffers=10;
 
 		//Synchronization Variables
-		received=false;	//Tells if we have received the 10 buffers for the WAITING state
-		noiseCancellation=false;	//Tells if we apply the noise cancellation or not
-
-		//Recording Variables
-		recordNoise=false;	//Tells if we record the noise estimate on .txt file or not
-		out = new SimpleOutputFile();	//The .txt file we use
-		out.open("outnoise.txt");	//We open the .txt file for writting
+		received=false;
+		noiseCancellation=false;
+		
+		//Graphic Variables
+		writingWhite=new Paint();	
+		writingWhite.setColor(Color.WHITE);
+		writingWhite.setTextSize(40);
+		writingBlack=new Paint();
+		writingBlack.setColor(Color.BLACK);
+		writingBlack.setTextSize(40);
 
 	}
 
@@ -222,62 +226,58 @@ public class StudentCode extends StudentCodeBase {
 	public static final int CORRELATION=2;
 	public static final int EMPTY=3;
 	public static final int PLAY=4;
+	boolean backToWAITING;			//Transition from PLAY to WAITING
 
-	//LMS Variables
-	double[] thetahat;
-	int orderLMS;
-	float mu;
-	float modifiedmu;
-	float deltaMu;
-	boolean firstLMS;
-	int timeLMS;
-	double maxTot;
+	//NLMS Variables
+	double[] thetahat;				//Filter taps
+	int orderLMS;					//Order
+	float mu;						//Step-size
+	float modifiedmu;				//Normalized step-size
+	float deltaMu;					//Modification value
+	boolean firstLMS;				//Tells if it's the first execution
+	int timeLMS;					//Computation time
 
 	//Voice Detection Variables
-	boolean firstVD;
-	boolean VD;
-	int numberSubdivision;
-	int W;
-	double[] N;
-	int noiseCounter;
-	int noiseLength;
-	double noiseMargin;
-	int hangover;
-	boolean speechFlag;
-	int timeVD;
-	FastFourierTransformer fft;
-	double[] segmentation;
-	double[] norm;
+	boolean firstVD;				//Tells if it's the first execution
+	boolean VD;						//Tells if we apply the VD
+	int numberSubdivision;			//Number of subdivisions of the buffer
+	int W;							//Length of a subdivision
+	double[] N;						//Noise power estimate
+	int noiseCounter;				//Counts the number of consecutive noise subdivisions
+	int noiseLength;				//Averaging parameter
+	double noiseMargin;				//Limit distance between noise and speech
+	int hangover;					//Limit number of consecutive noise subdivisions
+	boolean speechFlag;				//Tells if the subdivision is speech
+	int timeVD;						//Execution time
+	FastFourierTransformer fft;		//Fast Fourier Transform
+	double[] segmentation;			//Represent one subdivision
+	double[] norm;					//Norm of the FFT of the subdivision
 
 	//Buffering Variables
-	ArrayList<short[]> senderBuffer;
-	ArrayList<short[]> noiseBuffer;
-	short[] toPlay;
-	int i1;
-	int i2;
-	boolean started1;
-	boolean started2;
-	int bufferLength;
-	int senderID;
+	ArrayList<short[]> senderBuffer;//Stored buffers from sender
+	ArrayList<short[]> noiseBuffer;	//Stored buffers from noise
+	short[] toPlay;					//Buffer to be played
+	int i1;							//Counts the buffers from sender
+	int i2;							//Counts the buffers from noise
+	boolean started1;				//Tells if the sender is online
+	boolean started2;				//Tells if the noise is online
+	int bufferLength;				//Length of the buffer
+	int senderID;					//ID number of buffer's sender
 
 	//Delay Variables
-	boolean diffCalculated;
-	int diff;
-	float meanDiff;
-	int counter;
-	int delay;
-	int totalDelay;
-	int numberBuffers;
-	int timeDelay;
+	int diff;						//Number of buffers of delay
+	int delay;						//Delay inside the synchronized buffers
+	int totalDelay;					//Total delay
+	int numberBuffers;				//Number of buffers used for the correlation
 
 	//Synchronization Variables
-	boolean received;
-	boolean noiseCancellation;
+	boolean received;				//Tells if we received enough buffers for the correlation
+	boolean noiseCancellation;		//Tells if we apply the noise cancellation
+	
+	//Graphic Variables
+	Paint writingWhite;				//Paint for white writing
+	Paint writingBlack;				//Paint for black writing
 
-	//Recording Variables
-	boolean recordNoise;
-	SimpleOutputFile out;
-	long startRecord;
 
 	// Fill in the process function that will be called according to interval above
 	public void process()
@@ -441,17 +441,6 @@ public class StudentCode extends StudentCodeBase {
 					if(VD){
 						voiceDetection();
 					}
-					//Helps recording the noise estimate to debug by using Matlab
-					if (recordNoise){
-						int p;
-						for(p=bufferLength;p-->0;){
-							out.writeDouble(noiseEstimate[p]);
-						}
-						if(startRecord-System.currentTimeMillis()>1000){
-							out.close();
-							recordNoise=false;
-						}
-					}
 				}else{
 					//Apply voice detection even if no noise cancellation is done
 					if(VD){
@@ -469,9 +458,18 @@ public class StudentCode extends StudentCodeBase {
 						"mu="+mu+"  //  "+"mu'="+modifiedmu+"\n"+
 						"diff="+diff+"  //  "+"delay="+delay+"  //  "+"totalDelay="+totalDelay+"\n"+
 						"noiseCancellation="+noiseCancellation+"  //  "+"VD="+VD+"  //  "+"speechFlag="+speechFlag+"\n"+
-						"timeVD="+timeVD+"  //  "+"timeLMS="+timeLMS+"\n"+
+						"timeVD="+timeVD+"ms"+"  //  "+"timeLMS="+timeLMS+"ms"+"\n"+
 						"lengthSenderBuffer="+senderBuffer.size()+"\n"+
 						"lengthNoiseBuffer="+noiseBuffer.size();
+				//Transition to WAITING state
+				if(backToWAITING){
+					state=WAITING;
+					senderBuffer.clear();
+					noiseBuffer.clear();
+					backToWAITING=false;
+					noiseCancellation=false;
+					VD=false;
+				}
 				break;
 			}
 		}
@@ -523,7 +521,6 @@ public class StudentCode extends StudentCodeBase {
 	//Calculate the delay between two sequences noise and signal
 	//Based on the maximum of the cross-correlation
 	public int calculateDelay(short[] signal,short[] noise){
-		long start=System.currentTimeMillis();
 		double[] correlation = new double[2*numberBuffers*bufferLength];
 		int shift=numberBuffers*bufferLength;
 		double val;
@@ -546,8 +543,6 @@ public class StudentCode extends StudentCodeBase {
 				maxIndex=i;
 			}
 		}
-		//Variable that gives the execution speed of the algorithm
-		timeDelay=(int)(System.currentTimeMillis()-start);
 		return maxIndex-numberBuffers*bufferLength;
 	}
 
@@ -700,7 +695,7 @@ public class StudentCode extends StudentCodeBase {
 			}
 			//Reinitialize the state machine
 			if(y>530 && y<630){
-				state=WAITING;
+				backToWAITING=true;
 			}
 		}
 	} 
@@ -714,20 +709,17 @@ public class StudentCode extends StudentCodeBase {
 	{		
 		//Plots the interface
 		if (myGroupID==2){
-			Paint writting=new Paint();
-			writting.setColor(Color.WHITE);
-			writting.setTextSize(40);
 			plotCanvas.drawRect(10, 50, 360, 200, blue);
 			plotCanvas.drawRect(360, 50, 710, 200, orange);
 			plotCanvas.drawRect(10, 270, 360, 420, green);
 			plotCanvas.drawRect(360, 270, 710, 420, red);
 			plotCanvas.drawRect(10,430,710,530,yellow);
-			plotCanvas.drawText("noiseC=!noiseC", 20, 145, writting);
-			plotCanvas.drawText("VD=!VD", 460, 145, writting);
-			plotCanvas.drawText("Change the value of mu:", 40, 250, writting);
-			plotCanvas.drawText("+"+deltaMu,100 , 365 , writting);
-			plotCanvas.drawText("-"+deltaMu,460 , 365 , writting);
-			plotCanvas.drawText("Re-init", 40, 500, writting);
+			plotCanvas.drawText("noiseC=!noiseC", 20, 145, writingWhite);
+			plotCanvas.drawText("VD=!VD", 460, 145, writingWhite);
+			plotCanvas.drawText("Change the value of mu:", 40, 250, writingWhite);
+			plotCanvas.drawText("+"+deltaMu,100 , 365 , writingWhite);
+			plotCanvas.drawText("-"+deltaMu,460 , 365 , writingWhite);
+			plotCanvas.drawText("Re-init", 40, 500, writingBlack);
 		}			
 	}
 
