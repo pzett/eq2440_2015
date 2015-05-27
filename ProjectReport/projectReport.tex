@@ -28,6 +28,7 @@
 \usepackage{cite}
 \usepackage{natbib}
 \usepackage[numbib,notlof,notlot,nottoc]{tocbibind}
+\usepackage{mathtools,xparse}
 
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
 
@@ -613,6 +614,107 @@ In this section are presented some of the unsuccessful approaches of the theory 
 
 
 \chapter{Android}
+
+The Android part has been the most challenging in the whole project: implement a real time application with signal treatment implies code optimisation skills. Even though Android environment coding was a new experience for all the members of the group, the results have been outstanding.
+
+The coding environment of Android is Eclipse and the language used is JAVA, objecte oriented and assumed to be known by the reader. Moreover, the used \textit{Android} platform is \textit{Android 5.1}
+
+I this chapter it is going to be presented the followed steps and reached results during the performance of the project.
+
+\section{Code Training}
+
+For the \textit{Android Group}, the project began with a set of tasks that needed to be finished before the \textit{Midterm Evaluation}. It goes without saying that the group did do it in less time than expected and could start working on the transfer from MATLAB to Android coding two weeks before than expected.
+
+\section{Coding for Noise Cancellation}
+\label{sec:coding}
+
+Once the group was familiarized with the environment, the procedure of treating the information needed to be set. As the communication path for the teleconference is the internet, the information is going to be sent with TCP frames, therefore the signal processing is going to be frames/blocks oriented, i.e. a buffering is needed for such an application.
+
+In terms of time, the buffer is a non-variant parameter and it lasts around \textit{92 ms}. Contrary, the buffer length in terms of samples is frequency $f_{s}$ dependent and proportional. Typical buffer lengths are $1024$ and $2048$ samples which correspond to \textit{$f_{s}$=11025 Hz} and \textit{$f_{s}$=22050 Hz} respectively.
+
+Other technical requirements are:
+
+\begin{itemize}
+\item
+\item
+\item
+\end{itemize}
+
+
+	\subsection{State Diagram}
+	
+	To have a full understanding about how does the coding work, it is necessary to explain the different states that take place in the coding (see Figure \ref{fig:states}). The list of states and their explanation are above:
+	
+	\begin{itemize}
+	\item \textbf{Waiting}: starting state. This state is used to wait for both signal and noise phone to be online and to send buffers. Then, buffers are been filled until T1 happens.
+	
+	\item \textbf{Correlation}: state where the cross-correlation between the signal and noise buffers is calculated. The maximum of the cross-correlation gives the total delay between the two samples’ flows. Then, by a simple algorithm, this total delay is divided into two variables. These two variables are important thus the coding works with dynamic lists of buffers. The two variables are:
+	
+		\begin{itemize}
+		\item \textit{Number of buffers between the two corresponding buffers}: this is the number of buffers needed to throw, either for the signal or the noise, to synchronize the buffers' lists.
+		\item  \textit{Delay inside the synchronized buffers}: this is the number of samples we need to throw, either for the signal or the noise, to synchronize the samples.
+		\end{itemize}
+		
+	\item \textbf{Empty}: useless buffers (used for the cross-correlation) are removed. This state also helps fixing the length of the dynamic lists.
+	
+	\item \textbf{Play}: the most complex state. It can be divided as follows:
+	
+		\begin{itemize}
+		\item \textit{Initialization phase}: variables that will be used are initialized, particularly the noise, signal and \textit{to\_be\_played} arrays. The\textit{to\_be\_played} arrays is basically the same as the signal array,  but of a smaller length since more samples are needed on the signal array to apply the NLMS (\ref{sec:nlms}) algorithm, otherwise we some samples could be missed.
+		
+		\item \textit{Noise cancellation phase}: the algorithm goes through this phase if we ask it to do it; otherwise it skips to the next phase. This phase applies the NLMS algorithm between the signal and the noise arrays. Then the result is subtracted to the “to be played” array.
+		
+		\item \textit{Voice detection phase}: this algorithm uses the \textit{to\_be\_played} array (after NLMS or not) to detect if there is voice or not. If there is no voice, some parts of the array are set to zero.
+		\item \textit{Playing phase}: the processed array \textit{to\_be\_played} is played and the noise cancellation is analysed.
+		\end{itemize}
+		
+		
+	\end{itemize}
+		
+		Once the states are explained, the transitions are the last concepts to have a full understanding of this section:
+		
+		\begin{itemize}
+		\item T1: happens when enough buffers are received from the signal and the noise phones to calculate the cross correlation between the buffers.
+		\item T2: happens when the cross-correlation has been calculated and the delay computed.
+		\item T3: happens when the useless buffers are removed (the one we used to calculate the cross correlation)
+		\item T4: happens when someone tap the button "reset" on the phone’s screen.
+		\end{itemize}
+
+
+		\begin{figure}[h]
+		\centering
+		\includegraphics[width=10cm]{images/android/states}
+		\caption{State Diagram in the Android Coding}
+		\label{fig:states}
+		\end{figure}	
+		
+		
+		\subsection{NLMS}
+		
+		The \textit{Android Group} had to made some changes from the material sent by the \textit{Theory Group}. Due to some saturation, the \textit{NLMS Algorithm} was successfully tested.
+		
+		A few problems that may appear on the LMS are related to stability due to the signal power. Hence the step-size may have to be chosen unnecessarily small. However, the LMS can be made insensitive to the signal power by using a normalized step-size \cite{asp}:
+		
+		
+		
+	\begin{equation}
+	\label{eq:nlms}
+		\mu (n)=\frac{\bar{\mu}}{c+\lVert Y(n)\rVert^2}
+	\end{equation}
+	
+	The NLMS version in Android has been challenging because the buffers used on the framework last approximately \textit{92 ms}, as commented in \ref{sec:coding} and the processing part has to last less than this time. Because the NLMS version was imported from MATLAB, it has been first translated to JAVA and later on the code has been improved to reduce the execution time. These have been two implemented solutions to do so:
+	
+	\begin{itemize}
+	\item \textbf{Intelligent 'for-loops`}: The for-loop executes a test on the index variable for every iteration. This test consists of calculating the subtraction between the index variable and the tested value, and then compare it to $0$. To really reduce the execution time, the compared value has to be zero and thus any subtraction will be calculated, which helps if there are a lot of iterations. It is done as follows:
+	
+		\begin{itemize}
+			\item Replacing
+			
+			\item With
+		\end{itemize}
+	
+	\item \textbf{Moving every “static” calculation out the loops:}  operations inside loops take time. Therefore, all the constant values respect to the loop index are taken out of the loop and define them as local variables to avoid useless operations. It costs less to point at a local variable than to calculate.
+	\end{itemize}
 
 \chapter{Conclusions}
 

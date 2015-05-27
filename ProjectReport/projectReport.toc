@@ -24,5 +24,10 @@
 \contentsline {subsection}{\numberline {3.2.1}Kalman Filtering}{16}{subsection.3.2.1}
 \contentsline {subsection}{\numberline {3.2.2}RLS}{17}{subsection.3.2.2}
 \contentsline {chapter}{\numberline {4}Android}{21}{chapter.4}
-\contentsline {chapter}{\numberline {5}Conclusions}{23}{chapter.5}
-\contentsline {chapter}{\numberline {6}Appendices}{25}{chapter.6}
+\contentsline {section}{\numberline {4.1}Code Training}{21}{section.4.1}
+\contentsline {section}{\numberline {4.2}Coding for Noise Cancellation}{21}{section.4.2}
+\contentsline {subsection}{\numberline {4.2.1}State Diagram}{22}{subsection.4.2.1}
+\contentsline {subsection}{\numberline {4.2.2}NLMS}{23}{subsection.4.2.2}
+\contentsline {chapter}{\numberline {5}Conclusions}{25}{chapter.5}
+\contentsline {chapter}{\numberline {6}Appendices}{27}{chapter.6}
+\contentsline {chapter}{\numberline {7}Bibliography}{29}{chapter.7}

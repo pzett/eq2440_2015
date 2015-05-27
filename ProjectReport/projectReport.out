@@ -19,5 +19,10 @@
 \BOOKMARK [2][-]{subsection.3.2.1}{Kalman Filtering}{section.3.2}% 19
 \BOOKMARK [2][-]{subsection.3.2.2}{RLS}{section.3.2}% 20
 \BOOKMARK [0][-]{chapter.4}{Android}{}% 21
-\BOOKMARK [0][-]{chapter.5}{Conclusions}{}% 22
-\BOOKMARK [0][-]{chapter.6}{Appendices}{}% 23
+\BOOKMARK [1][-]{section.4.1}{Code Training}{chapter.4}% 22
+\BOOKMARK [1][-]{section.4.2}{Coding for Noise Cancellation}{chapter.4}% 23
+\BOOKMARK [2][-]{subsection.4.2.1}{State Diagram}{section.4.2}% 24
+\BOOKMARK [2][-]{subsection.4.2.2}{NLMS}{section.4.2}% 25
+\BOOKMARK [0][-]{chapter.5}{Conclusions}{}% 26
+\BOOKMARK [0][-]{chapter.6}{Appendices}{}% 27
+\BOOKMARK [0][-]{chapter.7}{Bibliography}{}% 28
