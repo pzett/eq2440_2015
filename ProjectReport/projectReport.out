@@ -13,7 +13,7 @@
 \BOOKMARK [0][-]{chapter.3}{Theory}{}% 13
 \BOOKMARK [1][-]{section.3.1}{Successful Approaches}{chapter.3}% 14
 \BOOKMARK [2][-]{subsection.3.1.1}{LMS Algorithm}{section.3.1}% 15
-\BOOKMARK [2][-]{subsection.3.1.2}{Speech Enhancement Using a-Minimum Mean- Square Error Short-Time Spectral Amplitude Estimator}{section.3.1}% 16
+\BOOKMARK [2][-]{subsection.3.1.2}{Speech Enhancement Systems: logMMSE}{section.3.1}% 16
 \BOOKMARK [2][-]{subsection.3.1.3}{Wiener Non-Causal Filtering}{section.3.1}% 17
 \BOOKMARK [1][-]{section.3.2}{Unsuccessful Approaches}{chapter.3}% 18
 \BOOKMARK [2][-]{subsection.3.2.1}{Kalman Filtering}{section.3.2}% 19
@@ -23,6 +23,7 @@
 \BOOKMARK [1][-]{section.4.2}{Coding for Noise Cancellation}{chapter.4}% 23
 \BOOKMARK [2][-]{subsection.4.2.1}{State Diagram}{section.4.2}% 24
 \BOOKMARK [2][-]{subsection.4.2.2}{NLMS}{section.4.2}% 25
-\BOOKMARK [0][-]{chapter.5}{Conclusions}{}% 26
-\BOOKMARK [0][-]{chapter.6}{Appendices}{}% 27
-\BOOKMARK [0][-]{chapter.7}{Bibliography}{}% 28
+\BOOKMARK [1][-]{section.4.3}{The Application}{chapter.4}% 26
+\BOOKMARK [0][-]{chapter.5}{Conclusions}{}% 27
+\BOOKMARK [0][-]{chapter.6}{Appendices}{}% 28
+\BOOKMARK [0][-]{chapter.7}{Bibliography}{}% 29

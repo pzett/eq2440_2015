@@ -1,4 +1,4 @@
-\documentclass[11pt,a4paper,spanish]{book}  % book, article
+\documentclass[11pt,a4paper,english]{book}  % book, article
 
 \usepackage[english]{babel}
 \usepackage[utf8]{inputenc}
@@ -475,8 +475,95 @@ In terms of goals, it has been very important for the group to reach a good nois
 		\end{figure}
 		
 		
-	\subsection{Speech Enhancement Using a-Minimum Mean- Square Error Short-Time Spectral Amplitude Estimator}
+	\subsection{Speech Enhancement Systems: logMMSE}
 	\label{sec:enhancement}
+	
+	\subsubsection{Introduction}
+	
+The \textit{logMMSE} is a a type of speech enhancement system that has been the most successful technique implemented by the theory group with outstanding results of noise cancellation and computational cost.
+	
+	To be familiar with the term, a speech enhancement system is a transform-based system that uses a single microphone which main goal is noise reduction. For the outer system, the time domain signal is first framed and windowed.  These frames are generally overlapping. Then a transform, typically \textit{FFT}, is applied to each and every frame. After the processing system, the gain is applied to the transform coefficients and the inverse transform is performed followed by an overlap-and-add method that is to compensate for the windowing and framing \citep{speech}.
+
+	
+	The observed signal is given by:
+
+	\begin{subequations}
+	\label{eq:speech1}
+	\begin{align}
+	Y_{k}=\frac{1}{T} \int_0^T \mathrm{e}^{-j \frac{2\pi}{T} Kt}\,\mathrm{d}t\\
+	k=0, \pm 1, \pm 2, \dots	
+	\end{align}
+	
+	\end{subequations}
+	
+	
+	Where \textit{k} denotes Fourier expansion index and \textit{i} denotes time index. The problem here is to estimate the Fourier expansion coefficients of the speech given our noisy speech sequence.
+
+It is naturally assumed by the group is not always present. Contrary, the noise is considered to be almost always present. Therefore, the main problems to be solved in this type of system are that of estimating the target PSD, i.e. a priori \textit{SNR}, estimating the noise \textit{PSD} estimate and find a suitable statistical assumption for the speech and noise.
+
+
+In our case, it is assumed that the Fourier Expansion Coefficients can be modelled as statistically independent Gaussian random variables. Both random variables are assumed to be independentin time and in Fourier expansion index. This is motivated by the fact that the Fourier Expansion Coefficients are coefficients that come from weighted random time samples and, through the Central Limit theory, these should approach Gaussian variables. The previous assumptions might not be entirely correct as the windows are overlapping and that there will be dependencies across Fourier expansion coefficients due to windowing, for instance.
+
+The problem in this point is to estimate the Fourier Expansion Coefficients using the \textit{logMMSE}, that stands for logarithmic Minimum Mean Square error function \cite{logmmse}:
+
+
+	\begin{equation}
+	\label{eq:logmmse1}
+		\mathrm{E}((log A_{k }- log\hat{A_{k}})^2)
+	\end{equation}
+	
+	This estimator is given by
+	
+	\begin{subequations}
+	\label{eq:logmmse2}
+	\begin{align}
+		\hat{A_{k}}=e^{\mathrm{E}(ln A_{k}\vert y(t))}, t \leq t \leq T\\
+		\hat{A_{k}}=e^{\mathrm{E}(ln A_{k}\vert Y_{k})}
+		\end{align}
+	\end{subequations}
+	
+	And through the Gaussian model our probability distribution functions are:
+	
+		\begin{subequations}
+	\label{eq:logmmse2}
+	\begin{align}
+		p(Y_{k} \vert a_{k},\alpha_{k})=\frac{1}{\pi \lambda_{d}(k)} e^{-\frac{1}{\lambda_{d}(k)} \vert Y_{k}-a_{k} e^{j\alpha_{k}}\vert ^2} \\
+		p(a_{k}, \alpha{k})=\frac{a_{k}}{\pi \lambda_{k}}e^{-\frac{a_{k}^2}{\lambda_{x}(k)}}
+		\end{align}
+	\end{subequations}
+	
+	and finally through a whole lot of calculations, we end up with the gain function as follows
+	
+	
+		\begin{equation}
+	\label{eq:logmmse3}
+		G(\xi_{k},\gamma_{k})=\frac{\xi_{k}}{1+ \xi_{k}} e^{\frac{1}{2} \int_{v_{k}}^\infty \frac{e^{-t}}{t} \mathrm{d}t}
+	\end{equation}
+	
+	The remaining problem is that of estimating the a priori SNR and estimating the noise variance in each frequency bin.
+	
+For estimating the noise variance, it is used a so-called Voice Activity Detection that tells whenever there is no voice present, and that enables the estimation of only the noise variance, only the noise is present. During moments when there is speech and noise, the noise variance of the past when there is only noise present is used. This is valid if the noise does not change too dramatically. The Voice Activity Detection works by comparing the spectral distance between the noise and the speech.
+
+	
+	For estimating the a priori SNR, we use a popular technique which is called decision-directed a priori SNR estimation \citep{speech}.
+	
+		\begin{equation}
+		\hat{\xi_{k}}(n)= \alpha \frac{\hat{A_{k}}^2 (n-1)}{\lambda_{d} (k,n-1)} + (1-\alpha) P(\gamma_{k}(n)-1), 0 \leq \alpha \leq 1
+	\end{equation}
+	
+	
+	\[
+ P(x) =
+  \begin{cases}
+   x & \text{if } x \geq 0 \\
+   0       & \text{otherwise}
+  \end{cases}
+\]
+	
+	And in our case alpha is 0.99
+This is one of the simpler ways to estimate the a priori SNR and a very effective one.
+	
+	\subsubsection{Implementation \& Results}
 
 
 	\subsection{Wiener Non-Causal Filtering}
@@ -715,6 +802,8 @@ Other technical requirements are:
 	
 	\item \textbf{Moving every “static” calculation out the loops:}  operations inside loops take time. Therefore, all the constant values respect to the loop index are taken out of the loop and define them as local variables to avoid useless operations. It costs less to point at a local variable than to calculate.
 	\end{itemize}
+	
+	\section{The Application}
 
 \chapter{Conclusions}
 

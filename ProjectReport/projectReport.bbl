@@ -1,5 +1,17 @@
 \begin{thebibliography}{1}
 
+\bibitem{logmmse}
+Y.~Ephraim and D.~Malah.
+\newblock Speech enhancement using a minimum mean-square error log-spectral
+  amplitude estimator.
+\newblock {\em IEEE Transactions on Acoutstic, Speech, and Signal Processing}.
+
+\bibitem{speech}
+Yariv Ephraim.
+\newblock Speech enhancement using a minimum mean-square error short-time
+  spectral amplitude estimator.
+\newblock {\em IEEE Transactions on Acoutstic, Speech, and Signal Processing}.
+
 \bibitem{asp}
 Håkan Hjalmarsson and Björn Ottersten.
 \newblock {\em Lecture Notes in Adaptive Signal Processing (EQ2400)}.

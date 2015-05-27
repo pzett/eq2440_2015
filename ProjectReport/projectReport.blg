@@ -8,45 +8,52 @@ You're missing a field name---line 29 of file ref.bib
  :     %volume   = "ASSP-32",
 (Error may have been on previous line)
 I'm skipping whatever remains of this entry
-You've used 1 entry,
+You're missing a field name---line 42 of file ref.bib
+ :     
+ :     %volume   = "ASSP-33",
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+Warning--empty year in logmmse
+Warning--empty year in speech
+You've used 3 entries,
             2118 wiz_defined-function locations,
-            502 strings with 4111 characters,
-and the built_in function-call counts, 271 in all, are:
-= -- 22
-> -- 13
+            509 strings with 4398 characters,
+and the built_in function-call counts, 717 in all, are:
+= -- 63
+> -- 33
 < -- 0
-+ -- 5
-- -- 4
-* -- 14
-:= -- 53
-add.period$ -- 3
-call.type$ -- 1
-change.case$ -- 4
++ -- 13
+- -- 10
+* -- 38
+:= -- 135
+add.period$ -- 9
+call.type$ -- 3
+change.case$ -- 13
 chr.to.int$ -- 0
-cite$ -- 1
-duplicate$ -- 12
-empty$ -- 23
-format.name$ -- 4
-if$ -- 54
+cite$ -- 5
+duplicate$ -- 32
+empty$ -- 57
+format.name$ -- 10
+if$ -- 141
 int.to.chr$ -- 0
-int.to.str$ -- 1
-missing$ -- 2
-newline$ -- 8
-num.names$ -- 2
-pop$ -- 9
+int.to.str$ -- 3
+missing$ -- 4
+newline$ -- 18
+num.names$ -- 6
+pop$ -- 22
 preamble$ -- 1
-purify$ -- 4
+purify$ -- 11
 quote$ -- 0
-skip$ -- 7
+skip$ -- 20
 stack$ -- 0
-substring$ -- 5
-swap$ -- 1
+substring$ -- 15
+swap$ -- 3
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 2
-warning$ -- 0
-while$ -- 2
-width$ -- 2
-write$ -- 12
-(There was 1 error message)
+type$ -- 10
+warning$ -- 2
+while$ -- 6
+width$ -- 4
+write$ -- 30
+(There were 2 error messages)
