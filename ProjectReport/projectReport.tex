@@ -480,7 +480,7 @@ In terms of goals, it has been very important for the group to reach a good nois
 	
 	\subsubsection{Introduction}
 	
-The \textit{logMMSE} is a a type of speech enhancement system that has been the most successful technique implemented by the theory group with outstanding results of noise cancellation and computational cost.
+The \textit{logMMSE} is a a type of speech enhancement system that, applied after the LMS filter, has been provided the best performance in terms of noise cancellation above all the technique implemented by the theory group with outstanding results of noise cancellation and computational cost.
 	
 	To be familiar with the term, a speech enhancement system is a transform-based system that uses a single microphone which main goal is noise reduction. For the outer system, the time domain signal is first framed and windowed.  These frames are generally overlapping. Then a transform, typically \textit{FFT}, is applied to each and every frame. After the processing system, the gain is applied to the transform coefficients and the inverse transform is performed followed by an overlap-and-add method that is to compensate for the windowing and framing \citep{speech}.
 
@@ -801,6 +801,8 @@ Other technical requirements are:
 		\end{itemize}
 	
 	\item \textbf{Moving every “static” calculation out the loops:}  operations inside loops take time. Therefore, all the constant values respect to the loop index are taken out of the loop and define them as local variables to avoid useless operations. It costs less to point at a local variable than to calculate.
+	
+	It is important to say that the \textit{Android Group} has achieved the results using only an LMS of order 10, much inferior to the orders 100 and 1000 initially proposed by the \textit{Theory Group}.
 	\end{itemize}
 	
 	\section{The Application}
