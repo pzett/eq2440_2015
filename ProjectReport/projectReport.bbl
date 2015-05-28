@@ -1,5 +1,11 @@
 \begin{thebibliography}{1}
 
+\bibitem{supression}
+S.~Boll and D.~Pulsipher.
+\newblock Suppression of acoustic noise in speech using two microphone adaptive
+  noise cancellation.
+\newblock {\em IEEE Trans. Acoustic Speech, Signal Processing}.
+
 \bibitem{logmmse}
 Y.~Ephraim and D.~Malah.
 \newblock Speech enhancement using a minimum mean-square error log-spectral
@@ -12,9 +18,25 @@ Yariv Ephraim.
   spectral amplitude estimator.
 \newblock {\em IEEE Transactions on Acoutstic, Speech, and Signal Processing}.
 
+\bibitem{crosstalk}
+R.~Zinser~Jr. G.~Mirchandani and J.B. Evans.
+\newblock A new adaptive noise cancellation scheme in the presence of
+  crosstalk.
+\newblock {\em IEEE Trans. On Circuits and Systems-II: Analog and Digital
+  Signal Processing}.
+
 \bibitem{asp}
 Håkan Hjalmarsson and Björn Ottersten.
 \newblock {\em Lecture Notes in Adaptive Signal Processing (EQ2400)}.
 \newblock KTH Edition, 2010.
+
+\bibitem{online3}
+Online.
+\newblock http://scholar.lib.vt.edu/theses/available/etd-04222002
+  -143554/unrestricted/02rudissertation.pdf.
+
+\bibitem{patent1}
+Online.
+\newblock https://www.google.com/patents/us2043416.
 
 \end{thebibliography}

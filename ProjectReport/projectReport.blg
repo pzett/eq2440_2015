@@ -13,47 +13,78 @@ You're missing a field name---line 42 of file ref.bib
  :     %volume   = "ASSP-33",
 (Error may have been on previous line)
 I'm skipping whatever remains of this entry
+You're missing a field name---line 54 of file ref.bib
+ :     
+ :     %volume   = "",
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+You're missing a field name---line 66 of file ref.bib
+ :     
+ :     %volume   = "",
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+You're missing a field name---line 78 of file ref.bib
+ :     
+ :     %volume   = "",
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+You're missing a field name---line 90 of file ref.bib
+ :     
+ :     %volume   = "28",
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+You're missing a field name---line 103 of file ref.bib
+ :     
+ :     %volume   = "39",
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+Warning--empty year in supression
 Warning--empty year in logmmse
 Warning--empty year in speech
-You've used 3 entries,
+Warning--empty year in crosstalk
+Warning--empty journal in online3
+Warning--empty year in online3
+Warning--empty journal in patent1
+Warning--empty year in patent1
+You've used 7 entries,
             2118 wiz_defined-function locations,
-            509 strings with 4398 characters,
-and the built_in function-call counts, 717 in all, are:
-= -- 63
-> -- 33
+            522 strings with 4921 characters,
+and the built_in function-call counts, 1599 in all, are:
+= -- 141
+> -- 73
 < -- 0
-+ -- 13
-- -- 10
-* -- 38
-:= -- 135
-add.period$ -- 9
-call.type$ -- 3
-change.case$ -- 13
++ -- 30
+- -- 22
+* -- 88
+:= -- 295
+add.period$ -- 19
+call.type$ -- 7
+change.case$ -- 31
 chr.to.int$ -- 0
-cite$ -- 5
-duplicate$ -- 32
-empty$ -- 57
-format.name$ -- 10
-if$ -- 141
+cite$ -- 15
+duplicate$ -- 72
+empty$ -- 125
+format.name$ -- 22
+if$ -- 311
 int.to.chr$ -- 0
-int.to.str$ -- 3
-missing$ -- 4
-newline$ -- 18
-num.names$ -- 6
-pop$ -- 22
+int.to.str$ -- 7
+missing$ -- 8
+newline$ -- 36
+num.names$ -- 14
+pop$ -- 52
 preamble$ -- 1
-purify$ -- 11
+purify$ -- 25
 quote$ -- 0
-skip$ -- 20
+skip$ -- 46
 stack$ -- 0
-substring$ -- 15
-swap$ -- 3
+substring$ -- 36
+swap$ -- 5
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 10
-warning$ -- 2
-while$ -- 6
-width$ -- 4
-write$ -- 30
-(There were 2 error messages)
+type$ -- 26
+warning$ -- 8
+while$ -- 14
+width$ -- 8
+write$ -- 62
+(There were 7 error messages)
