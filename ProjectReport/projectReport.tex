@@ -738,20 +738,20 @@ In this section are presented some of the unsuccessful approaches of the theory 
 
 The Android part has been the most challenging in the whole project: implement a real time application with signal treatment implies code optimisation skills. Even though Android environment coding was a new experience for all the members of the group, the results have been outstanding.
 
-The coding environment of Android is Eclipse and the language used is JAVA, object oriented and assumed to be known by the reader. Moreover, the used \textit{Android} platform is \textit{Android 5.1}
+The coding environment of Android is Eclipse and the language used is JAVA, object oriented and assumed to be known by the reader. Moreover, the used \textit{Android} platform is \textit{Android 5.1}. AS a clarification, the framework used in the project was the one provided by the supervisor, Per Zetterberg.
 
-I this chapter it is going to be presented the followed steps and reached results during the performance of the project.
+This chapter it is going to be presented the followed steps and reached results during the performance of the project.
 
 \section{Code Training}
 
-For the \textit{Android Group}, the project began with a set of tasks that needed to be finished before the \textit{Midterm Evaluation}. It goes without saying that the group did do it in less time than expected and could start working on the transfer from MATLAB to Android coding two weeks before than expected.
+For the \textit{Android Group}, the project began with a set of tasks that needed to be finished before the \textit{Midterm Evaluation}. It goes without saying that the group did it in less time than expected and could start working on the transfer from MATLAB to Android coding two weeks earlier than expected.
 
 \section{Coding for Noise Cancellation}
 \label{sec:coding}
 
-Once the group was familiarized with the environment, the procedure of treating the information needed to be set. As the communication path for the teleconference is the internet, the information is going to be sent with TCP frames, therefore the signal processing is going to be frames/blocks oriented, i.e. a buffering is needed for such an application.
+Once the group was familiarized with the environment, the procedure of processing the information needed to be set. As the communication path for the teleconference is the Internet, the information is going to be sent with TCP frames, therefore the signal processing is going to be frames/blocks oriented, i.e. a buffering is needed for such an application. The solution that has been kept for the buffering is: to use dynamic lists of buffers.
 
-In terms of time, the buffer is a non-variant parameter and it lasts around \textit{92 ms}. Contrary, the buffer length in terms of samples is frequency $f_{s}$ dependent and proportional. Typical buffer lengths are $1024$ and $2048$ samples which correspond to \textit{$f_{s}$=11025 Hz} and \textit{$f_{s}$=22050 Hz} respectively.
+In terms of time, the buffer is a constant parameter and it lasts around \textit{92 ms}. Contrary, the buffer length, in terms of number of samples, is frequency $f_{s}$ dependent and proportional. Typical buffer lengths are $1024$ and $2048$ samples which correspond to \textit{$f_{s}$=11025 Hz} and \textit{$f_{s}$=22050 Hz} respectively.
 
 Other technical requirements are:
 
@@ -767,7 +767,7 @@ Other technical requirements are:
 	To have a full understanding about how does the coding work, it is necessary to define a state machine diagram (see Figure \ref{fig:states}). The list of states and their explanation are above:
 	
 	\begin{itemize}
-	\item \textbf{Waiting}: starting state. This state is used to wait for both signal and noise phone to be online and to send buffers. Then, buffers are been filled until T1 happens.
+	\item \textbf{Waiting}: starting state. This state is used to wait for both signal and noise phone to be online and to send buffers. Then, the buffers are filled until T1 happens.
 	
 	\item \textbf{Correlation}: state where the cross-correlation between the signal and noise buffers is calculated. The maximum of the cross-correlation gives the total delay between the two samples’ flows. Then, by a simple algorithm, this total delay is divided into two variables. These two variables are important thus the coding works with dynamic lists of buffers. The two variables are:
 	
@@ -781,12 +781,12 @@ Other technical requirements are:
 	\item \textbf{Play}: the most complex state. It can be divided as follows:
 	
 		\begin{itemize}
-		\item \textit{Initialization phase}: variables that will be used are initialized, particularly the noise, signal and \textit{to\_be\_played} arrays. The \textit{to\_be\_played} arrays is basically the same as the signal array,  but of a smaller length since more samples are needed on the signal array to apply the NLMS (\ref{sec:nlms}) algorithm, otherwise we some samples could be missed.
+		\item \textit{Initialization phase}: variables that will be used are initialized, particularly the noise, signal and \textit{to\_be\_played} arrays. The \textit{to\_be\_played} array is basically the same as the signal array,  but of a smaller length since more samples are needed on the signal array to apply the \textit{NLMS Algorithm}, otherwise some samples could be missed.
 		
 		\item \textit{Noise cancellation phase}: the algorithm goes through this phase if we ask it to do it; otherwise it skips to the next phase. This phase applies the NLMS algorithm between the signal and the noise arrays. Then the result is subtracted to the \textit{to\_be\_played} array.
 		
 		\item \textit{Voice detection phase}: this algorithm uses the \textit{to\_be\_played} array (after NLMS or not) to detect if there is voice or not. If there is no voice, some parts of the array are set to zero.
-		\item \textit{Playing phase}: the processed array \textit{to\_be\_played} is played and the noise cancellation is analysed.
+		\item \textit{Playing phase}: the processed array \textit{to\_be\_played} is played and some checking variables are updated
 		\end{itemize}
 		
 		
@@ -797,8 +797,8 @@ Other technical requirements are:
 		\begin{itemize}
 		\item T1: happens when enough buffers are received from the signal and the noise phones to calculate the cross correlation between the buffers.
 		\item T2: happens when the cross-correlation has been calculated and the delay computed.
-		\item T3: happens when the useless buffers are removed (the one we used to calculate the cross correlation)
-		\item T4: happens when someone tap the button "reset" on the phone’s screen.
+		\item T3: happens when the useless buffers are removed (the one we used to calculate the cross-correlation)
+		\item T4: happens when someone tap the button \textit{re-init} on the phone’s screen.
 		\end{itemize}
 
 
@@ -812,9 +812,9 @@ Other technical requirements are:
 		
 		\subsection{NLMS}
 		
-		The proposed LMS solution by the \textit{Theory Group} ended up with several problems when it was translated to JAVA, like a certain saturation. Therefore, the \textit{Android Group} needed to do some changes in the code.
+		The proposed LMS solution by the \textit{Theory Group} ended up with several problems when it was translated to JAVA. One of the problemas was the presence of saturation. Therefore, the \textit{Android Group} needed to do some changes in the code.
 		
-		A few problems that may appear on the LMS are related to stability due to the signal power. Hence the step-size may have to be chosen unnecessarily small. However, the LMS can be made insensitive to the signal power by using a normalized step-size \cite{asp}:
+		As a possible explanation, few problems that may appear on the LMS are related to stability due to the signal's power. Hence the step-size may have to be chosen unnecessarily small. However, the LMS can be made insensitive to the signal power by using a normalized step-size \cite{asp}:
 		
 		
 		
@@ -826,20 +826,144 @@ Other technical requirements are:
 	The NLMS version in Android has been challenging because the buffers used on the framework last approximately \textit{92 ms}, as commented in \ref{sec:coding} and the processing part has to last less than this time. Because the NLMS version was imported from MATLAB, it has been first translated to JAVA and later on the code has been improved to reduce the execution time. These have been two implemented solutions to do so:
 	
 	\begin{itemize}
-	\item \textbf{Intelligent 'for-loops`}: The for-loop executes a test on the index variable for every iteration. This test consists of calculating the subtraction between the index variable and the tested value, and then compare it to $0$. To really reduce the execution time, the compared value has to be zero and thus the subtraction will be calculated, which helps if there are a lot of iterations. It is done as follows:
+	\item \textbf{Intelligent 'for-loops`}: The for-loop executes a test on the index variable for every iteration. This test consists of calculating the subtraction between the index variable and the tested value, and then compare it to $0$. To really reduce the execution time, the compared value has to be zero and thus no subtraction will be calculated, which helps if there are a lot of iterations. It is done as follows:
 	
 		\begin{itemize}
 			\item Replacing
 			
+			\begin{lstlisting}
+			for(int i=0;i<bufferLength;i++){
+//Calculation
+}
+
+			
+			
+			\end{lstlisting}
+			
 			\item With
+			
+			\begin{lstlisting}
+			int i;
+for(i=bufferLength;i-->0;){
+//Calculation
+}
+
+			\end{lstlisting}
 		\end{itemize}
 	
-	\item \textbf{Moving every “static” calculation out the loops:}  operations inside loops take time. Therefore, all the constant values respect to the loop index are taken out of the loop and define them as local variables to avoid useless operations. It costs less to point at a local variable than to calculate.
+	\item \textbf{Moving every “static” calculation out the loops:}  operations inside loops take time. Therefore, all the constant values respect to the loop index are taken out of the loop and define them as local variables to avoid useless calculations. It costs less to point at a local variable than to calculate.
 	
-	It is important to say that the \textit{Android Group} has achieved the results using only an LMS of order 10, much inferior to the orders 100 and 1000 initially proposed by the \textit{Theory Group}.
+	\begin{itemize}
+	\item Replacing:
+	
+		\begin{lstlisting}
+	
+		toFilter=new int[bufferLength];
+int i;
+int x=10;
+int y=2;
+for(i=bufferLength;i-->0;){
+	toFilter[i]=x*y;
+}
+	
+		
+		\end{lstlisting}
+		
+		\item With:
+		
+			\begin{lstlisting}
+			toFilter=new int[bufferLength];
+int i;
+int x=10;
+int y=2;
+int z=x*y;
+for(i=bufferLength;i-->0;){
+	toFilter[i]=z;
+}
+
+			\end{lstlisting}
 	\end{itemize}
 	
+	\item
+	
+		\end{itemize}
+	
+	It is important to say that the \textit{Android Group} has achieved the results using only an LMS of order 10, much inferior to the orders 100 and 1000 initially proposed by the \textit{Theory Group}.
+
+	
 	\section{The Application}
+	
+	This section aims to be an explanation and graphic demonstration of the application interface developed by the \textit{Android Group}. The main purpose of the application is to make the noise cancellation work correctly.
+	
+	Neither the layout nor the functionality are meant to a commercial use thus there are options like changing the value of the step-stize of the \textit{LMS Algorithm}. Consequently, the app is designed to be used in an engineering lab environment.
+	
+	
+	\subsubsection{Screens of the application}
+	
+	The application's interface with the user consists in 3 main different screens. The Figure \ref{fig:starting} shows the first screen (\textit{Starting Screen}) that appears when the app is launched. At this point, to continue it is necessary to tap the screen to jump to the \textit{Selection Screen} shown in Figure \ref{fig:selection}.
+	
+	The \textit{Selection Screen} show the different roles that the mobile phone can have:
+	
+	\begin{itemize}
+	\item Sender: it is the phone used by the user in the noisy environment.
+	\item Noise: it is the phone that collects the noise information necessary to apply the \textit{LMS Algorithm}
+	\item Receiver: it is the phone of the receiver. This phone is the one in charge of the noise cancellation
+	\end{itemize}
+	
+	
+	Finally, the last important screen is the \textit{Receiver Screen}. This is the screen displayed in the receiver phone from where some of the parameters of the noise cancellation algorithms will be managed. There are two main parts in this screen, one for parameters or mode selection and the other one of pure information.
+	
+	On the one hand, the \textit{Receiver Screen} has different option buttons:
+	
+	\begin{itemize}
+	\item Blue button: decides whether apply the noise cancellation or not
+	\item Orange button: decide whether we apply the voice detection or not
+	\item Green and red buttons: add the written values to $\mu$ (step-size)
+	\item Yellow button: re-initialize the application (we go back to the WAITING state)
+	\end{itemize}
+	
+	On the second hand, there is a second part in the \textit{Receiver Screen} that display all the necessary values to have a full understanding about what is the application doing:	
+	
+	\begin{itemize}
+	\item \textit{mu} (step-size): this is the value of the $\mu$ coefficient
+	\item \textit{mu'} (normalize step-size): this is the modified value of $\mu$ used for the  \textit{NLMS Algorithm}
+	\item \textit{Diff}: number of buffers between two synchronized buffers (one from sender and one from noise)
+	\item \textit{Delay}: the delay inside two synchronized buffers in number of samples
+	\item \textit{totalDelay}: it’s the total delay observed in number of samples
+	\item \textit{noiseCancellation}: Boolean that tells if we apply the noise cancellation or not
+	\item \textit{VD}: Boolean that tells if we apply the voice detection or not
+	\item \textit{speechFlag}: Boolean that tells if we detected speech or not
+	\item \textit{timeVD}: execution time of the voice detection algorithm
+	\item \textit{timeLMS}: execution time of the NLMS algorithm
+	\item\textit{lengthSenderBuffer}: length of the ArrayList containing the recorded buffers from the sender
+	\item \textit{lengthNoiseBuffer}: length of the ArrayList containing the recorded buffers from the noise
+	\end{itemize}
+
+	
+	
+		\begin{figure}[h]
+		\centering
+		\includegraphics[width=6cm]{images/android/startingscreen.jpg}
+		\caption{App's starting screen}
+		\label{fig:starting}
+		\end{figure}
+		
+		
+		\begin{figure}[h]
+		\centering
+		\includegraphics[width=6cm]{images/android/selectionscreen.jpg}
+		\caption{Selection of role in the teleconference}
+		\label{fig:selection}
+		\end{figure}
+		
+		
+		\begin{figure}[h]
+		\centering
+		\includegraphics[width=6cm]{images/android/receiverscreen.jpg}
+		\caption{Receiver screen: noise cancellation parameters selection}
+		\label{fig:receiver}
+		\end{figure}
+	
 
 \chapter{Conclusions}
 
