@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  28 MAY 2015 14:48
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  28 MAY 2015 16:46
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1080,60 +1080,63 @@ Underfull \hbox (badness 10000) in paragraph at lines 325--326
 
  []
 
-[11] [12]
+[11] <images/management/ganttchart1.jpg, id=237, 695.59875pt x 527.9725pt>
+File: images/management/ganttchart1.jpg Graphic file (type jpg)
+
+<use images/management/ganttchart1.jpg>
+Package pdftex.def Info: images/management/ganttchart1.jpg used on input line 3
+75.
+(pdftex.def)             Requested size: 426.79134pt x 323.93985pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<images/management/ganttchart2.jpg, id=238, 646.415pt x 269.005pt>
+File: images/management/ganttchart2.jpg Graphic file (type jpg)
+
+<use images/management/ganttchart2.jpg>
+Package pdftex.def Info: images/management/ganttchart2.jpg used on input line 3
+82.
+(pdftex.def)             Requested size: 426.79134pt x 177.60951pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[12] [13 <./images/management/ganttchart1.jpg>] [14 <./images/management/ganttc
+hart2.jpg>]
 Chapter 3.
 
-LaTeX Warning: Reference `sec:history' on page 13 undefined on input line 380.
+LaTeX Warning: Reference `sec:history' on page 15 undefined on input line 395.
 
-[13
+[15
 
 ]
 
-LaTeX Warning: Reference `eq:stepsize' on page 14 undefined on input line 421.
+LaTeX Warning: Reference `eq:stepsize' on page 16 undefined on input line 436.
 
-<images/theory/SimplifiedLMS.jpg, id=257, 423.83344pt x 238.64156pt>
+<images/theory/SimplifiedLMS.jpg, id=273, 423.83344pt x 238.64156pt>
 File: images/theory/SimplifiedLMS.jpg Graphic file (type jpg)
 
 <use images/theory/SimplifiedLMS.jpg>
-Package pdftex.def Info: images/theory/SimplifiedLMS.jpg used on input line 436
+Package pdftex.def Info: images/theory/SimplifiedLMS.jpg used on input line 451
 .
 (pdftex.def)             Requested size: 227.62204pt x 128.16173pt.
 
 
-LaTeX Warning: Reference `eq:lmsus' on page 14 undefined on input line 453.
+LaTeX Warning: Reference `eq:lmsus' on page 16 undefined on input line 468.
 
-[14 <./images/theory/SimplifiedLMS.jpg>]
-<images/theory/lms100tapstime.jpg, id=274, 977.6525pt x 445.665pt>
+[16 <./images/theory/SimplifiedLMS.jpg>]
+<images/theory/lms100tapstime.jpg, id=290, 977.6525pt x 445.665pt>
 File: images/theory/lms100tapstime.jpg Graphic file (type jpg)
 
 <use images/theory/lms100tapstime.jpg>
-Package pdftex.def Info: images/theory/lms100tapstime.jpg used on input line 46
-8.
+Package pdftex.def Info: images/theory/lms100tapstime.jpg used on input line 48
+3.
 (pdftex.def)             Requested size: 426.79134pt x 194.55634pt.
 
-<images/theory/lms100tapsfreq.jpg, id=275, 836.12375pt x 554.07pt>
+<images/theory/lms100tapsfreq.jpg, id=291, 836.12375pt x 554.07pt>
 File: images/theory/lms100tapsfreq.jpg Graphic file (type jpg)
 
-<use images/theory/lms100tapsfreq.jpg>
-Package pdftex.def Info: images/theory/lms100tapsfreq.jpg used on input line 47
-6.
-(pdftex.def)             Requested size: 426.79134pt x 282.82559pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<images/theory/lms1000tapstime.jpg, id=276, 885.3075pt x 426.59375pt>
-File: images/theory/lms1000tapstime.jpg Graphic file (type jpg)
-
-<use images/theory/lms1000tapstime.jpg>
-Package pdftex.def Info: images/theory/lms1000tapstime.jpg used on input line 4
-83.
-(pdftex.def)             Requested size: 426.79134pt x 205.65443pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-File: images/theory/lms100tapsfreq.jpg Graphic file (type jpg)
 <use images/theory/lms100tapsfreq.jpg>
 Package pdftex.def Info: images/theory/lms100tapsfreq.jpg used on input line 49
 1.
@@ -1142,178 +1145,201 @@ Package pdftex.def Info: images/theory/lms100tapsfreq.jpg used on input line 49
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[15 <./images/theory/lms100tapstime.jpg>]pdfTeX warning (ext4): destination wit
+<images/theory/lms1000tapstime.jpg, id=292, 885.3075pt x 426.59375pt>
+File: images/theory/lms1000tapstime.jpg Graphic file (type jpg)
+
+<use images/theory/lms1000tapstime.jpg>
+Package pdftex.def Info: images/theory/lms1000tapstime.jpg used on input line 4
+98.
+(pdftex.def)             Requested size: 426.79134pt x 205.65443pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+File: images/theory/lms100tapsfreq.jpg Graphic file (type jpg)
+<use images/theory/lms100tapsfreq.jpg>
+Package pdftex.def Info: images/theory/lms100tapsfreq.jpg used on input line 50
+6.
+(pdftex.def)             Requested size: 426.79134pt x 282.82559pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[17 <./images/theory/lms100tapstime.jpg>]pdfTeX warning (ext4): destination wit
 h the same identifier (name{equation.3.1.1}) has been already used, duplicate i
 gnored
 <to be read again> 
                    \relax 
-l.515 	\end{align}
+l.530 	\end{align}
                   pdfTeX warning (ext4): destination with the same identifier (
 name{equation.3.1.2}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.515 	\end{align}
-                   [16 <./images/theory/lms100tapsfreq.jpg>]pdfTeX warning (ext
+l.530 	\end{align}
+                   [18 <./images/theory/lms100tapsfreq.jpg>]pdfTeX warning (ext
 4): destination with the same identifier (name{equation.3.1.1}) has been alread
 y used, duplicate ignored
 <to be read again> 
                    \relax 
-l.542 		\end{align}
+l.557 		\end{align}
                    pdfTeX warning (ext4): destination with the same identifier 
 (name{equation.3.1.2}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.542 		\end{align}
+l.557 		\end{align}
                    pdfTeX warning (ext4): destination with the same identifier 
 (name{equation.3.1.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.552 		\end{align}
+l.567 		\end{align}
                    pdfTeX warning (ext4): destination with the same identifier 
 (name{equation.3.1.2}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.552 		\end{align}
-                    [17 <./images/theory/lms1000tapstime.jpg>] [18]
-<images/theory/logmmse2.jpg, id=316, 885.3075pt x 426.59375pt>
+l.567 		\end{align}
+                    [19 <./images/theory/lms1000tapstime.jpg>]
+<images/theory/logmmseboxes.jpg, id=324, 963.6pt x 542.025pt>
+File: images/theory/logmmseboxes.jpg Graphic file (type jpg)
+
+<use images/theory/logmmseboxes.jpg>
+Package pdftex.def Info: images/theory/logmmseboxes.jpg used on input line 603.
+
+(pdftex.def)             Requested size: 426.79134pt x 240.06314pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[20] <images/theory/logmmse2.jpg, id=335, 885.3075pt x 426.59375pt>
 File: images/theory/logmmse2.jpg Graphic file (type jpg)
 
 <use images/theory/logmmse2.jpg>
-Package pdftex.def Info: images/theory/logmmse2.jpg used on input line 605.
+Package pdftex.def Info: images/theory/logmmse2.jpg used on input line 629.
 (pdftex.def)             Requested size: 426.79134pt x 205.65443pt.
 
-<images/theory/logmmse3.jpg, id=317, 885.3075pt x 426.59375pt>
+<images/theory/logmmse3.jpg, id=336, 885.3075pt x 426.59375pt>
 File: images/theory/logmmse3.jpg Graphic file (type jpg)
 
 <use images/theory/logmmse3.jpg>
-Package pdftex.def Info: images/theory/logmmse3.jpg used on input line 613.
+Package pdftex.def Info: images/theory/logmmse3.jpg used on input line 637.
 (pdftex.def)             Requested size: 426.79134pt x 205.65443pt.
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [19 <./images/theory/logmmse2.jpg> <./images/theory/logmmse3.jpg>]
-<images/theory/highsigma.jpg, id=326, 1168.365pt x 410.53375pt>
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[21 <./images/theory/logmmseboxes.jpg (PNG copy)> <./images/theory/logmmse2.jpg
+>] [22 <./images/theory/logmmse3.jpg>]
+<images/theory/highsigma.jpg, id=353, 1168.365pt x 410.53375pt>
 File: images/theory/highsigma.jpg Graphic file (type jpg)
 
 <use images/theory/highsigma.jpg>
-Package pdftex.def Info: images/theory/highsigma.jpg used on input line 662.
+Package pdftex.def Info: images/theory/highsigma.jpg used on input line 686.
 (pdftex.def)             Requested size: 426.79134pt x 149.96571pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[20] <images/theory/nonc.jpg, id=340, 885.3075pt x 426.59375pt>
+ [23 <./images/theory/highsigma.jpg>]
+<images/theory/nonc.jpg, id=365, 885.3075pt x 426.59375pt>
 File: images/theory/nonc.jpg Graphic file (type jpg)
 
 <use images/theory/nonc.jpg>
-Package pdftex.def Info: images/theory/nonc.jpg used on input line 696.
+Package pdftex.def Info: images/theory/nonc.jpg used on input line 720.
 (pdftex.def)             Requested size: 426.79134pt x 205.65443pt.
 
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<images/theory/noncunstable.jpg, id=341, 885.3075pt x 426.59375pt>
+<images/theory/noncunstable.jpg, id=366, 885.3075pt x 426.59375pt>
 File: images/theory/noncunstable.jpg Graphic file (type jpg)
 
 <use images/theory/noncunstable.jpg>
-Package pdftex.def Info: images/theory/noncunstable.jpg used on input line 703.
+Package pdftex.def Info: images/theory/noncunstable.jpg used on input line 727.
 
 (pdftex.def)             Requested size: 426.79134pt x 205.65443pt.
 
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<images/theory/noncunstableoverlap.jpg, id=342, 885.3075pt x 426.59375pt>
+<images/theory/noncunstableoverlap.jpg, id=367, 885.3075pt x 426.59375pt>
 File: images/theory/noncunstableoverlap.jpg Graphic file (type jpg)
 
 <use images/theory/noncunstableoverlap.jpg>
 Package pdftex.def Info: images/theory/noncunstableoverlap.jpg used on input li
-ne 710.
+ne 734.
 (pdftex.def)             Requested size: 426.79134pt x 205.65443pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[21 <./images/theory/highsigma.jpg>] [22 <./images/theory/nonc.jpg>]
-<images/theory/freqlms.jpg, id=361, 676.5275pt x 603.25375pt>
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [24 <./images/theory/nonc.jpg> <./images/theory/noncunstable.jpg>] [25 <./imag
+es/theory/noncunstableoverlap.jpg>]
+<images/theory/freqlms.jpg, id=384, 676.5275pt x 603.25375pt>
 File: images/theory/freqlms.jpg Graphic file (type jpg)
 
 <use images/theory/freqlms.jpg>
-Package pdftex.def Info: images/theory/freqlms.jpg used on input line 765.
+Package pdftex.def Info: images/theory/freqlms.jpg used on input line 789.
 (pdftex.def)             Requested size: 284.52756pt x 253.71463pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[23 <./images/theory/noncunstable.jpg>] [24 <./images/theory/noncunstableoverla
-p.jpg> <./images/theory/freqlms.jpg>]
+ [26 <./images/theory/freqlms.jpg>]
 Chapter 4.
-[25
+[27
 
-] <images/android/states.png, id=378, 631.35875pt x 429.605pt>
+] <images/android/states.png, id=397, 631.35875pt x 429.605pt>
 File: images/android/states.png Graphic file (type png)
 
 <use images/android/states.png>
-Package pdftex.def Info: images/android/states.png used on input line 845.
+Package pdftex.def Info: images/android/states.png used on input line 865.
 (pdftex.def)             Requested size: 284.52756pt x 193.60889pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[26]
-LaTeX Font Info:    Try loading font information for OML+cmr on input line 873.
+[28]
+LaTeX Font Info:    Try loading font information for OML+cmr on input line 893.
 
  (/usr/local/texlive/2012/texmf-dist/tex/latex/base/omlcmr.fd
 File: omlcmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <9> not available
-(Font)              Font shape `OML/cmm/m/it' tried instead on input line 873.
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 893.
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <9> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 873.
- [27 <./images/android/states.png>] [28] [29]
-<images/android/startingscreen.jpg, id=450, 722.7pt x 1284.8pt>
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 893.
+ [29 <./images/android/states.png>] [30] [31]
+<images/android/startingscreen.jpg, id=470, 722.7pt x 1284.8pt>
 File: images/android/startingscreen.jpg Graphic file (type jpg)
 
 <use images/android/startingscreen.jpg>
 Package pdftex.def Info: images/android/startingscreen.jpg used on input line 1
-007.
+027.
 (pdftex.def)             Requested size: 170.71652pt x 303.4964pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<images/android/selectionscreen.jpg, id=451, 722.7pt x 1284.8pt>
+<images/android/selectionscreen.jpg, id=471, 722.7pt x 1284.8pt>
 File: images/android/selectionscreen.jpg Graphic file (type jpg)
 
 <use images/android/selectionscreen.jpg>
 Package pdftex.def Info: images/android/selectionscreen.jpg used on input line 
-1015.
+1035.
 (pdftex.def)             Requested size: 170.71652pt x 303.4964pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<images/android/receiverscreen.jpg, id=452, 722.7pt x 1284.8pt>
+<images/android/receiverscreen.jpg, id=472, 722.7pt x 1284.8pt>
 File: images/android/receiverscreen.jpg Graphic file (type jpg)
 
 <use images/android/receiverscreen.jpg>
 Package pdftex.def Info: images/android/receiverscreen.jpg used on input line 1
-023.
+043.
 (pdftex.def)             Requested size: 170.71652pt x 303.4964pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[30] [31 <./images/android/startingscreen.jpg>] [32 <./images/android/selection
-screen.jpg>] [33 <./images/android/receiverscreen.jpg>] [34
+[32] [33 <./images/android/startingscreen.jpg>] [34 <./images/android/selection
+screen.jpg>] [35 <./images/android/receiverscreen.jpg>] [36
 
 ]
 Chapter 5.
-[35] [36
+[37] [38
 
 ]
 Chapter 6.
-(./projectReport.bbl [37] [38
+(./projectReport.bbl [39] [40
 
 ]
 Chapter 7.
@@ -1324,12 +1350,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 34--37
  []
 
 )
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1042.
- [39]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1042.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1062.
+ [41]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1062.
  (./projectReport.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1042.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1042.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1062.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1062.
 
 Package rerunfilecheck Info: File `projectReport.out' has not changed.
 (rerunfilecheck)             Checksum: 9BC3993CDDEED8FF2D00D37CFC7AC578;1881.
@@ -1340,13 +1366,13 @@ LaTeX Warning: There were undefined references.
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1042.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1062.
  ) 
 Here is how much of TeX's memory you used:
- 16501 strings out of 493488
- 259123 string characters out of 3141326
+ 16525 strings out of 493488
+ 259732 string characters out of 3141326
  468534 words of memory out of 3000000
- 19358 multiletter control sequences out of 15000+200000
+ 19373 multiletter control sequences out of 15000+200000
  15463 words of font info for 57 fonts, out of 3000000 for 9000
  957 hyphenation exceptions out of 8191
  42i,10n,58p,1116b,1971s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -1372,10 +1398,10 @@ ve/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/
 exmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2012/tex
 mf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2012/texm
 f-dist/fonts/type1/public/amsfonts/cm/cmti9.pfb>
-Output written on projectReport.pdf (39 pages, 1292610 bytes).
+Output written on projectReport.pdf (41 pages, 1721667 bytes).
 PDF statistics:
- 604 PDF objects out of 1000 (max. 8388607)
- 515 compressed objects within 6 object streams
- 158 named destinations out of 1000 (max. 500000)
- 321 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 624 PDF objects out of 1000 (max. 8388607)
+ 528 compressed objects within 6 object streams
+ 163 named destinations out of 1000 (max. 500000)
+ 336 words of extra memory for PDF output out of 10000 (max. 10000000)
 
