@@ -103,11 +103,7 @@ morekeywords={*,...}            % if you want to add more keywords to the set
 
 
 
-%\marginsize{3 cm}{2 cm}{2 cm}{2.5 cm}
 
-%\title{\textbf{Project Handbook for Development Projects}}
-%\author{Carolina Millet \\ Xavier Bush}
-%\date{October 2014}		% Comentar para que aparezca la fecha de hoy
 \newgeometry{
     top=35mm,
     bottom=30mm,
@@ -350,13 +346,13 @@ This group is only formed by Mohammad Abdulla who has taken care of all the tech
 
 	\section{Management Group}
 
-The \textit{Management Group} has taken car of the drawing up of those tasks that were oriented to plan, follow up and present the work of the project.
+The \textit{Management Group} has taken care of the drawing up of those tasks that were oriented to plan, follow up and present the work of the project.
 
 The main documents are listed below:
 
 \begin{itemize}
 \item Project Plan: document that contained a brief description of the project, time resources and planning and tasks planning.
-\item Progress Report: document containing the follow up of the projects in terms of achievements and resources. It is a updated version of the Project Plan. The last Progress Report can be found in \ref{sec:appendix}.
+\item Progress Report: document containing the follow up of the projects in terms of achievements and resources. It is a updated version of the Project Plan.
 \item Project Report: this precise document. It contains the description of all the project in all the areas.
 \end{itemize}
 
@@ -387,7 +383,7 @@ As every document listed before is already available for the supervisor, in this
 
 \section{Cross-Groups Duties}
 
-In terms of making easier the transfer of information between groups, the makeup of the groups has followed a cross-specialization criteria. Therefore, there are team members in more than one group, and it has been possible due to the wide scope of skills that the team members have (\ref{organization}).
+In terms of making the transfer of information between groups easier, the makeup of the groups has followed a cross-specialization criteria. Therefore, there are team members in more than one group, and it has been possible due to the wide scope of skills that the team members have (\ref{organization}).
 
 \chapter{Theory}
 \label{sec:theory}
@@ -405,7 +401,7 @@ In terms of goals, it has been very important for the group to reach a good nois
 	
 	The LMS (Least Mean Square) Algorithm \cite{asp} is an adaptive filtering technique used to estimate the unwanted component in the signal that wants to be filtered and, a posteriori, subtract it to "clean" the wanted signal.
 	
-	To use this technique it is a needed to have both signals, the one that contains the useful information ($y(n)$) and the noisy one ($x(n)$).
+	To use this technique it is needed to have both signals, the one that contains the useful information ($y(n)$) and the noisy one ($x(n)$).
 	
 	The process used in this technique is a recursive calculation samples by sample were $N$ previous samples of the wanted signal are used to calculate the current filter sample, used later on for the subtraction.
 	
@@ -426,8 +422,8 @@ In terms of goals, it has been very important for the group to reach a good nois
 	In the Equation \ref{eq:lmsgeneral2}:
 	
 	\begin{itemize}
-	\item $\hat{\theta(n)}$: estimation of the current sample of the filter
-	\item $\hat{\theta(n)}$: estimation of the previous sample of the filter
+	\item $\hat{\theta}(n)$: estimation of the current sample of the filter
+	\item $\hat{\theta}(n-1)$: estimation of the previous sample of the filter
 	\item $Y(n)$: vector that contains the $N$ samples used in the implementation
 	\item $x(n$): sample of the wanted signal
 	\item $\mu$: step size
@@ -444,7 +440,7 @@ In terms of goals, it has been very important for the group to reach a good nois
 	
 	In terms of cost operation, LMS is very efficient thus only needs O(N) operations in each iteration. A priori, this is feasible for a real time implementation and this one of the reason that made us start with this approach.
 	
-	Nevertheless, the implementation of LMS for noise cancellation is a little bit different. As showed in Figure \ref{fig:simplms}, the purpose is to estimate $x_{1}(n)$ from $x(n)$, i.e. calculate $\hat{x_{1}}(n)$ to then subtract if from $z(n)=s(n)+x(n)$ from the received signal at the receiver phone. In conclusion, it is necessary that de \textit{Adaptive Filer} emulate the \textit{Channel}.
+	Nevertheless, the implementation of LMS for noise cancellation is a little bit different. As showed in Figure \ref{fig:simplms}, the purpose is to estimate $x_{1}(n)$ from $x(n)$, i.e. calculate $\hat{x_{1}}(n)$ to then subtract if from $z(n)=s(n)+x(n)$ from the received signal at the receiver phone. In conclusion, it is necessary that de \textit{Adaptive Filter} emulate the \textit{Channel}.
 	
 		\begin{figure}[h]
 		\centering
@@ -534,10 +530,10 @@ The \textit{logMMSE} is a a type of speech enhancement system that, applied afte
 	
 	Where \textit{k} denotes Fourier expansion index and \textit{i} denotes time index. The problem here is to estimate the Fourier expansion coefficients of the speech given our noisy speech sequence.
 
-It is naturally assumed by the group is not always present. Contrary, the noise is considered to be almost always present. Therefore, the main problems to be solved in this type of system are that of estimating the target PSD, i.e. a priori \textit{SNR}, estimating the noise \textit{PSD} estimate and find a suitable statistical assumption for the speech and noise.
+It is naturally assumed by the group that the voice is not always present. Contrary, the noise is considered to be almost always present. Therefore, the main problems to be solved in this type of system are that of estimating the target PSD, i.e. a priori \textit{SNR}, estimating the noise \textit{PSD} estimate and find a suitable statistical assumption for the speech and noise.
 
 
-In our case, it is assumed that the Fourier Expansion Coefficients can be modelled as statistically independent Gaussian random variables. Both random variables are assumed to be independentin time and in Fourier expansion index. This is motivated by the fact that the Fourier Expansion Coefficients are coefficients that come from weighted random time samples and, through the Central Limit theory, these should approach Gaussian variables. The previous assumptions might not be entirely correct as the windows are overlapping and that there will be dependencies across Fourier expansion coefficients due to windowing, for instance.
+In our case, it is assumed that the Fourier Expansion Coefficients can be modelled as statistically independent Gaussian random variables. Both random variables are assumed to be independent in time and in Fourier expansion index. This is motivated by the fact that the Fourier Expansion Coefficients are coefficients that come from weighted random time samples and, through the Central Limit theory, these should approach Gaussian variables. The previous assumptions might not be entirely correct as the windows are overlapping and that there will be dependencies across Fourier expansion coefficients due to windowing, for instance.
 
 The problem in this point is to estimate the Fourier Expansion Coefficients using the \textit{logMMSE}, that stands for logarithmic Minimum Mean Square error function \cite{logmmse}:
 
@@ -611,7 +607,7 @@ The implementation in MATLAB of the logMMSE has been done with the help of an al
 
 As said in \ref{sec:logmmseintro}, the input of the logMMSE function is the output of the LMS function. In this way, the performance of logMMSE is maximized.
 
-To clarify the utilization of the logMMSE the parameters needed an their values are stated below:
+To clarify the utilization of the logMMSE the parameters needed and their values are stated below:
 
 \begin{itemize}
 \item $\alpha=0.99$; This is one of the simpler ways to estimate the a priori SNR and a very effective one.
@@ -619,7 +615,7 @@ To clarify the utilization of the logMMSE the parameters needed an their values 
 
 Finally, and using the same kind of analysis than in the previous section, the results will be presented in the time domain and in the frequency domain.
 
-First, Figure \ref{fig:logmmse1} shows the time plots of the different signals: the original, the output of the LMS filter and the output of the logMMSE filter. It can be appreciated that there is a certain unwanted gain in certain parts of the last plot, corresponding to the output of the logMMSE. Even though, this does not affect to the quality of the auditive results and, furthermore, the noise is almost 100\% cancelled.
+First, Figure \ref{fig:logmmse1} shows the time plots of the different signals: the original, the output of the LMS filter and the output of the logMMSE filter. It can be appreciated that there is a certain unwanted gain in certain parts of the last plot, corresponding to the output of the logMMSE. Even though, this does not affect the quality of the auditive results and, furthermore, the noise is almost 100\% cancelled.
 
 In the Figure \ref{fig:logmmse2} we have the different plots overlapped and it is easier to see how the noise is reduced.
 
@@ -657,7 +653,7 @@ Finally, about the computational time, the new system lasts 6 seconds to filter 
 		\hat{x(n)} = \sum \limits_{k=-\infty}^\infty \theta(n,k)y(n-k)
 	\end{equation}
 	
-	To solve this problem, given the estimator, the group has followed a spectral factorization technique that defines the optinar linear filter as
+	To solve this problem, given the estimator, the group has followed a spectral factorization technique that defines the optimal linear filter as
 	
 		\begin{equation}
 	\label{eq:nonc1}
@@ -672,7 +668,7 @@ Finally, about the computational time, the new system lasts 6 seconds to filter 
 		There are many differences between LMS and Non-Causal Filtering. These are the most important:
 		
 		\begin{itemize}
-		\item Number of phones=2. In this case, to extract the needed information about the noise it is not needed the third phone that was used to record pure noise.
+		\item Number of phones=2. In this case, to extract the needed information about the noise the third phone that was used to record pure noise is not needed. 
 		
 		\item The processing is done by frames.
 		
@@ -696,7 +692,7 @@ Finally, about the computational time, the new system lasts 6 seconds to filter 
 			\item Voice-Unvoice detection of the frame
 		\begin{itemize}
 			\item If the frame is unvoiced: $\mu_{unvoiced}$ and $\sigma_{unvoiced}$ are updated
-			\item If the frame is detected as voiced: $\mu_{voiced}$ and $\sigma_{voiced}$
+			\item If the frame is detected as voiced: $\mu_{voiced}$ and $\sigma_{voiced}$ are recalculated and $\mu_{unvoiced}$ and $\sigma_{unvoiced}$ remain equal
 			\end{itemize}
 			
 		\item Filter the frame
@@ -1047,6 +1043,8 @@ for(i=bufferLength;i-->0;){
 	
 
 \chapter{Conclusions}
+
+
 
 \chapter{Appendices}
 \label{sec:appendix}
