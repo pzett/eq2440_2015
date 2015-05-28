@@ -34,5 +34,8 @@
 \contentsline {section}{\numberline {4.3}The Application}{31}{section.4.3}
 \contentsline {subsubsection}{Screens of the application}{31}{section*.26}
 \contentsline {chapter}{\numberline {5}Conclusions}{37}{chapter.5}
+\contentsline {section}{\numberline {5.1}Theory Conclusions}{37}{section.5.1}
+\contentsline {section}{\numberline {5.2}Android Group}{37}{section.5.2}
+\contentsline {section}{\numberline {5.3}Open issues to solve}{38}{section.5.3}
 \contentsline {chapter}{\numberline {6}Appendices}{39}{chapter.6}
 \contentsline {chapter}{\numberline {7}Bibliography}{41}{chapter.7}

@@ -164,7 +164,6 @@ Per ZETTERBERG
 \restoregeometry
 
 
-
 \pagebreak\tableofcontents
 \pagebreak
 
@@ -449,6 +448,8 @@ In terms of goals, it has been very important for the group to reach a good nois
 		\label{fig:simplms}
 		\end{figure}
 		
+		Finally, it is important to comment that for a good performance of the \textit{LMS Algorithm} it is needed a high correlation between the noise coming from the first speaker and the one coming from the phone that records the noise. To do so, a synchronisation will have to be applied in the receiver.
+		
 	
 	\subsubsection{Implementation \& Results}
 	
@@ -703,7 +704,7 @@ Finally, about the computational time, the new system lasts 6 seconds to filter 
 			\item No overlap between frames
 		\end{itemize}
 		
-		After applying these steps the results have been partly satisfactory. As can be appreciated in the Figure \ref{fig:nonc}, the noise is highly reduced in the unvoiced frames. On the other hand, the drawback comes in shape of unstable regions, as can be seen at first sight between seconds 4 and 5. Figure \ref{fig:noncunstable} shows a zoom in in an unstable region, and a possible explanation of it is that the functions used in the non-causal filtering is the inserting of a zero 60 samples-vector at the end of each filtered signal, in each frame in our case.
+		After applying these steps the results have been partly satisfactory. As can be appreciated in the Figure \ref{fig:nonc}, the noise is highly reduced in the unvoiced frames. On the other hand, the drawback comes in shape of unstable regions, as can be seen at first sight between seconds 4 and 5. Figure \ref{fig:noncunstable} shows a zoom in an unstable region, and a possible explanation of it is that the functions used in the non-causal filtering is the inserting of a zero 60 samples-vector at the end of each filtered signal, in each frame in our case.
 		
 		To try to solve this problem, a solution to filter overlapped frames has been implemented. The main purpose of if was to avoid unstable regions and the zero-sample vectors. Meanwhile the second problem has been successfully solved, a bigger unstable appeared, as shown in Figure \ref{fig:noncunstableoverlap}. A curious results is the perfect shape of a decreasing exponential that it has.
 		
@@ -736,13 +737,13 @@ Finally, about the computational time, the new system lasts 6 seconds to filter 
 
 \section{Unsuccessful Approaches}
 
-In this section are presented some of the unsuccessful approaches of the theory group. The reasons of the unreached success come from different natures, as will be explained above in each algorithm or technique.
+In this section some of the unsuccessful approaches of the theory group are presented. The reasons of the unreached success come from different natures, as will be explained above in each algorithm or technique.
 
 	\subsection{Kalman Filtering}
 	Kalman Filtering is an Adaptive Filtering technique highly used in tracking and predicting, for instance. Therefore it was considered as a suitable option to face the noise cancellation problem of this project. But, unfortunately this technique showed two main drawbacks:
 	
 	\begin{itemize}
-	\item Computational cost too high. Therefore not possible the transfer to the Android coding.
+	\item Computational cost too high. Therefore it is not possible to transfer to the Android coding.
 	\item Difficulties to find a right State-Space Model showed in Equation \ref{eq:kalman}, i.e. problems to find \textit{F, G, H, v(n) and w(n)}
 	\end{itemize}
 	
@@ -760,13 +761,13 @@ In this section are presented some of the unsuccessful approaches of the theory 
 	
 	\subsection{RLS}
 	
-	The REcursive Least Squeares (RLS) Algorithm \cite{asp} is supposed to have a better convergence and result than the LMS Algorithm. The problem that RLS tries to solve is the FIR Wiener one, where the aim is to estimate the process $x(n)$ using a fixed number of observations from another process ${y(n)}$ using a liner estimator
+	The Recursive Least Squeares (RLS) Algorithm \cite{asp} is supposed to have a better convergence and result than the LMS Algorithm. The problem that RLS tries to solve is the FIR Wiener one, where the aim is to estimate the process $x(n)$ using a fixed number of observations from another process ${y(n)}$ using a liner estimator
 	
 	\begin{equation}
 	\hat{x}(n)=\sum \limits_{k=-0}^{N-1} \theta(k)y(n-k)=Y^T (n)\theta
 	\end{equation}
 	
-	where $Y(n)= [y(n),y(n-1),\dots,y(N-N+1)]^T$ are the saples that have to be filtered and the crierion is $MSE(\theta)=E{(x(n)-\hat{x(n)})^2}$.
+	where $Y(n)= [y(n),y(n-1),\dots,y(N-N+1)]^T$ are the samples that have to be filtered and the crierion is $MSE(\theta)=E{(x(n)-\hat{x(n)})^2}$.
 	
 	Nevertheless, the option was tested during the first days of the project and dropped after checking the Computational Cost: O($N^2$) vs the  O($N$) of the LMS.
 	
@@ -792,9 +793,11 @@ The issue with the frequency domain LMS is the fact that it does not converge as
 
 The Android part has been the most challenging in the whole project: implement a real time application with signal treatment implies code optimisation skills. Even though Android environment coding was a new experience for all the members of the group, the results have been outstanding.
 
-The coding environment of Android is Eclipse and the language used is JAVA, object oriented and assumed to be known by the reader. Moreover, the used \textit{Android} platform is \textit{Android 5.1}. AS a clarification, the framework used in the project was the one provided by the supervisor, Per Zetterberg.
+The coding environment of Android is Eclipse and the language used is JAVA, object oriented and assumed to be known by the reader. Moreover, the used \textit{Android} platform is \textit{Android 5.1}. 
 
-This chapter it is going to be presented the followed steps and reached results during the performance of the project.
+As a clarification, the framework used in the project was the one provided by the supervisor, Per Zetterberg.
+
+In this chapter the followed steps and reached results during the performance of the project are presented. 
 
 \section{Code Training}
 
@@ -803,7 +806,7 @@ For the \textit{Android Group}, the project began with a set of tasks that neede
 \section{Coding for Noise Cancellation}
 \label{sec:coding}
 
-Once the group was familiarized with the environment, the procedure of processing the information needed to be set. As the communication path for the teleconference is the Internet, the information is going to be sent with TCP frames, therefore the signal processing is going to be frames/blocks oriented, i.e. a buffering is needed for such an application. The solution that has been kept for the buffering is: to use dynamic lists of buffers.
+Once the group was familiarized with the environment, the procedure of processing the information needed to be set. As the communication path for the teleconference is the Internet, the information is going to be sent with TCP frames, therefore the signal processing is going to be frames/blocks oriented, i.e. buffering is needed for such an application. The solution that has been kept for the buffering is: to use dynamic lists of buffers.
 
 In terms of time, the buffer is a constant parameter and it lasts around \textit{92 ms}. Contrary, the buffer length, in terms of number of samples, is frequency $f_{s}$ dependent and proportional. Typical buffer lengths are $1024$ and $2048$ samples which correspond to \textit{$f_{s}$=11025 Hz} and \textit{$f_{s}$=22050 Hz} respectively.
 
@@ -905,7 +908,7 @@ for(i=bufferLength;i-->0;){
 			\end{lstlisting}
 		\end{itemize}
 	
-	\item \textbf{Moving every “static” calculation out the loops:}  operations inside loops take time. Therefore, all the constant values respect to the loop index are taken out of the loop and define them as local variables to avoid useless calculations. It costs less to point at a local variable than to calculate.
+	\item \textbf{Moving every “static” calculation out the loops:}  operations inside loops take time. Therefore, all the constant with to the loop index are taken out of the loop and define them as local variables to avoid useless calculations. It costs less to point at a local variable than to calculate.
 	
 	\begin{itemize}
 	\item Replacing:
@@ -1014,6 +1017,8 @@ for(i=bufferLength;i-->0;){
 	\item \textit{timeLMS}: execution time of the NLMS algorithm
 	\item\textit{lengthSenderBuffer}: length of the ArrayList containing the recorded buffers from the sender
 	\item \textit{lengthNoiseBuffer}: length of the ArrayList containing the recorded buffers from the noise
+	\item \textit{Number of taps}: obviously this is the order of the NLMS filter.
+	
 	\end{itemize}
 
 	
@@ -1032,6 +1037,7 @@ for(i=bufferLength;i-->0;){
 		\caption{Selection of role in the teleconference}
 		\label{fig:selection}
 		\end{figure}
+			
 		
 		
 		\begin{figure}[h]
@@ -1043,6 +1049,59 @@ for(i=bufferLength;i-->0;){
 	
 
 \chapter{Conclusions}
+
+The evaluation of the project as whole is absolutely positive. Nevertheless, the group does not consider it a complete success due to several problems or limitations that it has.
+
+
+\section{Theory Conclusions}
+From a theoretical point of view, the noise cancellation has been achieved in MATLAB simulation with non appreciable distortion or voice modification. Moreover, the techniques used to do so have been successful and computational efficient, which was a requirement before the transfer the code to Android.
+
+As a conclusion, the group has seen that the combination of different techniques to process the signal gives better results.
+
+\section{Android Group}
+The challenge of the Android has been partially achieved. In terms of communications, the two phones connect to each other with an acceptable delay. On the other hand, the system is limited to a static position, i.e. both phones that are involved with the noise need to remain in the same position for synchronisation purposes.
+
+The synchronisation has been one of the bigger problems. As a main requirement for the NLMS using, it is necessary a maximum correlation between the noise samples that arrive to the receiver from the sender and the ones from the noise recorder. Otherwise, the NLMS performance is limited (\ref{lms}). Therefore, the needed synchronisation will be done by correlation.
+
+The biggest problem concerning synchronisation is the distance between the phone of the \textit{Speaker 1} and the phone of the \textit{Noise}. This distance will affect directly to the delay between the signals when they will arrive to the phone of the \textit{Speaker 2}. This delay is due to the propagation of the acoustic waves in the air. For instance, considering that the sound propagation in the air is $v_{air}=340$ \textit{m/s}, with a \textit{5 m} distance between these two phones, the delay is $\Delta_{t}=14.7$ \textit{ms}. This delay has a real impact on the needed size of the filter. Taking into account next values:
+
+\begin{itemize}
+\item $f_{s}=11$ \textit{KHz} (Minim possible value)
+\item $t_{buffer}=92$ \textit{ms} (Buffer duration)
+\end{itemize}
+
+and doing the proper calculations ($order_{minim}=\frac{14.7}{92} \cdot 1024=163$) samples. Finally, with this set up, 163 is the minimum degree of the NLMS Filter.
+
+On the other hand, with a 100 degree NLMS filter the voice received by the \textit{Speaker 2} suffers noise distortion, possibly because of Inter Symbol Interference.
+
+With this results, the group has faced a trade-off between the noise cancellation and the voice distortion. Thus, the final set up is next:
+
+\begin{itemize}
+\item Distance between phones: 0.5 m (maximum)
+\item Order of the NLMS filter: from 10 to 50
+\end{itemize}
+
+As a result, the noise cancellation is considered a success and the received voice suffers a smaller distortion.
+
+Moreover, there is a special set up that has given extraordinary results. This set up consists in two phones besides each other, being one the \textit{Noise phone} and the other one the \textit{Speaker 1 phone}. As a result, the \textit{Speaker 2} can experience a full noise cancellation. The Figure \ref{fig:setup} shows the mentioned set up.
+
+		\begin{figure}[h]
+		\centering
+		\includegraphics[width=6cm]{images/android/setup.jpg}
+		\caption{Set up for complete noise cancellation}
+		\label{fig:setup}
+		\end{figure}
+
+
+\section{Open issues to solve}
+
+Taking into account all the problems found out during the performance of the project and the limitations of the final application, the \textit{Group} will list the open issues to solve as proposals to continue the project:
+
+\begin{itemize}
+\item Reach a non-static set up of the phones
+\item Reach phonic isolation between the noise and the senders phone
+\item Reach maximum correlation between the added noise to the teleconference with the pure noise signal 
+\end{itemize}
 
 
 
