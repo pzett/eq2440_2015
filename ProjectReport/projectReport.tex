@@ -812,7 +812,7 @@ Other technical requirements are:
 		
 		\subsection{NLMS}
 		
-		The \textit{Android Group} had to make some changes from the material sent by the \textit{Theory Group}. Due to some saturation, the \textit{NLMS Algorithm} was successfully tested.
+		The proposed LMS solution by the \textit{Theory Group} ended up with several problems when it was translated to JAVA, like a certain saturation. Therefore, the \textit{Android Group} needed to do some changes in the code.
 		
 		A few problems that may appear on the LMS are related to stability due to the signal power. Hence the step-size may have to be chosen unnecessarily small. However, the LMS can be made insensitive to the signal power by using a normalized step-size \cite{asp}:
 		
@@ -826,7 +826,7 @@ Other technical requirements are:
 	The NLMS version in Android has been challenging because the buffers used on the framework last approximately \textit{92 ms}, as commented in \ref{sec:coding} and the processing part has to last less than this time. Because the NLMS version was imported from MATLAB, it has been first translated to JAVA and later on the code has been improved to reduce the execution time. These have been two implemented solutions to do so:
 	
 	\begin{itemize}
-	\item \textbf{Intelligent 'for-loops`}: The for-loop executes a test on the index variable for every iteration. This test consists of calculating the subtraction between the index variable and the tested value, and then compare it to $0$. To really reduce the execution time, the compared value has to be zero and thus any subtraction will be calculated, which helps if there are a lot of iterations. It is done as follows:
+	\item \textbf{Intelligent 'for-loops`}: The for-loop executes a test on the index variable for every iteration. This test consists of calculating the subtraction between the index variable and the tested value, and then compare it to $0$. To really reduce the execution time, the compared value has to be zero and thus the subtraction will be calculated, which helps if there are a lot of iterations. It is done as follows:
 	
 		\begin{itemize}
 			\item Replacing
