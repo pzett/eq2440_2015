@@ -749,6 +749,26 @@ In this section are presented some of the unsuccessful approaches of the theory 
 	where $Y(n)= [y(n),y(n-1),\dots,y(N-N+1)]^T$ are the saples that have to be filtered and the crierion is $MSE(\theta)=E{(x(n)-\hat{x(n)})^2}$.
 	
 	Nevertheless, the option was tested during the first days of the project and dropped after checking the Computational Cost: O($N^2$) vs the  O($N$) of the LMS.
+	
+	
+	\subsection{Frequency Domain LMS-Algorithm}
+	
+	One of the main reasons why the \textit{Frequency Domain LMS-Algorithm} was considered was due to the fact that the time domain algorithm required a lot of taps, in the order of a 1000 taps, which made the amount of multiplications per sample very high. 
+	
+What the frequency domain LMS does is that it works in the frequency domain and takes blocks of data and process, instead of processing sample by sample, like in the time domain LMS, which means that the amount of multiplications per sample drastically decreases, by up to 16 times. The frequency domain LMS is often used for noise cancellation, hence there are a lot of research on this topic, but not for noise cancellation purposes.
+
+The issue with the frequency domain LMS is the fact that it does not converge as fast as time domain algorithm, which means that a lot of noise will not be removed. Another problem is that the blocks must be windowed and overlapped and after processing, one must use the overlap and add method and all of this increases the amount of computations per sample. To have a better understanding about the \textit{Frequency Domain LMS-Algorithm}, the Figure \ref{fig:freqlms} shows the block diagram of this technique.
+
+
+		\begin{figure}[h]
+		\centering
+		\includegraphics[width=10cm]{images/theory/freqlms.jpg}
+		\caption{Frequency Domain LMS-Algorithm Block Diagram}
+		\label{fig:freqlms}
+		\end{figure}	
+
+
+
 
 
 

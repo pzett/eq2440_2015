@@ -25,13 +25,14 @@
 \contentsline {section}{\numberline {3.2}Unsuccessful Approaches}{21}{section.3.2}
 \contentsline {subsection}{\numberline {3.2.1}Kalman Filtering}{21}{subsection.3.2.1}
 \contentsline {subsection}{\numberline {3.2.2}RLS}{22}{subsection.3.2.2}
+\contentsline {subsection}{\numberline {3.2.3}Frequency Domain LMS-Algorithm}{22}{subsection.3.2.3}
 \contentsline {chapter}{\numberline {4}Android}{25}{chapter.4}
 \contentsline {section}{\numberline {4.1}Code Training}{25}{section.4.1}
 \contentsline {section}{\numberline {4.2}Coding for Noise Cancellation}{25}{section.4.2}
 \contentsline {subsection}{\numberline {4.2.1}State Diagram}{26}{subsection.4.2.1}
 \contentsline {subsection}{\numberline {4.2.2}NLMS}{27}{subsection.4.2.2}
 \contentsline {section}{\numberline {4.3}The Application}{29}{section.4.3}
-\contentsline {subsubsection}{Screens of the application}{29}{section*.22}
+\contentsline {subsubsection}{Screens of the application}{29}{section*.23}
 \contentsline {chapter}{\numberline {5}Conclusions}{35}{chapter.5}
 \contentsline {chapter}{\numberline {6}Appendices}{37}{chapter.6}
 \contentsline {chapter}{\numberline {7}Bibliography}{39}{chapter.7}
