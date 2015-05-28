@@ -27,9 +27,9 @@
 \contentsline {subsection}{\numberline {3.2.2}RLS}{25}{subsection.3.2.2}
 \contentsline {subsection}{\numberline {3.2.3}Frequency Domain LMS-Algorithm}{26}{subsection.3.2.3}
 \contentsline {chapter}{\numberline {4}Android}{27}{chapter.4}
-\contentsline {section}{\numberline {4.1}Code Training}{27}{section.4.1}
+\contentsline {section}{\numberline {4.1}Learning Android}{27}{section.4.1}
 \contentsline {section}{\numberline {4.2}Coding for Noise Cancellation}{27}{section.4.2}
-\contentsline {subsection}{\numberline {4.2.1}State Diagram}{28}{subsection.4.2.1}
+\contentsline {subsection}{\numberline {4.2.1}State Diagram}{27}{subsection.4.2.1}
 \contentsline {subsection}{\numberline {4.2.2}NLMS}{29}{subsection.4.2.2}
 \contentsline {section}{\numberline {4.3}The Application}{31}{section.4.3}
 \contentsline {subsubsection}{Screens of the application}{31}{section*.26}

@@ -389,7 +389,7 @@ In terms of making the transfer of information between groups easier, the makeup
 
 The \textit{Theory Group} has been working within different scenarios but mainly has followed what is called \textit{Adaptive Signal Processing}, as it has been explained in \ref{sec:history}. Some of them have ended in good performance algorithms where only two of them have been transferred to Android and some other have not reached the wanted outcome.
 
-In terms of goals, it has been very important for the group to reach a good noise cancellation and preserving as much as possible the voice quality.
+In terms of goals, it has been very important for the group to reach a good noise cancellation and preserving as much as possible of the voice quality.
 
 \section{Successful Approaches}
 
@@ -404,7 +404,7 @@ In terms of goals, it has been very important for the group to reach a good nois
 	
 	The process used in this technique is a recursive calculation samples by sample were $N$ previous samples of the wanted signal are used to calculate the current filter sample, used later on for the subtraction.
 	
-	The original problem to solve in LMS is shown in the Equation \ref{eq:lmsgeneral1}, where is clearly visible that the LMS minimizes the MSE using the instantaneous error.
+	The original problem to solve in LMS is shown in the Equation \ref{eq:lmsgeneral1}, where it is clearly visible that the LMS minimizes the MSE using the instantaneous error.
 	
 		\begin{equation}
 	\label{eq:lmsgeneral1}
@@ -437,7 +437,7 @@ In terms of goals, it has been very important for the group to reach a good nois
 	
 	where $\lambda_{1}$ is the maximum eigen value of $I-\mu \Sigma_{YY}$.
 	
-	In terms of cost operation, LMS is very efficient thus only needs O(N) operations in each iteration. A priori, this is feasible for a real time implementation and this one of the reason that made us start with this approach.
+	In terms of cost operations, LMS is very efficient thus only needs O(N) operations in each iteration. A priori, this is feasible for a real time implementation and this one of the reason that made us start with this approach.
 	
 	Nevertheless, the implementation of LMS for noise cancellation is a little bit different. As showed in Figure \ref{fig:simplms}, the purpose is to estimate $x_{1}(n)$ from $x(n)$, i.e. calculate $\hat{x_{1}}(n)$ to then subtract if from $z(n)=s(n)+x(n)$ from the received signal at the receiver phone. In conclusion, it is necessary that de \textit{Adaptive Filter} emulate the \textit{Channel}.
 	
@@ -464,7 +464,7 @@ In terms of goals, it has been very important for the group to reach a good nois
 	
 	Even though there is an upper limit for the value of $\mu$ (\ref{eq:lmsus}), there is not a lower limit (besides $0$). Therefore, the group followed a test-and-set empirical criteria where different $\mu$ values where tested and the value who gave the best auditive performance was the chosen. In the last case, the best performance was given by $\mu=5 \cdot 10^{-5}.$
 	
-	These results are reasonable: it exists a linear dependency of the performance with the number of previous samples used to calculate the current estimation.
+	These results are reasonable: if seems that the bigger filter is used the more noise cancellation is achieved. However, there is a reverberation introduced when using big filters.
 	
 	To show some graphic results of the performance of this algorithm, on the one hand Figure \ref{fig:lmstime100} and \ref{fig:lmsfreq100} show the time and frequency response of the filtered sequence with $N=100$ samples in comparison with the original recording. There is some audible noise reduction that in the figure can be seen in the noisy frames where there is more presence of noise in the original plot than in the filtered one. When it comes to the frequency domain, we can appreciate that there are several small peaks at low frequencies and the contribution of the peak at $f=0.6$ (where $fs=44.1$ KHz) has been slightly decreased.
 	
@@ -514,7 +514,7 @@ In terms of goals, it has been very important for the group to reach a good nois
 	
 The \textit{logMMSE} is a a type of speech enhancement system that, applied after the LMS filter, has been provided the best performance in terms of noise cancellation above all the technique implemented by the theory group with outstanding results of noise cancellation and computational cost.
 	
-	To be familiar with the term, a speech enhancement system is a transform-based system that uses a single microphone which main goal is noise reduction. For the outer system, the time domain signal is first framed and windowed.  These frames are generally overlapping. Then a transform, typically \textit{FFT}, is applied to each and every frame. After the processing system, the gain is applied to the transform coefficients and the inverse transform is performed followed by an overlap-and-add method that is to compensate for the windowing and framing \cite{speech}.
+	To be familiar with the term, a speech enhancement system is a transform-based system that uses a single microphone which main goal is speech enhancement. For the outer system, the time domain signal is first framed and windowed.  These frames are generally overlapping. Then a transform, typically \textit{FFT}, is applied to each and every frame. After the processing system, the gain is applied to the transform coefficients and the inverse transform is performed followed by an overlap-and-add method that is to compensate for the windowing and framing \cite{speech}.
 
 	
 	The observed signal is given by:
@@ -522,8 +522,8 @@ The \textit{logMMSE} is a a type of speech enhancement system that, applied afte
 	\begin{subequations}
 	\label{eq:speech1}
 	\begin{align}
-	Y_{k}=\frac{1}{T} \int_0^T \mathrm{e}^{-j \frac{2\pi}{T} Kt}\,\mathrm{d}t\\
-	k=0, \pm 1, \pm 2, \dots	
+	Y_{k}=\frac{1}{T} \int_0^T y(n) \mathrm{e}^{-j \frac{2\pi}{T} Kt}\,\mathrm{d}t\\
+	k=0, 1, 2, \dots	
 	\end{align}
 	
 	\end{subequations}
@@ -541,7 +541,7 @@ The problem in this point is to estimate the Fourier Expansion Coefficients usin
 
 	\begin{equation}
 	\label{eq:logmmse1}
-		\mathrm{E}((log A_{k }- log\hat{A_{k}})^2)
+		\mathrm{E}((log A_{k } - log\hat{A_{k}})^2)
 	\end{equation}
 	
 	This estimator is given by
@@ -549,8 +549,8 @@ The problem in this point is to estimate the Fourier Expansion Coefficients usin
 	\begin{subequations}
 	\label{eq:logmmse2}
 	\begin{align}
-		\hat{A_{k}}=e^{\mathrm{E}(ln A_{k}\vert y(t))}, t \leq t \leq T\\
-		\hat{A_{k}}=e^{\mathrm{E}(ln A_{k}\vert Y_{k})}
+		\hat{A_{k}}=exp(\mathrm{E}(ln A_{k}\vert y(t))), t \leq t \leq T\\
+		\hat{A_{k}}=exp(\mathrm{E}(ln A_{k}\vert Y_{k}))
 		\end{align}
 	\end{subequations}
 	
@@ -559,8 +559,8 @@ The problem in this point is to estimate the Fourier Expansion Coefficients usin
 		\begin{subequations}
 	\label{eq:logmmse2}
 	\begin{align}
-		p(Y_{k} \vert a_{k},\alpha_{k})=\frac{1}{\pi \lambda_{d}(k)} e^{-\frac{1}{\lambda_{d}(k)} \vert Y_{k}-a_{k} e^{j\alpha_{k}}\vert ^2} \\
-		p(a_{k}, \alpha{k})=\frac{a_{k}}{\pi \lambda_{k}}e^{-\frac{a_{k}^2}{\lambda_{x}(k)}}
+		p(Y_{k} \vert a_{k},\alpha_{k})=\frac{1}{\pi \lambda_{d}(k)} exp(-\frac{1}{\lambda_{d}(k)} \vert Y_{k}-a_{k} e^{j\alpha_{k}}\vert ^2) \\
+		p(a_{k}, \alpha{k})=\frac{a_{k}}{\pi \lambda_{k}}exp(-\frac{a_{k}^2}{\lambda_{x}(k)})
 		\end{align}
 	\end{subequations}
 	
@@ -569,7 +569,7 @@ The problem in this point is to estimate the Fourier Expansion Coefficients usin
 	
 		\begin{equation}
 	\label{eq:logmmse3}
-		G(\xi_{k},\gamma_{k})=\frac{\xi_{k}}{1+ \xi_{k}} e^{\frac{1}{2} \int_{v_{k}}^\infty \frac{e^{-t}}{t} \mathrm{d}t}
+		G(\xi_{k},\gamma_{k})=\frac{\xi_{k}}{1+ \xi_{k}} exp(\frac{1}{2} \int_{v_{k}}^\infty \frac{e^{-t}}{t} \mathrm{d}t)
 	\end{equation}
 	
 	The remaining problem is that of estimating the a priori SNR and estimating the noise variance in each frequency bin.
@@ -597,10 +597,12 @@ Finally, after all the theoretical explanation, the Figure \ref{fig:boxesmmse} s
 		
 		\begin{figure}[h]
 		\centering
-		\includegraphics[width=15cm]{images/theory/logmmseboxes.jpg}
+		\includegraphics[width=10cm]{images/theory/logmmseboxes.jpg}
 		\caption{Box Diagram for logMMSE}
 		\label{fig:boxesmmse}
 		\end{figure}
+		
+		This method is one of the simpler ways to estimate the a priori SNR and a very effective one.
 	
 	\subsubsection{Implementation \& Results}
 
@@ -608,11 +610,7 @@ The implementation in MATLAB of the logMMSE has been done with the help of an al
 
 As said in \ref{sec:logmmseintro}, the input of the logMMSE function is the output of the LMS function. In this way, the performance of logMMSE is maximized.
 
-To clarify the utilization of the logMMSE the parameters needed and their values are stated below:
-
-\begin{itemize}
-\item $\alpha=0.99$; This is one of the simpler ways to estimate the a priori SNR and a very effective one.
-\end{itemize}
+To clarify the utilization of the logMMSE the parameters needed and their values are stated below. In our case, $\alpha=0.99$.
 
 Finally, and using the same kind of analysis than in the previous section, the results will be presented in the time domain and in the frequency domain.
 
@@ -799,7 +797,7 @@ As a clarification, the framework used in the project was the one provided by th
 
 In this chapter the followed steps and reached results during the performance of the project are presented. 
 
-\section{Code Training}
+\section{Learning Android}
 
 For the \textit{Android Group}, the project began with a set of tasks that needed to be finished before the \textit{Midterm Evaluation}. It goes without saying that the group did it in less time than expected and could start working on the transfer from MATLAB to Android coding two weeks earlier than expected.
 
@@ -809,14 +807,6 @@ For the \textit{Android Group}, the project began with a set of tasks that neede
 Once the group was familiarized with the environment, the procedure of processing the information needed to be set. As the communication path for the teleconference is the Internet, the information is going to be sent with TCP frames, therefore the signal processing is going to be frames/blocks oriented, i.e. buffering is needed for such an application. The solution that has been kept for the buffering is: to use dynamic lists of buffers.
 
 In terms of time, the buffer is a constant parameter and it lasts around \textit{92 ms}. Contrary, the buffer length, in terms of number of samples, is frequency $f_{s}$ dependent and proportional. Typical buffer lengths are $1024$ and $2048$ samples which correspond to \textit{$f_{s}$=11025 Hz} and \textit{$f_{s}$=22050 Hz} respectively.
-
-Other technical requirements are:
-
-\begin{itemize}
-\item
-\item
-\item
-\end{itemize}
 
 
 	\subsection{State Diagram}
@@ -888,24 +878,22 @@ Other technical requirements are:
 		\begin{itemize}
 			\item Replacing
 			
-			\begin{lstlisting}
-			for(int i=0;i<bufferLength;i++){
+\begin{lstlisting}
+for(int i=0;i<bufferLength;i++){
 //Calculation
 }
-
-			
-			
-			\end{lstlisting}
+\end{lstlisting}
 			
 			\item With
 			
-			\begin{lstlisting}
-			int i;
+\begin{lstlisting}
+int i;
 for(i=bufferLength;i-->0;){
 //Calculation
 }
 
-			\end{lstlisting}
+\end{lstlisting}
+	
 		\end{itemize}
 	
 	\item \textbf{Moving every “static” calculation out the loops:}  operations inside loops take time. Therefore, all the constant with to the loop index are taken out of the loop and define them as local variables to avoid useless calculations. It costs less to point at a local variable than to calculate.
@@ -913,9 +901,8 @@ for(i=bufferLength;i-->0;){
 	\begin{itemize}
 	\item Replacing:
 	
-		\begin{lstlisting}
-	
-		toFilter=new int[bufferLength];
+\begin{lstlisting}
+toFilter=new int[bufferLength];
 int i;
 int x=10;
 int y=2;
@@ -923,13 +910,12 @@ for(i=bufferLength;i-->0;){
 	toFilter[i]=x*y;
 }
 	
-		
-		\end{lstlisting}
+\end{lstlisting}
 		
 		\item With:
 		
-			\begin{lstlisting}
-			toFilter=new int[bufferLength];
+\begin{lstlisting}
+toFilter=new int[bufferLength];
 int i;
 int x=10;
 int y=2;
@@ -938,31 +924,33 @@ for(i=bufferLength;i-->0;){
 	toFilter[i]=z;
 }
 
-			\end{lstlisting}
+\end{lstlisting}
+
 	\end{itemize}
 	
 	\item \textbf{Do not instantiate inside the loops}: Everything is said in the title. If the coded is translated directly from MATLAB, the code might end up with variables that are instantiated inside loops. This is a situation to avoid. To instantiate variables takes some precious time for real time application.
 	
 	\begin{itemize}
 	\item Replace:
-		\begin{lstlisting}
-		for(i=bufferLength;i-->0;){
+\begin{lstlisting}
+for(i=bufferLength;i-->0;){
 	int x=0;
 	//Processing that uses x
 }
 
-		\end{lstlisting}
+\end{lstlisting}
+
 	\item With:
 	
-		\begin{lstlisting}
-		int i;
+\begin{lstlisting}
+int i;
 int x;
 for(i=bufferLength;i-->0;){
 	x=0;
 	//Processing that uses x
 }
 
-		\end{lstlisting}
+\end{lstlisting}
 		\end{itemize}
 
 	
