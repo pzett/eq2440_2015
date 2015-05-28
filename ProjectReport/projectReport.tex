@@ -182,7 +182,7 @@ The diversity of noise nature and its sources lead the engineering to a big chal
 	
 	The first recognized work on eliminating noise from speech signal was documented in 1934 when Paul Lueg was granted the first patent for a noise control system. In his work, Paul Lueg explained his way to cancel sinusoidal tones in ducts by phase-advancing the wave and then by inverting the polarity to cancel random sounds in the area nearby an amplifier. Basically he developed a process of silencing disturbing sound oscillations or noise which was able to work independently of the main source of oscillation or speech \cite{patent1}. 
 	
-After this work of Paul Lueg, a lot of people started working on improving noise cancelation technique used by Paul and later in 1950, Lawrence J. Fogel designed a systems where he successfully canceled the noise in helicopter and airplane cockpits communication. This work of Lawrence J. Fogel was a milestone in the noise cancellation system development where he designed a system for supplementing a standard noise suppressor by eliminating the peaks of energy as well as the nulls of energy. He claimed his design to be able to increase the lucidity of speech in noisy environment significantly over the works done previously [2].
+After this work of Paul Lueg, a lot of people started working on improving noise cancelation technique used by Paul and later in 1950, Lawrence J. Fogel designed a systems where he successfully canceled the noise in helicopter and airplane cockpits communication. This work of Lawrence J. Fogel was a milestone in the noise cancellation system development where he designed a system for supplementing a standard noise suppressor by eliminating the peaks of energy as well as the nulls of energy. He claimed his design to be able to increase the lucidity of speech in noisy environment significantly over the works done previously \cite{patent2}.
 
 Meanwhile Willard Meeker was working to implement active noise control to a circumaural earmuff and in 1957 he successfully developed a working model of his headset with an active attenuation bandwidth of approximately \textit{50–500 Hz} and a maximum attenuation of approximately 20 dB \cite{online3}.
 During 1980’s due to the technological boom, travelling less and doing the meetings over telephone became an efficient way to reduce the pressure on our environment and do business more economically. At that time technology present to reduce the noise from the speech signal was not efficient enough to make a perfect teleconference without any noise interference issue. As a consequence, more private researchers and companies were interested to develop more advanced working design to cancel noise efficiently to have a completely noise-free environment for teleconference or other communication systems. 
@@ -1054,16 +1054,16 @@ The evaluation of the project as whole is absolutely positive. Nevertheless, the
 
 
 \section{Theory Conclusions}
-From a theoretical point of view, the noise cancellation has been achieved in MATLAB simulation with non appreciable distortion or voice modification. Moreover, the techniques used to do so have been successful and computational efficient, which was a requirement before the transfer the code to Android.
+From a theoretical point of view, the noise cancellation has been achieved in MATLAB simulation with non appreciable distortion or voice modification. Moreover, the techniques used to do so have been successful and computationally efficient, which was a requirement before transferring the code to Android.
 
-As a conclusion, the group has seen that the combination of different techniques to process the signal gives better results.
+As a conclusion, the group has seen that combination of different techniques gives better results.
 
 \section{Android Group}
 The challenge of the Android has been partially achieved. In terms of communications, the two phones connect to each other with an acceptable delay. On the other hand, the system is limited to a static position, i.e. both phones that are involved with the noise need to remain in the same position for synchronisation purposes.
 
-The synchronisation has been one of the bigger problems. As a main requirement for the NLMS using, it is necessary a maximum correlation between the noise samples that arrive to the receiver from the sender and the ones from the noise recorder. Otherwise, the NLMS performance is limited (\ref{lms}). Therefore, the needed synchronisation will be done by correlation.
+The synchronisation has been one of the bigger problems. As a main requirement for the NLMS usage, it is necessary a maximum correlation between the noise samples that arrive to the receiver from the sender and the ones from the noise recorder. Otherwise, the NLMS performance is limited (\ref{lms}). Therefore, the required synchronisation will be done by correlation.
 
-The biggest problem concerning synchronisation is the distance between the phone of the \textit{Speaker 1} and the phone of the \textit{Noise}. This distance will affect directly to the delay between the signals when they will arrive to the phone of the \textit{Speaker 2}. This delay is due to the propagation of the acoustic waves in the air. For instance, considering that the sound propagation in the air is $v_{air}=340$ \textit{m/s}, with a \textit{5 m} distance between these two phones, the delay is $\Delta_{t}=14.7$ \textit{ms}. This delay has a real impact on the needed size of the filter. Taking into account next values:
+The biggest problem concerning synchronisation is the distance between the phone of the \textit{Speaker 1} and the phone of the \textit{Noise}. This distance will affect directly to the delay between the signals when they will arrive to the phone of the \textit{Speaker 2}. This delay is due to the propagation of the acoustic waves in the air. For instance, considering that the sound propagation in the air is $v_{air}=340$ \textit{m/s}, with a \textit{5 m} distance between these two phones, the delay is $\Delta_{t}=14.7$ \textit{ms}. This delay has a real impact on the required size of the filter. Taking next values into account:
 
 \begin{itemize}
 \item $f_{s}=11$ \textit{KHz} (Minim possible value)
@@ -1074,7 +1074,7 @@ and doing the proper calculations ($order_{minim}=\frac{14.7}{92} \cdot 1024=163
 
 On the other hand, with a 100 degree NLMS filter the voice received by the \textit{Speaker 2} suffers noise distortion, possibly because of Inter Symbol Interference.
 
-With this results, the group has faced a trade-off between the noise cancellation and the voice distortion. Thus, the final set up is next:
+With this results, the group has faced a trade-off between the noise cancellation and the voice distortion. Thus, the final set up is as follows:
 
 \begin{itemize}
 \item Distance between phones: 0.5 m (maximum)
@@ -1083,7 +1083,7 @@ With this results, the group has faced a trade-off between the noise cancellatio
 
 As a result, the noise cancellation is considered a success and the received voice suffers a smaller distortion.
 
-Moreover, there is a special set up that has given extraordinary results. This set up consists in two phones besides each other, being one the \textit{Noise phone} and the other one the \textit{Speaker 1 phone}. As a result, the \textit{Speaker 2} can experience a full noise cancellation. The Figure \ref{fig:setup} shows the mentioned set up.
+Moreover, there is a special set up that has given extraordinary results. This set up consists of two phones besides each other, being one as the \textit{Noise phone} and the other one as the \textit{Speaker 1 phone}. As a result, the \textit{Speaker 2} can experience a full noise cancellation. The Figure \ref{fig:setup} shows the mentioned set up.
 
 		\begin{figure}[h]
 		\centering

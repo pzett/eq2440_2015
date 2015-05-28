@@ -46,45 +46,47 @@ Warning--empty journal in online3
 Warning--empty year in online3
 Warning--empty journal in patent1
 Warning--empty year in patent1
-You've used 7 entries,
+Warning--empty journal in patent2
+Warning--empty year in patent2
+You've used 8 entries,
             2118 wiz_defined-function locations,
-            522 strings with 4921 characters,
-and the built_in function-call counts, 1599 in all, are:
-= -- 141
-> -- 73
+            524 strings with 4968 characters,
+and the built_in function-call counts, 1798 in all, are:
+= -- 158
+> -- 80
 < -- 0
-+ -- 30
-- -- 22
-* -- 88
-:= -- 295
-add.period$ -- 19
-call.type$ -- 7
-change.case$ -- 31
++ -- 33
+- -- 24
+* -- 99
+:= -- 331
+add.period$ -- 21
+call.type$ -- 8
+change.case$ -- 35
 chr.to.int$ -- 0
-cite$ -- 15
-duplicate$ -- 72
-empty$ -- 125
-format.name$ -- 22
-if$ -- 311
+cite$ -- 18
+duplicate$ -- 82
+empty$ -- 142
+format.name$ -- 24
+if$ -- 349
 int.to.chr$ -- 0
-int.to.str$ -- 7
-missing$ -- 8
-newline$ -- 36
-num.names$ -- 14
-pop$ -- 52
+int.to.str$ -- 8
+missing$ -- 9
+newline$ -- 40
+num.names$ -- 16
+pop$ -- 60
 preamble$ -- 1
-purify$ -- 25
+purify$ -- 28
 quote$ -- 0
-skip$ -- 46
+skip$ -- 52
 stack$ -- 0
-substring$ -- 36
+substring$ -- 41
 swap$ -- 5
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 26
-warning$ -- 8
-while$ -- 14
-width$ -- 8
-write$ -- 62
+type$ -- 30
+warning$ -- 10
+while$ -- 16
+width$ -- 9
+write$ -- 69
 (There were 7 error messages)
