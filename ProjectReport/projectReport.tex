@@ -884,7 +884,30 @@ for(i=bufferLength;i-->0;){
 			\end{lstlisting}
 	\end{itemize}
 	
-	\item
+	\item \textbf{Do not instantiate inside the loops}: Everything is said in the title. If the coded is translated directly from MATLAB, the code might end up with variables that are instantiated inside loops. This is a situation to avoid. To instantiate variables takes some precious time for real time application.
+	
+	\begin{itemize}
+	\item Replace:
+		\begin{lstlisting}
+		for(i=bufferLength;i-->0;){
+	int x=0;
+	//Processing that uses x
+}
+
+		\end{lstlisting}
+	\item With:
+	
+		\begin{lstlisting}
+		int i;
+int x;
+for(i=bufferLength;i-->0;){
+	x=0;
+	//Processing that uses x
+}
+
+		\end{lstlisting}
+		\end{itemize}
+
 	
 		\end{itemize}
 	

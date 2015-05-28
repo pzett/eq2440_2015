@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  28 MAY 2015 11:49
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  28 MAY 2015 12:25
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1257,56 +1257,60 @@ LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <9> not available
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <9> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 835.
  [25 <./images/android/states.png>] [26] [27]
-<images/android/startingscreen.jpg, id=410, 722.7pt x 1284.8pt>
+<images/android/startingscreen.jpg, id=423, 722.7pt x 1284.8pt>
 File: images/android/startingscreen.jpg Graphic file (type jpg)
 
 <use images/android/startingscreen.jpg>
 Package pdftex.def Info: images/android/startingscreen.jpg used on input line 9
-46.
+69.
 (pdftex.def)             Requested size: 170.71652pt x 303.4964pt.
 
-<images/android/selectionscreen.jpg, id=411, 722.7pt x 1284.8pt>
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<images/android/selectionscreen.jpg, id=424, 722.7pt x 1284.8pt>
 File: images/android/selectionscreen.jpg Graphic file (type jpg)
 
 <use images/android/selectionscreen.jpg>
 Package pdftex.def Info: images/android/selectionscreen.jpg used on input line 
-954.
+977.
 (pdftex.def)             Requested size: 170.71652pt x 303.4964pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<images/android/receiverscreen.jpg, id=412, 722.7pt x 1284.8pt>
+<images/android/receiverscreen.jpg, id=425, 722.7pt x 1284.8pt>
 File: images/android/receiverscreen.jpg Graphic file (type jpg)
 
 <use images/android/receiverscreen.jpg>
 Package pdftex.def Info: images/android/receiverscreen.jpg used on input line 9
-62.
+85.
 (pdftex.def)             Requested size: 170.71652pt x 303.4964pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[28 <./images/android/startingscreen.jpg>] [29 <./images/android/selectionscree
-n.jpg>] [30 <./images/android/receiverscreen.jpg>]
-Chapter 5.
-[31
+[28] [29 <./images/android/startingscreen.jpg>] [30 <./images/android/selection
+screen.jpg>] [31 <./images/android/receiverscreen.jpg>] [32
 
-] [32
+]
+Chapter 5.
+[33] [34
 
 ]
 Chapter 6.
-(./projectReport.bbl [33] [34
+(./projectReport.bbl [35] [36
 
 ]
 Chapter 7.
 )
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 981.
- [35]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 981.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1004.
+ [37]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1004.
  (./projectReport.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 981.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 981.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1004.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1004.
+
 Package rerunfilecheck Info: File `projectReport.out' has not changed.
 (rerunfilecheck)             Checksum: B3FA54DCC8F79CEB4A3A9B0086C9E823;1797.
 
@@ -1316,12 +1320,12 @@ LaTeX Warning: There were undefined references.
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 981.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1004.
  ) 
 Here is how much of TeX's memory you used:
- 16460 strings out of 493488
- 258479 string characters out of 3141326
- 439534 words of memory out of 3000000
+ 16474 strings out of 493488
+ 258663 string characters out of 3141326
+ 468534 words of memory out of 3000000
  19340 multiletter control sequences out of 15000+200000
  15463 words of font info for 57 fonts, out of 3000000 for 9000
  957 hyphenation exceptions out of 8191
@@ -1348,10 +1352,10 @@ ve/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/
 exmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2012/tex
 mf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2012/texm
 f-dist/fonts/type1/public/amsfonts/cm/cmti9.pfb>
-Output written on projectReport.pdf (35 pages, 1262129 bytes).
+Output written on projectReport.pdf (37 pages, 1266054 bytes).
 PDF statistics:
- 548 PDF objects out of 1000 (max. 8388607)
- 466 compressed objects within 5 object streams
- 136 named destinations out of 1000 (max. 500000)
+ 574 PDF objects out of 1000 (max. 8388607)
+ 490 compressed objects within 5 object streams
+ 150 named destinations out of 1000 (max. 500000)
  308 words of extra memory for PDF output out of 10000 (max. 10000000)
 
